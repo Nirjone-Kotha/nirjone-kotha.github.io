@@ -5,7 +5,7 @@
 export const FIREBASE_CONFIG = Object.freeze({
   apiKey: "AIzaSyBKcvLC3ZhZVQ4HWAQ9LxKhPLzWFG4dslI",
   authDomain: "nirjone-kotha.firebaseapp.com",
-  databaseURL: "https://nirjone-kotha-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https://nirjone-kotha-default-rtdb.firebaseio.com",
   projectId: "nirjone-kotha",
   storageBucket: "nirjone-kotha.firebasestorage.app",
   messagingSenderId: "628049723897",
