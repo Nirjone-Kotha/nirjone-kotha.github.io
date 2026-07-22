@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="application-name" content="Moner Kotha" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Moner Kotha" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="description" content="Moner Kotha is an anonymous social site for sharing feelings, receiving empathy, and finding a calmer moment." />
+  <meta name="app-public-url" content="" />
+  <meta name="robots" content="noindex,follow" />
+  <link rel="alternate" hreflang="bn" href="/bn/" />
+  <link rel="alternate" hreflang="en" href="/en/" />
+  <link rel="alternate" hreflang="x-default" href="/en/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Moner Kotha: Anonymous Social Site" />
+  <meta property="og:description" content="A calm anonymous social space to share feelings, feel heard, and find a calmer moment." />
+  <meta property="og:url" content="/" />
+  <meta property="og:image" content="/assets/brand/share-cover.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Moner Kotha: Anonymous Social Site" />
+  <meta name="twitter:description" content="A calm anonymous social space to share feelings, feel heard, and find a calmer moment." />
+  <meta name="twitter:image" content="/assets/brand/share-cover.png" />
+  <meta name="theme-color" content="#f3f8f7" id="themeColorMeta" />
+  <title>Moner Kotha: Anonymous Social Site</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./assets/icons/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="./assets/css/styles.css?v=6.1.0" />
+</head>
+<body>
+  <noscript><div class="noscript-banner">JavaScript is required for the social app. Public information is available in <a href="/bn/">বাংলা</a> and <a href="/en/">English</a>.</div></noscript>
+  <div class="offline-banner" id="offlineBanner" role="status" hidden>
+    <span data-t="offlineBanner">You are offline. Saved parts of the app are still available.</span>
+    <button data-action="retry-online" data-t="tryAgain">Try again</button>
+  </div>
+  <div id="app">
+    <div class="app-splash" id="appSplash" aria-hidden="true">
+      <img class="splash-logo" src="./assets/brand/logo-mark.png" alt="" />
+      <p>Moner Kotha</p><small>কথা বলুন মন খুলে</small>
+    </div>
+
+    <div class="ambient" aria-hidden="true">
+      <span class="ambient-orb orb-one"></span>
+      <span class="ambient-orb orb-two"></span>
+      <span class="ambient-orb orb-three"></span>
+      <span class="noise"></span>
+    </div>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#" data-nav="home" aria-label="Moner Kotha home">
+          <span class="brand-logo-wrap"><img class="brand-logo" src="./assets/brand/logo-mark.png" alt="Moner Kotha logo" /></span>
+          <span class="brand-copy"><strong id="brandName">Moner Kotha</strong><small id="brandSlogan">কথা বলুন মন খুলে</small></span>
+        </a>
+
+        <label class="global-search" for="globalSearch">
+          <span class="search-icon" data-icon="search"></span>
+          <input id="globalSearch" type="search" autocomplete="off" placeholder="Search stories, feelings or topics" />
+        </label>
+
+        <div class="top-actions">
+          <button class="icon-button mobile-search-button" data-action="focus-search" aria-label="Search"><span data-icon="search"></span></button>
+          <button class="icon-button mobile-menu-button" data-action="app-menu" aria-label="More information"><span data-icon="menu"></span></button>
+          <button class="icon-button" data-action="notifications" aria-label="Notifications">
+            <span data-icon="bell"></span><i class="notification-dot"></i>
+          </button>
+          <button class="icon-button" data-action="theme" aria-label="Switch theme"><span data-icon="moon"></span></button>
+          <button class="text-button language-button" data-action="language">বাংলা</button>
+          <button class="install-button" id="installButton" data-action="install"><span data-icon="download"></span><span data-t="installApp">Install</span></button>
+          <span class="platform-pill" id="platformPill" aria-label="Current platform"><i></i><b>Web</b></span>
+          <button class="avatar-button" data-action="profile" aria-label="Open profile"><span>SR</span></button>
+          <button class="safety-top" data-action="safety"><span data-icon="shield"></span><span data-t="needHelp">Help</span></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="social-shell">
+      <aside class="left-rail">
+        <nav class="side-nav" aria-label="Main navigation">
+          <button class="nav-item active" data-nav="home"><span data-icon="home"></span><b data-t="home">Home</b></button>
+          <button class="nav-item" data-nav="explore"><span data-icon="compass"></span><b data-t="explore">Explore</b></button>
+          <button class="nav-item" data-nav="circles"><span data-icon="users"></span><b data-t="circles">Support groups</b></button>
+          <button class="nav-item" data-nav="saved"><span data-icon="bookmark"></span><b data-t="saved">Saved</b></button>
+          <button class="nav-item" data-nav="calm"><span data-icon="sparkles"></span><b data-t="calmRoom">Calming tools</b></button>
+          <button class="nav-item" data-action="contact-us"><span data-icon="mail"></span><b data-t="contactUs">Contact us</b></button>
+          <a class="nav-item public-nav-link" data-app-public="about" href="/en/about/"><span data-icon="book"></span><b data-t="aboutApp">About the app</b></a>
+        </nav>
+
+        <button class="compose-rail" data-action="compose">
+          <span data-icon="pen"></span><span data-t="shareFeeling">Share what you feel</span>
+        </button>
+
+        <section class="mini-profile edit-profile-card surface-card">
+          <div class="mini-profile-top"><span class="profile-orbit">SR</span><div><strong id="sideAlias">Silent River</strong><small data-t="anonymousIdentity">Your chosen name</small></div></div>
+          <button class="edit-profile-button" data-action="profile"><span data-icon="pen"></span><span data-t="editProfile">Edit profile</span></button>
+        </section>
+
+        <p class="rail-note"><span data-t="demoPrivacy">For now, your activity is saved only on this device.</span></p>
+      </aside>
+
+      <main class="feed-column" id="mainContent">
+        <section class="welcome-strip surface-card" id="welcomeStrip">
+          <div>
+            <span class="eyebrow"><i></i><span data-t="safeSocial">A calm social space</span></span>
+            <h1 id="welcomeTitle">How are you feeling today?</h1>
+            <p data-t="welcomeCopy">Share what is on your mind, listen to others, or simply stay for a while.</p>
+          </div>
+          <button class="soft-button mood-select-button" data-action="checkin">
+            <span class="mood-select-icon" data-icon="heart"></span>
+            <span class="mood-select-copy"><strong data-t="moodCheckin">Choose your mood</strong><small data-t="moodButtonHint">See matching posts first</small></span>
+          </button>
+        </section>
+
+        <section class="stories-row" aria-label="48-hour stories">
+          <button class="story-bubble add-story" data-action="compose-moment">
+            <span class="story-ring"><i data-icon="plus"></i></span><b data-t="addMoment">Add story</b>
+          </button>
+          <div id="circleStories" class="circle-stories"></div>
+        </section>
+
+        <section class="composer-compact surface-card" data-action="compose" tabindex="0" role="button" aria-label="Say the things you have not been able to say">
+          <span class="compact-avatar">SR</span>
+          <div class="composer-placeholder">
+            <span class="composer-kicker"><span data-icon="pen"></span><b data-t="createPost">Create an anonymous post</b></span>
+            <strong data-t="composerQuestion">What would you like to share?</strong>
+            <small data-t="composerHint">Tap here to write. Your real identity will not be shown.</small>
+          </div>
+          <button class="composer-open" data-action="compose"><span data-icon="plus"></span><span data-t="writePost">Write a post</span></button>
+        </section>
+
+        <section class="feed-toolbar">
+          <div class="feed-tabs" role="tablist">
+            <button class="feed-tab active" data-feed="for-you" data-t="forYou">For you</button>
+            <button class="feed-tab" data-feed="latest" data-t="latest">Newest</button>
+            <button class="feed-tab" data-feed="following" data-t="following">Following</button>
+            <button class="feed-tab" data-feed="islamic" data-t="islamic">Islamic</button>
+            <button class="feed-tab" data-feed="video" data-t="video">Video</button>
+            <button class="feed-tab" data-feed="ranking" data-t="ranking">Top ranked</button>
+          </div>
+          <button class="filter-button" data-action="filter"><span data-icon="sliders"></span><span data-t="filter">Choose what to see</span></button>
+        </section>
+
+        <section class="active-filter-bar" id="activeFilterBar" hidden></section>
+
+        <section class="feed-list" id="feedList" aria-live="polite" data-nosnippet></section>
+
+        <button class="load-more" id="loadMore"><span data-t="showMore">Show more</span><span data-icon="chevron-down"></span></button>
+      </main>
+
+      <aside class="right-rail">
+        <section class="checkin-card surface-card">
+          <div class="section-heading">
+            <div><small data-t="oneMinute">Takes one minute</small><h2 data-t="todayCheckin">How do you feel now?</h2></div>
+            <span class="soft-orbit" data-icon="heart"></span>
+          </div>
+          <p data-t="checkinPrompt">You do not need to fix anything—just notice what you are feeling.</p>
+          <div class="mini-moods" id="miniMoods"></div>
+          <button class="full-soft-button" data-action="save-checkin" disabled><span data-t="saveFeeling">Save this feeling</span></button>
+          <div class="checkin-history" id="checkinHistory"></div>
+        </section>
+
+        <section class="right-card surface-card">
+          <div class="section-heading">
+            <div><small data-t="community">Community</small><h2 data-t="activeCircles">Active support groups</h2></div>
+            <button class="icon-quiet" data-nav="circles" aria-label="View circles"><span data-icon="arrow-up-right"></span></button>
+          </div>
+          <div id="circleList" class="circle-list"></div>
+        </section>
+
+        <div id="desktopAdSlotMount" class="desktop-ad-mount" hidden aria-label="Advertisement"></div>
+
+        <section class="quote-card surface-card">
+          <span class="quote-mark">“</span>
+          <p id="dailyQuote"></p>
+          <button class="quiet-link" data-action="next-quote"><span data-icon="refresh"></span><span data-t="anotherThought">Show another message</span></button>
+        </section>
+
+        <section class="support-rules">
+          <strong><span data-icon="shield"></span><span data-t="careRules">Keeping this space safe</span></strong>
+          <p data-t="careRulesCopy">Be kind. Do not share self-harm methods or ask for private contact details.</p>
+          <button class="quiet-link" data-action="safety"><span data-t="readSafety">Read safety guidance</span><span data-icon="arrow-right"></span></button>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="app-footer" aria-label="Website information" id="appFooter">
+      <nav><a href="/en/about/" data-app-public="about">About</a><a href="/en/resources/" data-app-public="resources">Resources</a><a href="/en/community-guidelines/" data-app-public="community-guidelines">Guidelines</a><a href="/en/safety/" data-app-public="safety">Safety</a><a href="/en/privacy/" data-app-public="privacy">Privacy</a><a href="/en/terms/" data-app-public="terms">Terms</a><a href="/en/contact/" data-app-public="contact">Contact</a><button data-action="cookie-settings" data-t="cookieSettings">Cookie settings</button></nav>
+      <small>Moner Kotha · <span data-t="demoPrivacy">For now, your activity is saved only on this device.</span></small>
+    </footer>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      <button class="active" data-nav="home"><span data-icon="home"></span><small data-t="home">Home</small></button>
+      <button data-nav="explore"><span data-icon="compass"></span><small data-t="explore">Explore</small></button>
+      <button class="mobile-compose" data-action="compose"><span data-icon="plus"></span></button>
+      <button data-nav="circles"><span data-icon="users"></span><small data-t="circles">Support groups</small></button>
+      <button data-action="profile"><span data-icon="user"></span><small data-t="profile">Profile</small></button>
+      <button data-action="app-menu"><span data-icon="menu"></span><small data-t="moreMenu">More</small></button>
+    </nav>
+  </div>
+
+  <div class="modal-layer" id="modalLayer" hidden>
+    <div class="modal-backdrop" data-action="close-modal"></div>
+    <section class="modal-card" id="modalCard" role="dialog" aria-modal="true" tabindex="-1"></section>
+  </div>
+
+  <div class="drawer-layer" id="drawerLayer" hidden>
+    <div class="modal-backdrop" data-action="close-drawer"></div>
+    <aside class="side-drawer" id="sideDrawer"></aside>
+  </div>
+
+  <div class="app-update-banner" id="updateBanner" role="status" hidden><span></span><button data-action="apply-update"></button></div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <div class="startup-error" id="startupError" role="alert" hidden>
+    <strong>Moner Kotha could not start.</strong>
+    <span>Please reload once. Your saved posts and preferences will remain on this device.</span>
+    <div><button type="button" onclick="location.reload()">Reload</button></div>
+  </div>
+
+  <script>
+    (() => {
+      const hideSplash = () => {
+        const splash = document.getElementById("appSplash");
+        if (!splash) return;
+        splash.classList.add("hide");
+        window.setTimeout(() => splash.remove(), 520);
+      };
+      window.__MK_APP_READY__ = false;
+      window.__MK_HIDE_SPLASH__ = hideSplash;
+      // Never block the interface behind a recovery dialog. The application
+      // marks itself ready as soon as its first usable render is complete.
+      window.setTimeout(() => {
+        if (!window.__MK_APP_READY__) hideSplash();
+      }, 4500);
+      window.addEventListener("error", event => {
+        const target = event.target;
+        if (target && (target.tagName === "SCRIPT" || target.tagName === "LINK")) {
+          console.error("Application resource failed to load", target.src || target.href || target);
+        }
+      }, true);
+    })();
+  </script>
+  <script type="module" src="./assets/js/app.js?v=6.1.0" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
+</body>
+</html>

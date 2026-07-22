@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "description": "Built-in features exposed to the administration panel. New UI features can register here or be controlled with a CSS-selector rule from Feature Manager.",
+  "features": [
+    {"id":"posting","labelBn":"পোস্ট প্রকাশ","labelEn":"Post publishing","selector":"[data-action='compose'],.composer-compact","effect":"hide"},
+    {"id":"stories","labelBn":"স্টোরি","labelEn":"Stories","selector":".stories-row,[data-action='compose-moment']","effect":"hide"},
+    {"id":"comments","labelBn":"কমেন্ট","labelEn":"Comments","selector":"[data-comments],[data-islamic-comments]","effect":"hide"},
+    {"id":"search","labelBn":"সার্চ","labelEn":"Search","selector":".search-wrap","effect":"hide"},
+    {"id":"supportCircles","labelBn":"সাপোর্ট সার্কেল","labelEn":"Support circles","selector":"[data-nav='circles'],.right-card","effect":"hide"},
+    {"id":"saved","labelBn":"সেভড","labelEn":"Saved","selector":"[data-nav='saved']","effect":"hide"},
+    {"id":"calmRoom","labelBn":"কাম স্পেস","labelEn":"Calm space","selector":"[data-nav='calm']","effect":"hide"},
+    {"id":"islamicContent","labelBn":"ইসলামিক কনটেন্ট","labelEn":"Islamic content","selector":"[data-feed='islamic']","effect":"hide"},
+    {"id":"generalVideo","labelBn":"জেনারেল ভিডিও","labelEn":"General video","selector":"[data-feed='video']","effect":"hide"},
+    {"id":"profile","labelBn":"প্রোফাইল","labelEn":"Profile","selector":"[data-action='profile'],.edit-profile-card","effect":"hide"},
+    {"id":"notifications","labelBn":"নোটিফিকেশন","labelEn":"Notifications","selector":"[data-action='notifications']","effect":"hide"},
+    {"id":"contact","labelBn":"যোগাযোগ","labelEn":"Contact","selector":"[data-action='contact-us'],[data-app-public='contact']","effect":"hide"}
+  ]
+}

@@ -1,0 +1,16 @@
+MONER KOTHA V6.1.0 — FIREBASE SETUP REQUIRED
+
+এই source code-এ কোনো private Firebase credential বা admin account রাখা হয়নি।
+Hosting-এর আগে:
+
+1. config/firebase-config.js-এ Firebase Web App config paste করুন।
+2. Firebase Authentication > Sign-in method > Email/Password enable করুন।
+3. Realtime Database তৈরি করে firebase-database.rules.json deploy করুন।
+4. Firebase Authentication-এ admin user তৈরি করুন।
+5. Realtime Database-এ adminUsers/ADMIN_UID/enabled = true লিখুন।
+
+Admin login: /admin/login.html
+Full guide: /docs/ADMIN_PANEL_GUIDE.md
+
+User profile-এ বাস্তব phone/email নেওয়া হয় না। Password-টিই private ID/access key।
+Guest mode local-only; password ভুলে গেলে recovery নেই।

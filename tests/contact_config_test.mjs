@@ -1,0 +1,13 @@
+globalThis.window={dispatchEvent(){}};
+globalThis.CustomEvent=class {constructor(type,init={}){this.type=type;this.detail=init.detail}};
+const cfg=await import('../assets/js/config.js');
+if(cfg.sanitizeEmail('bad')!=='')throw new Error('invalid email accepted');
+if(cfg.sanitizeEmail('Help@Example.com')!=='help@example.com')throw new Error('email normalization failed');
+if(cfg.sanitizeWhatsAppNumber('+880 (171) 234-5678')!=='8801712345678')throw new Error('WhatsApp sanitization failed');
+const empty=cfg.contactOptions({contact:{facebookPageUrl:'',supportEmail:'',whatsappNumber:'',whatsappPrefilledMessage:'Hello'}},'bn');
+if(empty.some(x=>x.enabled||x.href))throw new Error('empty contact generated link');
+const full=cfg.contactOptions({contact:{facebookPageUrl:'https://facebook.com/monerkotha',supportEmail:'help@example.com',whatsappNumber:'8801712345678',whatsappPrefilledMessage:'Hello'}},'en');
+if(!full.find(x=>x.id==='facebook').href.startsWith('https://facebook.com/'))throw new Error('Facebook link failed');
+if(full.find(x=>x.id==='email').href!=='mailto:help@example.com')throw new Error('mailto failed');
+if(!full.find(x=>x.id==='whatsapp').href.startsWith('https://wa.me/8801712345678'))throw new Error('WhatsApp link failed');
+console.log(JSON.stringify({status:'PASS',empty:empty.length,enabled:full.filter(x=>x.enabled).length}));
