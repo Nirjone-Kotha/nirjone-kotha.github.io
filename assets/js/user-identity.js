@@ -4,6 +4,11 @@ const listeners = new Set();
 let current = Object.freeze({ status: firebaseConfigured() ? "loading" : "unavailable", user: null, configured: firebaseConfigured() });
 let readyPromise = null;
 
+const withDbTimeout = (promise) => Promise.race([
+  promise,
+  new Promise((_, reject) => setTimeout(() => reject(new Error("Database connection timed out. Please check Firebase rules.")), 5000))
+]);
+
 function publish(next) {
   current = Object.freeze({ ...current, ...next });
   listeners.forEach(listener => {
@@ -94,13 +99,17 @@ export async function signInOrCreateWithPassword(rawPassword) {
   const uid = credential.user.uid;
   const metaRef = databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${uid}/meta`);
   const now = new Date().toISOString();
-  const metaSnap = await databaseSdk.get(metaRef);
-  await databaseSdk.update(metaRef, cleanFirebaseValue({
-    identityVersion: 1,
-    createdAt: metaSnap.val()?.createdAt || now,
-    lastSeenAt: now,
-    usesPersonalContact: false
-  }));
+  try {
+    const metaSnap = await withDbTimeout(databaseSdk.get(metaRef));
+    await withDbTimeout(databaseSdk.update(metaRef, cleanFirebaseValue({
+      identityVersion: 1,
+      createdAt: metaSnap.val()?.createdAt || now,
+      lastSeenAt: now,
+      usesPersonalContact: false
+    })));
+  } catch (dbError) {
+    throw new Error(dbError.message || "Database connection failed.");
+  }
 
   publish({ status: "authenticated", configured: true, user: { uid } });
   return { uid, created };
@@ -110,16 +119,25 @@ export async function loadUserAppData() {
   const identity = await initUserIdentity();
   if (identity.status !== "authenticated" || !identity.user?.uid) return null;
   const { database, databaseSdk } = await getFirebaseServices();
-  const snapshot = await databaseSdk.get(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/appData`));
-  return snapshot.exists() ? snapshot.val() : null;
+  try {
+    const snapshot = await withDbTimeout(databaseSdk.get(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/appData`)));
+    return snapshot.exists() ? snapshot.val() : null;
+  } catch (dbError) {
+    console.warn("Failed to load user app data", dbError);
+    return null;
+  }
 }
 
 export async function clearUserAppData() {
   const identity = getIdentityState();
   if (identity.status !== "authenticated" || !identity.user?.uid) return false;
   const { database, databaseSdk } = await getFirebaseServices();
-  await databaseSdk.remove(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/appData`));
-  await databaseSdk.update(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/meta`), { lastSeenAt: new Date().toISOString() });
+  try {
+    await withDbTimeout(databaseSdk.remove(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/appData`)));
+    await withDbTimeout(databaseSdk.update(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/meta`), { lastSeenAt: new Date().toISOString() }));
+  } catch (e) {
+    console.warn("Failed to clear app data", e);
+  }
   return true;
 }
 
@@ -128,8 +146,13 @@ export async function saveUserAppData(data) {
   if (identity.status !== "authenticated" || !identity.user?.uid) return false;
   const { database, databaseSdk } = await getFirebaseServices();
   const payload = cleanFirebaseValue({ ...data, syncedAt: new Date().toISOString(), schemaVersion: 1 });
-  await databaseSdk.set(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/appData`), payload);
-  await databaseSdk.update(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/meta`), { lastSeenAt: new Date().toISOString() });
+  try {
+    await withDbTimeout(databaseSdk.set(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/appData`), payload));
+    await withDbTimeout(databaseSdk.update(databaseSdk.ref(database, `${FIREBASE_PATHS.users}/${identity.user.uid}/meta`), { lastSeenAt: new Date().toISOString() }));
+  } catch (e) {
+    console.warn("Failed to save app data", e);
+    throw new Error("Failed to save data. Please check connection and permissions.");
+  }
   return true;
 }
 
