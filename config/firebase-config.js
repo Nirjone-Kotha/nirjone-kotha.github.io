@@ -3,7 +3,7 @@
  * Firebase Console > Project settings > Your apps > Web 
  */
 export const FIREBASE_CONFIG = Object.freeze({
-  apiKey: "AIzaSyBKcvLC3hZVQ4HWAQ9LxKhPLzWFg4dsLI",
+  apiKey: "AIzaSyBKcvLC3ZhZVQ4HWAQ9LxKhPLzWFG4dslI",
   authDomain: "nirjone-kotha.firebaseapp.com",
   databaseURL: "https://nirjone-kotha-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "nirjone-kotha",
