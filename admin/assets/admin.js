@@ -1,4 +1,5 @@
 import { adminApi, adminSignOut, compressAdminImage } from "./admin-firebase.js";
+import { generalVideoCatalog, islamicVideoCatalog } from "../../assets/js/video_catalog.js?v=6.1.0";
 const cfg=window.MK_ADMIN;
 const content=document.querySelector('#adminContent');
 const nav=document.querySelector('#adminNav');
@@ -70,7 +71,161 @@ function announcementTable(){return `<div class="table-wrap"><table class="data-
 function renderAdvertising(){const a=state.settings.advertising,stats=state.stats?.campaigns||{};content.innerHTML=`<div class="page-stack"><section class="hero-card"><div><small>DETAILED AD CONTROL</small><h2>Google Ads এবং নিজস্ব campaign—দুটিই নিয়ন্ত্রণ করুন</h2><p>Master switch, provider, privacy, placement, slot ID, frequency cap, campaign schedule, device/language targeting এবং impression/click summary একই জায়গায়। Islamic ও safety-sensitive context-এ ads render হবে না।</p></div><div class="hero-actions"><button data-action="new-campaign">+ New direct ad</button><a href="../?view=home" target="_blank" rel="noopener">Preview website ↗</a></div></section><section class="panel"><div class="panel-head"><div><h2>1. Global advertisement control</h2><p>সবচেয়ে আগে master switch এবং provider ঠিক করুন। Master OFF থাকলে কোনো placement বা campaign render হবে না।</p></div><button class="primary" data-action="save-settings">Save ad settings</button></div><div class="form-grid"><div class="field full">${switchMarkup('advertising.masterEnabled','Advertisement master switch',a.masterEnabled?'বর্তমানে ON—enabled placement-এ ad দেখানো যাবে।':'বর্তমানে OFF—Google ও direct campaign সম্পূর্ণ বন্ধ।',a.masterEnabled)}</div><div class="field"><span>Ad provider mode</span><select data-path="advertising.provider"><option value="none" ${a.provider==='none'?'selected':''}>None</option><option value="google" ${a.provider==='google'?'selected':''}>Google AdSense only</option><option value="direct" ${a.provider==='direct'?'selected':''}>Own/direct campaigns only</option><option value="hybrid" ${a.provider==='hybrid'?'selected':''}>Hybrid: direct first, Google fallback</option></select><small>Hybrid mode-এ matching direct campaign না থাকলে Google slot ব্যবহৃত হবে।</small></div><div class="field">${switchMarkup('advertising.nonPersonalizedOnly','Non-personalized ads only','Mood, post text, search এবং safety data কখনও targeting-এ ব্যবহার করা হবে না।',a.nonPersonalizedOnly)}</div><div class="field"><span>Maximum impressions per session</span><input type="number" min="1" max="100" data-path="advertising.frequency.maxImpressionsPerSession" value="${esc(a.frequency.maxImpressionsPerSession)}"><small>একটি browser session-এ ad overload কমায়।</small></div><div class="field"><span>Minimum seconds between ads</span><input type="number" min="0" max="3600" data-path="advertising.frequency.minSecondsBetweenAds" value="${esc(a.frequency.minSecondsBetweenAds)}"><small>এক ad-এর পর আরেকটি render হওয়ার minimum gap।</small></div></div></section><section class="two-col"><div class="panel"><div class="panel-head"><div><h2>2. Placement controls</h2><p>কোন জায়গায় বিজ্ঞাপন দেখানো যাবে তা আলাদাভাবে নির্বাচন করুন।</p></div></div><div class="placement-grid">${Object.entries(placementMeta).map(([key,[title,desc]])=>switchMarkup(`advertising.placements.${key}`,title,desc,Boolean(a.placements[key]))).join('')}</div></div><div class="panel"><div class="panel-head"><div><h2>Placement guidance</h2><p>User experience ও safety boundary।</p></div></div><div class="guide-card"><h4>Recommended শুরু</h4><p>প্রথমে শুধু <b>Desktop right rail</b> এবং <b>Feed in-feed</b> চালু করুন। Anchor/Vignette পরে performance দেখে ব্যবহার করুন।</p></div><div class="guide-card" style="margin-top:11px"><h4>Protected areas</h4><p>Islamic section, composer, comments, safety page, calm room, profile, modal, high-risk feed এবং private context-এ ad engine নিজে থেকে block করে।</p></div><div class="guide-card" style="margin-top:11px"><h4>Google Ads off করার সময়</h4><p>Provider <b>Direct</b> নির্বাচন করুন বা Google enabled OFF করুন। Direct campaigns তখনও চলতে পারবে, যদি master switch ON থাকে।</p></div></div></section><section class="panel"><div class="panel-head"><div><h2>3. Google AdSense configuration</h2><p>Approved AdSense account-এর publisher ID এবং exact slot IDs দিন। ভুল/খালি ID হলে Google ad render হবে না; direct campaign unaffected থাকবে।</p></div></div><div class="form-grid"><div class="field">${switchMarkup('advertising.google.enabled','Enable Google AdSense','Provider Google/Hybrid হলে এই switch প্রয়োজন।',a.google.enabled)}</div><div class="field">${switchMarkup('advertising.google.autoAds','Google Auto Ads','Auto Ads script-level behavior; AdSense dashboard policy-ও প্রযোজ্য।',a.google.autoAds)}</div><div class="field full"><span>Publisher client ID</span><input data-path="advertising.google.clientId" value="${esc(a.google.clientId)}" placeholder="ca-pub-1234567890123456"><small>শুধু approved ca-pub ID ব্যবহার করুন।</small></div>${googleSlotFields(a.google.slotById||{})}</div><div class="button-row"><button class="primary" data-action="save-settings">Save Google configuration</button></div></section><section class="panel"><div class="panel-head"><div><h2>4. Direct advertisement campaigns</h2><p>নিজস্ব advertiser, banner, native promotion বা video campaign schedule করুন।</p></div><button class="secondary" data-action="new-campaign">+ Create campaign</button></div><div class="mini-kpi" style="margin-bottom:15px"><span><b>${fmt(Object.values(stats).reduce((n,x)=>n+Number(x.impressions||0),0))}</b><small>Total impressions</small></span><span><b>${fmt(Object.values(stats).reduce((n,x)=>n+Number(x.clicks||0),0))}</b><small>Total clicks</small></span><span><b>${state.campaigns.filter(x=>statusOf(x)[0]==='active').length}</b><small>Active campaigns</small></span></div>${campaignTable()}</section></div>`}
 function googleSlotFields(slots){const fields=[['desktop-right-rail-1','Desktop right rail slot'],['feed-10','Standard feed first slot'],['video-feed-10','Video feed first slot']];return fields.map(([id,label])=>`<div class="field"><span>${esc(label)}</span><input data-path="advertising.google.slotById.${id}" value="${esc(slots[id]||'')}" placeholder="1234567890"><small>Runtime slot ID: <span class="code-chip">${id}</span></small></div>`).join('')}
 function campaignTable(){const stats=state.stats?.campaigns||{};return `<div class="table-wrap"><table class="data-table"><thead><tr><th>Campaign</th><th>Placement & target</th><th>Performance</th><th>Status</th><th></th></tr></thead><tbody>${state.campaigns.length?state.campaigns.map(c=>{const st=stats[c.id]||{};return `<tr><td><div style="display:flex;gap:10px;align-items:center">${c.imageUrl?`<img class="campaign-thumb" src="${esc(c.imageUrl)}" alt="">`:''}<div><b>${esc(c.name)}</b><small>${esc(c.advertiser||'Direct advertiser')} · ${esc(c.type)}</small></div></div></td><td>${esc((c.placements||[]).join(', ')||'No placement')}<small>${esc(c.locale)} · ${esc(c.device)} · weight ${esc(c.weight)}</small></td><td>${fmt(st.impressions)} views<small>${fmt(st.clicks)} clicks · CTR ${st.impressions?((st.clicks/st.impressions)*100).toFixed(2):'0.00'}%</small></td><td>${statusBadge(c)}</td><td><div class="row-actions"><button class="icon-btn" data-edit-campaign="${esc(c.id)}">Edit</button><button class="icon-btn" data-delete-campaign="${esc(c.id)}">Delete</button></div></td></tr>`}).join(''):`<tr><td colspan="5" class="empty-table">কোনো direct campaign নেই। Google Ads আলাদাভাবে ব্যবহার করা যাবে।</td></tr>`}</tbody></table></div>`}
-function renderVideos(){content.innerHTML=`<div class="page-stack"><section class="hero-card"><div><small>ADMIN-MANAGED VIDEO CATALOGUE</small><h2>Code edit ছাড়াই YouTube video ও Shorts যোগ করুন</h2><p>General/Islamic section, content type, mood mapping, duration, featured state এবং enabled status নির্ধারণ করুন। Admin-managed video seed catalogue-এর সঙ্গে স্বয়ংক্রিয়ভাবে merge হবে।</p></div><div class="hero-actions"><button data-action="new-video">+ Add video</button><button data-action="bulk-video">Bulk import</button></div></section><section class="panel"><div class="panel-head"><div><h2>Managed videos</h2><p>এই তালিকা admin panel থেকে যোগ করা video; project-এর built-in seed videos অপরিবর্তিত থাকে।</p></div></div>${videoTable()}</section></div>`}
+function getVideoStats(){
+  const managed = state.videos || [];
+  const managedGeneral = managed.filter(v => (v.section || 'general') === 'general' && v.enabled !== false);
+  const managedIslamic = managed.filter(v => v.section === 'islamic' && v.enabled !== false);
+
+  const seenGen = new Set();
+  const allGeneral = [...managedGeneral, ...(generalVideoCatalog || [])].filter(item => {
+    const key = item.youtubeId || item.id;
+    if (!key || seenGen.has(key)) return false;
+    seenGen.add(key);
+    return true;
+  });
+
+  const seenIsl = new Set();
+  const allIslamic = [...managedIslamic, ...(islamicVideoCatalog || [])].filter(item => {
+    const key = item.youtubeId || item.id;
+    if (!key || seenIsl.has(key)) return false;
+    seenIsl.add(key);
+    return true;
+  });
+
+  const moods = ["lonely","sad","anxious","overwhelmed","angry","numb","lost","hopeful"];
+  const moodLabels = {
+    lonely: "Lonely (একাকীত্ব)",
+    sad: "Sad (মন খারাপ)",
+    anxious: "Anxious (উদ্বেগ)",
+    overwhelmed: "Overwhelmed (চাপ)",
+    angry: "Angry (রাগ)",
+    numb: "Numb (শূন্যতা)",
+    lost: "Lost (দিশেহারা)",
+    hopeful: "Hopeful (আশা)"
+  };
+
+  const moodStats = {};
+  moods.forEach(m => {
+    moodStats[m] = {
+      label: moodLabels[m] || m,
+      general: 0,
+      islamic: 0,
+      total: 0
+    };
+  });
+
+  allGeneral.forEach(item => {
+    const itemMoods = item.moods && item.moods.length ? item.moods : (item.mood ? [item.mood] : moods);
+    itemMoods.forEach(m => {
+      if (moodStats[m]) {
+        moodStats[m].general += 1;
+        moodStats[m].total += 1;
+      }
+    });
+  });
+
+  allIslamic.forEach(item => {
+    const itemMoods = item.moods && item.moods.length ? item.moods : (item.mood ? [item.mood] : moods);
+    itemMoods.forEach(m => {
+      if (moodStats[m]) {
+        moodStats[m].islamic += 1;
+        moodStats[m].total += 1;
+      }
+    });
+  });
+
+  return {
+    totalGeneral: allGeneral.length,
+    totalIslamic: allIslamic.length,
+    totalAll: allGeneral.length + allIslamic.length,
+    adminGeneral: managedGeneral.length,
+    adminIslamic: managedIslamic.length,
+    adminTotal: managed.length,
+    moodStats
+  };
+}
+
+function renderVideos(){
+  const stats = getVideoStats();
+  content.innerHTML=`<div class="page-stack">
+    <section class="hero-card">
+      <div>
+        <small>ADMIN-MANAGED VIDEO CATALOGUE</small>
+        <h2>Code edit ছাড়াই YouTube video ও Shorts যোগ করুন</h2>
+        <p>General/Islamic section, content type, mood mapping, duration, featured state এবং enabled status নির্ধারণ করুন। Admin-managed video seed catalogue-এর সঙ্গে স্বয়ংক্রিয়ভাবে merge হবে।</p>
+      </div>
+      <div class="hero-actions">
+        <button data-action="new-video">+ Add video</button>
+        <button data-action="bulk-video">Bulk import</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>📊 Video Statistics (ভিডিও সংখ্যা পরিসংখ্যান)</h2>
+          <p>Islamic video এবং General video-র মোট সংখ্যা এবং প্রতিটি Mood-এ ভিডিওর বিভাজন।</p>
+        </div>
+      </div>
+      <div class="three-col" style="margin-bottom:20px">
+        <div class="guide-card">
+          <h4>Islamic Videos</h4>
+          <p style="font-size:22px;margin:6px 0 2px;color:#075d52"><b>${stats.totalIslamic} টি</b></p>
+          <small>${stats.adminIslamic} Admin Added + Built-in Seed Videos</small>
+        </div>
+        <div class="guide-card">
+          <h4>General Videos</h4>
+          <p style="font-size:22px;margin:6px 0 2px;color:var(--brand)"><b>${stats.totalGeneral} টি</b></p>
+          <small>${stats.adminGeneral} Admin Added + Built-in Seed Videos</small>
+        </div>
+        <div class="guide-card">
+          <h4>Total Combined Videos</h4>
+          <p style="font-size:22px;margin:6px 0 2px"><b>${stats.totalAll} টি</b></p>
+          <small>${stats.adminTotal} Admin Added + Built-in Seed Videos</small>
+        </div>
+      </div>
+
+      <div class="panel-head" style="padding-top:14px;border-top:1px solid var(--line)">
+        <div>
+          <h2>🎭 Mood Breakdown (প্রতিটি মুডে ভিডিও সংখ্যা)</h2>
+          <p>Islamic video ও General video-র প্রতিটি mood ফিল্টারে কয়টি করে ভিডিও আছে:</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Mood Category</th>
+              <th>Islamic Videos Count</th>
+              <th>General Videos Count</th>
+              <th>Total Count in Mood</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Object.values(stats.moodStats).map(m => `
+              <tr>
+                <td><b>${esc(m.label)}</b></td>
+                <td><span class="status-badge on" style="background:#e8f6ee;color:#075d52;border-color:#bce5d5">${m.islamic} টি ভিডিও</span></td>
+                <td><span class="status-badge on">${m.general} টি ভিডিও</span></td>
+                <td><b>${m.total} টি ভিডিও</b></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Managed videos</h2>
+          <p>এই তালিকা admin panel থেকে যোগ করা video; project-এর built-in seed videos অপরিবর্তিত থাকে।</p>
+        </div>
+      </div>
+      ${videoTable()}
+    </section>
+  </div>`;
+}
 function videoTable(){return `<div class="table-wrap"><table class="data-table"><thead><tr><th>Video</th><th>Section</th><th>Moods</th><th>Status</th><th></th></tr></thead><tbody>${state.videos.length?state.videos.map(v=>`<tr><td><div style="display:flex;gap:10px;align-items:center"><img class="campaign-thumb" src="${esc(v.thumbnailUrl)}" alt=""><div><b>${esc(v.titleBn||v.title)}</b><small>${esc(v.youtubeId)} · ${esc(v.channelTitle||'YouTube')}</small></div></div></td><td>${esc(v.section)}<small>${esc(v.contentType)} · ${esc(v.durationSeconds||0)} sec</small></td><td>${esc((v.moods||[]).join(', ')||'All moods')}</td><td>${v.enabled?'<span class="status-badge on">Enabled</span>':'<span class="status-badge off">Disabled</span>'}</td><td><div class="row-actions"><button class="icon-btn" data-edit-video="${esc(v.id)}">Edit</button><button class="icon-btn" data-delete-video="${esc(v.id)}">Delete</button></div></td></tr>`).join(''):`<tr><td colspan="5" class="empty-table">Admin-managed video নেই। Built-in catalogue এখনও website-এ থাকবে।</td></tr>`}</tbody></table></div>`}
 function renderSystem(){const sys=state.system||{};content.innerHTML=`<div class="page-stack"><section class="panel"><div class="panel-head"><div><h2>Firebase connection & project modules</h2><p>Admin panel এখন PHP বা server JSON file ব্যবহার করে না। Firebase Authentication access যাচাই করে এবং Realtime Database থেকে live settings load করে।</p></div><button class="secondary" data-action="refresh-system">Refresh connection</button></div><div class="three-col"><div class="guide-card"><h4>Project version</h4><p><b>${esc(sys.version||'unknown')}</b></p></div><div class="guide-card"><h4>Database</h4><p><b>${esc(sys.databaseMode||'Firebase')}</b></p></div><div class="guide-card"><h4>Authentication</h4><p><b>${esc(sys.authMode||'Firebase Auth')}</b></p></div></div><div style="margin-top:16px">${(sys.modules||[]).map(m=>`<div class="module-row"><div><b>${esc(m.label)}</b><small>${esc(m.path)}</small></div><div><small>Connection</small><div>Static ES module</div></div><span class="status-badge ${m.exists?'on':'off'}">${m.exists?'Connected':'Missing'} · ${esc(m.sha1||'')}</span></div>`).join('')}</div><div class="warning-box" style="margin-top:15px"><b>Automatic update-এর সীমা:</b> Existing settings ও registered selector rules realtime-এ update হয়। নতুন business feature code-এ যোগ করলে Feature Manager-এ selector rule বা registry entry যোগ করতে হবে; panel অজানা logic নিরাপদভাবে অনুমান করে না।</div></section><section class="two-col"><div class="panel"><div class="panel-head"><div><h2>Firebase operating guide</h2><p>Deployment-এর পর প্রয়োজনীয় workflow।</p></div></div><div class="guide-grid"><div class="guide-card"><h4>Site update</h4><ul><li>Site Control থেকে brand/contact edit করুন</li><li>Save করলে Firebase runtime সাথে সাথে update হবে</li><li>বড় deployment-এর আগে maintenance mode ON করুন</li></ul></div><div class="guide-card"><h4>Announcement</h4><ul><li>Topbar: ছোট জরুরি update</li><li>Feed: কম বিরক্তিকর detailed notice</li><li>Modal: শুধু critical announcement</li></ul></div><div class="guide-card"><h4>Advertisement</h4><ul><li>প্রথমে master OFF রেখে configuration করুন</li><li>Provider ও placement ঠিক করুন</li><li>Image upload browser-এ optimize হয়ে Database-এ campaign-এর সঙ্গে save হয়</li></ul></div><div class="guide-card"><h4>Firebase security</h4><ul><li><span class="code-chip">firebase-database.rules.json</span> deploy করুন</li><li>Admin UID-কে <span class="code-chip">adminUsers/{uid}/enabled=true</span> দিন</li><li>Test mode production-এ ব্যবহার করবেন না</li></ul></div></div></div><div class="panel"><div class="panel-head"><div><h2>Security</h2><p>Firebase administrator password পরিবর্তন করুন।</p></div></div><form id="passwordForm" class="form-grid"><div class="field full"><span>Current password</span><input type="password" name="currentPassword" required autocomplete="current-password"></div><div class="field full"><span>New password</span><input type="password" name="newPassword" minlength="10" required autocomplete="new-password"><small>কমপক্ষে ১০ অক্ষর।</small></div><div class="field full"><button class="primary" type="submit">Change password</button></div></form></div></section><section class="panel"><div class="panel-head"><div><h2>Audit log</h2><p>Firebase-এ সংরক্ষিত admin change history।</p></div></div>${auditMarkup(state.audit)}</section></div>`;document.querySelector('#passwordForm')?.addEventListener('submit',changePassword)}
 function ruleEditor(rule={}){openModal(`${modalHead(rule.id?'Edit selector rule':'New selector rule')}<form id="ruleForm" class="modal-content form-grid"><input type="hidden" name="id" value="${esc(rule.id||'')}"><div class="field"><span>Rule label</span><input name="label" required value="${esc(rule.label||'')}"></div><div class="field"><span>Effect</span><select name="effect"><option value="hide" ${rule.effect==='hide'?'selected':''}>Hide matching elements</option><option value="disable" ${rule.effect==='disable'?'selected':''}>Disable matching elements</option><option value="class" ${rule.effect==='class'?'selected':''}>Add CSS class</option></select></div><div class="field full"><span>CSS selector</span><input name="selector" required value="${esc(rule.selector||'')}" placeholder="[data-nav='shop']"><small>Browser document.querySelectorAll-compatible selector দিন।</small></div><div class="field"><span>Class name (class effect only)</span><input name="className" value="${esc(rule.className||'')}"></div><div class="field">${switchMarkup('','Rule enabled','OFF করলে rule সংরক্ষিত থাকবে, apply হবে না।',rule.enabled!==false).replace('data-path=""','name="enabled"')}</div><div class="field full button-row"><button type="button" class="ghost" data-close-modal>Cancel</button><button type="submit" class="primary">Apply rule</button></div></form>`);document.querySelector('#ruleForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget),item={id:f.get('id')||`rule_${Date.now()}`,label:f.get('label'),selector:f.get('selector'),effect:f.get('effect'),className:f.get('className'),enabled:e.currentTarget.querySelector('[name=enabled]').checked};const rows=state.settings.featureRules||[];const i=rows.findIndex(x=>x.id===item.id);if(i>=0)rows[i]=item;else rows.unshift(item);closeModal();renderFeatures();toast('Rule added. Save feature controls to publish it.')})}
