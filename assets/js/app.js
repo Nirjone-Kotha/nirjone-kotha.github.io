@@ -1134,11 +1134,11 @@ function renderMiniMoods(){
   });
 }
 function renderCircleList(){
-  const wrap=$("#circleList");wrap.innerHTML="";
+  const wrap=$("#circleList");if(!wrap)return;wrap.innerHTML="";
   circles.slice(0,4).forEach(c=>{
     const joined=state.joined.has(c.id);
     const row=document.createElement("div");row.className="circle-row";
-    row.innerHTML=`<span class="circle-icon">${icon(c.icon==="home"?"circleHome":c.icon)}</span><span class="circle-copy"><strong>${escapeHtml(localText(c,"bn","en"))}</strong><small>${formatCompact(c.online)} ${t("online")}</small></span><button class="join-button ${joined?"joined":""}" data-join="${c.id}">${joined?t("joined"):t("join")}</button>`;
+    row.innerHTML=`<span class="circle-icon" data-open-circle="${c.id}" style="cursor:pointer">${c.emoji || "👥"}</span><span class="circle-copy" data-open-circle="${c.id}" style="cursor:pointer"><strong style="color:var(--brand)">${escapeHtml(localText(c,"bn","en"))}</strong><small>${formatCompact(c.online)} ${t("online")} · <span style="text-decoration:underline">${state.lang==="bn"?"প্রবেশ ➔":"Enter ➔"}</span></small></span><button class="join-button ${joined?"joined":""}" data-join="${c.id}">${joined?t("joined"):t("join")}</button>`;
     wrap.appendChild(row);
   });
 }
@@ -1658,7 +1658,7 @@ function openComposer(postId=null){
       </div>
     </details>
 
-    <label class="control-label" for="composeText">${t("write")}</label><textarea class="compose-textarea" id="composeText" maxlength="4000" placeholder="${escapeHtml(t("postPlaceholder"))}">${escapeHtml(state.draftText)}</textarea>
+    <label class="control-label" for="composeText">${t("write")}</label><textarea class="compose-textarea" id="composeText" maxlength="4000" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" style="white-space:pre-wrap;word-break:break-word;" placeholder="${escapeHtml(t("postPlaceholder"))}">${escapeHtml(state.draftText)}</textarea>
     <p class="compose-whisper" id="composeWhisper">${escapeHtml(t("whisper"))}</p><div class="privacy-alert" id="privacyAlert" hidden>${icon("shield")} ${escapeHtml(t("privacy"))}</div>
     <div class="compose-footer"><span class="char-count"><b id="composeCount">${displayNumber(state.draftText.length)}</b>/4000</span><div><button class="secondary-button" data-action="close-modal">${t("cancel")}</button> <button class="primary-button" data-action="submit-post">${icon("send")} ${editing?t("editPost"):t("postNow")}</button></div></div>
   </div>`);setTimeout(()=>$("#composeText")?.focus(),80);
@@ -1824,17 +1824,36 @@ async function testNotification(){const ok=await pwa.showNotification("Moner Kot
 
 function openCircles(){
   state.view="circles";updateNav();
-  setPage(`${pageHeader(t("circlesTitle"))}<div class="modal-body"><p class="modal-intro">${t("circlesCopy")}</p><div class="circles-grid">${circles.map(c=>`<article class="circle-card"><span class="circle-icon">${icon(c.icon==="home"?"circleHome":c.icon)}</span><h3>${escapeHtml(localText(c,"bn","en"))}</h3><p>${escapeHtml(localText(c,"description_bn","description_en"))}</p><div class="circle-card-footer"><small>${formatCompact(c.members)} ${t("members")} · ${formatCompact(c.online)} ${t("online")}</small><button class="join-button ${state.joined.has(c.id)?"joined":""}" data-join="${c.id}">${state.joined.has(c.id)?t("joined"):t("join")}</button></div></article>`).join("")}</div></div>`);
+  setPage(`${pageHeader(t("circlesTitle"))}<div class="modal-body"><p class="modal-intro">${t("circlesCopy")}</p><div class="circles-grid">${circles.map(c=>`
+    <article class="circle-card" style="display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span class="circle-icon">${c.emoji || "👥"}</span>
+          <div>
+            <h3 style="margin:0;font-size:16px;cursor:pointer" data-open-circle="${c.id}">${escapeHtml(localText(c,"bn","en"))}</h3>
+            <small style="color:var(--muted);font-size:11px">${formatCompact(c.members)} ${t("members")} · ${formatCompact(c.online)} ${t("online")}</small>
+          </div>
+        </div>
+        <p style="font-size:12.5px;line-height:1.5;color:var(--text);margin:6px 0 14px">${escapeHtml(localText(c,"description_bn","description_en"))}</p>
+      </div>
+      <div class="circle-card-footer" style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:auto">
+        <button class="primary-button" style="flex:1;font-size:11px;padding:8px 10px" data-open-circle="${c.id}">
+          ${state.lang==="bn"?"গ্রুপের আলোচনা ➔":"Group discussions ➔"}
+        </button>
+        <button class="join-button ${state.joined.has(c.id)?"joined":""}" data-join="${c.id}">
+          ${state.joined.has(c.id)?t("joined"):t("join")}
+        </button>
+      </div>
+    </article>
+  `).join("")}</div></div>`);
 }
 function openCircle(id){
-  const c=circles.find(x=>x.id===id);if(!c)return;
-  state.topicFilter="all";state.moodFilter="all";state.query="";state.view="home";
-  const relevant=allPosts().filter(p=>p.circle===id);
-  setPage(`${pageHeader(localText(c,"bn","en"),"circles-page")}<div class="modal-body"><p style="color:var(--muted);font-size:12px">${escapeHtml(localText(c,"description_bn","description_en"))}</p><button class="primary-button" data-join="${c.id}">${state.joined.has(c.id)?t("joined"):t("join")}</button><div style="height:14px"></div>${relevant.slice(0,3).map(p=>`<article class="circle-card" style="margin-bottom:8px"><strong>${escapeHtml(postAlias(p))}</strong><p>${escapeHtml(userContentText(p))}</p><button class="quiet-link" data-comments="${p.id}">${icon("message")} ${t("comments")}</button></article>`).join("")}</div>`);
+  openCircleDiscussionPage(id);
 }
 
 function openCalm(){
   state.view="calm";updateNav();state.groundingStep=0;state.bodyScanStep=0;state.resetSeconds=60;
+  const lang = state.calmLang || state.lang;
   const bodyStep=bodyScanText(0);
   const kindness=kindnessText(state.kindnessIndex);
 
@@ -1844,99 +1863,99 @@ function openCalm(){
   const heroDescBn = "যখন আপনার প্রচণ্ড মানসিক চাপ, দুশ্চিন্তা বা বুক ধড়ফড় অনুভব হয়—তখন এই সরঞ্জামগুলো আপনার মনকে শান্ত করতে এবং স্নায়ুকে শিথিল করতে সাহায্য করে। নিচের যেকোনো একটি টুল বেছে নিয়ে ১-২ মিনিট চেষ্টা করুন।";
   const heroDescEn = "When you feel anxious, overwhelmed, or stressed—these tools bring immediate relaxation to your mind and body. Choose a tool below to begin.";
 
-  setPage(`${pageHeader(state.lang==="bn"?"শান্ত ঘর (Calm Space)":"Calm Space")}
+  setPage(`${pageHeader(lang==="bn"?"শান্ত ঘর (Calm Space)":"Calm Space")}
     <div class="modal-body direct-page-body">
       <section class="calm-hero-guide">
         <div class="calm-hero-top">
           <span class="calm-hero-icon">🌿</span>
           <div>
-            <h2>${state.lang==="bn"?heroTitleBn:heroTitleEn}</h2>
-            <small>${state.lang==="bn"?"বিজ্ঞানসম্মত মানসিক প্রশান্তির সরঞ্জাম":"Science-backed relaxation tools"}</small>
+            <h2>${lang==="bn"?heroTitleBn:heroTitleEn}</h2>
+            <small>${lang==="bn"?"বিজ্ঞানসম্মত মানসিক প্রশান্তির সরঞ্জাম":"Science-backed relaxation tools"}</small>
           </div>
         </div>
-        <p class="calm-hero-desc">${state.lang==="bn"?heroDescBn:heroDescEn}</p>
+        <p class="calm-hero-desc">${lang==="bn"?heroDescBn:heroDescEn}</p>
         <div class="calm-lang-bar">
-          <span>${state.lang==="bn"?"পড়ুন আপনার ভাষায় / Read in:": "Read in:"}</span>
-          <button class="calm-lang-btn ${state.lang==="bn"?"active":""}" data-action="set-calm-lang-bn">🇧🇩 বাংলা</button>
-          <button class="calm-lang-btn ${state.lang==="en"?"active":""}" data-action="set-calm-lang-en">🌐 English</button>
+          <span>${lang==="bn"?"পড়ুন আপনার ভাষায় / Read in:": "Read in:"}</span>
+          <button class="calm-lang-btn ${lang==="bn"?"active":""}" data-action="set-calm-lang-bn">🇧🇩 বাংলা</button>
+          <button class="calm-lang-btn ${lang==="en"?"active":""}" data-action="set-calm-lang-en">🌐 English</button>
         </div>
       </section>
 
       <div class="calm-layout">
         <section class="calm-tool-card">
           <div class="calm-tool-header">
-            <h3>🌬️ ${state.lang==="bn"?"৪-৭-৮ গভীর নিশ্বাসের ব্যায়াম":"4-7-8 Deep Breathing Exercise"}</h3>
-            <span class="calm-tool-badge">${state.lang==="bn"?"অ্যাংজাইটি ও প্যানিক কমানোর জন্য":"For Panic & Anxiety"}</span>
+            <h3>🌬️ ${lang==="bn"?"৪-৭-৮ গভীর নিশ্বাসের ব্যায়াম":"4-7-8 Deep Breathing Exercise"}</h3>
+            <span class="calm-tool-badge">${lang==="bn"?"অ্যাংজাইটি ও প্যানিক কমানোর জন্য":"For Panic & Anxiety"}</span>
           </div>
           <p class="calm-tool-desc">
-            ${state.lang==="bn"?"কখন ব্যবহার করবেন: বুক ধড়ফড় করলে, খুব ভয় লাগলে বা হঠাৎ মানসিক চাপ বাড়লে। ৪ সেকেন্ড শ্বাস নিন, ৪ সেকেন্ড আটকে রাখুন, এরপর ধীরে নিশ্বাস ছাড়ুন।":"Use this when your heart is racing or anxiety spikes. Breathe in for 4s, hold for 4s, then release slowly for 4s."}
+            ${lang==="bn"?"কখন ব্যবহার করবেন: বুক ধড়ফড় করলে, খুব ভয় লাগলে বা হঠাৎ মানসিক চাপ বাড়লে। ৪ সেকেন্ড শ্বাস নিন, ৪ সেকেন্ড আটকে রাখুন, এরপর ধীরে নিশ্বাস ছাড়ুন।":"Use this when your heart is racing or anxiety spikes. Breathe in for 4s, hold for 4s, then release slowly for 4s."}
           </p>
-          <div class="breath-orb" id="breathOrb"><span id="breathLabel">${t("breatheIn")}</span></div>
-          <button class="primary-button" style="width:100%" data-action="toggle-breath">${t("start")}</button>
+          <div class="breath-orb" id="breathOrb"><span id="breathLabel">${lang==="bn"?"শ্বাস নিন":"Breathe in"}</span></div>
+          <button class="primary-button" style="width:100%" data-action="toggle-breath">${lang==="bn"?"শুরু করুন":"Start"}</button>
         </section>
 
         <section class="calm-tool-card">
           <div class="calm-tool-header">
-            <h3>🎧 ${state.lang==="bn"?"প্রশান্তিদায়ক প্রাকৃতিক শব্দ":"Calming Soundscape"}</h3>
-            <span class="calm-tool-badge">${state.lang==="bn"?"মনোযোগ ও ঘুমানোর জন্য":"For Focus & Sleep"}</span>
+            <h3>🎧 ${lang==="bn"?"প্রশান্তিদায়ক প্রাকৃতিক শব্দ":"Calming Soundscape"}</h3>
+            <span class="calm-tool-badge">${lang==="bn"?"মনোযোগ ও ঘুমানোর জন্য":"For Focus & Sleep"}</span>
           </div>
           <p class="calm-tool-desc">
-            ${state.lang==="bn"?"কখন ব্যবহার করবেন: পড়ার সময়, কাজে মনোযোগ দিতে বা রাতে নিশ্চিন্তে ঘুমানোর জন্য। হেডফোন ব্যবহার করলে ভালো লাগবে।":"Use this to block distractions, calm racing thoughts, or fall asleep peacefully. Headset recommended."}
+            ${lang==="bn"?"কখন ব্যবহার করবেন: পড়ার সময়, কাজে মনোযোগ দিতে বা রাতে নিশ্চিন্তে ঘুমানোর জন্য। হেডফোন ব্যবহার করলে ভালো লাগবে।":"Use this to block distractions, calm racing thoughts, or fall asleep peacefully. Headset recommended."}
           </p>
           <div class="sound-buttons">
-            <button class="sound-button" data-sound="rain">🌧️ ${t("rain")}</button>
-            <button class="sound-button" data-sound="ocean">🌊 ${t("ocean")}</button>
-            <button class="sound-button" data-sound="tone">🎵 ${t("tone")}</button>
-            <button class="sound-button" data-sound="off">⏹️ ${t("off")}</button>
+            <button class="sound-button" data-sound="rain">🌧️ ${lang==="bn"?"বৃষ্টি":"Rain"}</button>
+            <button class="sound-button" data-sound="ocean">🌊 ${lang==="bn"?"সমুদ্রের ঢেউ":"Ocean"}</button>
+            <button class="sound-button" data-sound="tone">🎵 ${lang==="bn"?"প্রশান্তির সুর":"Tone"}</button>
+            <button class="sound-button" data-sound="off">⏹️ ${lang==="bn"?"বন্ধ করুন":"Off"}</button>
           </div>
         </section>
 
         <section class="calm-tool-card">
           <div class="calm-tool-header">
-            <h3>🌿 ${state.lang==="bn"?"৫-৪-৩-২-১ গ্রাউন্ডিং টেকনিক":"5-4-3-2-1 Grounding Tool"}</h3>
-            <span class="calm-tool-badge">${state.lang==="bn"?"দুশ্চিন্তা থেকে মনকে ফেরাতে":"Instant Reality Anchor"}</span>
+            <h3>🌿 ${lang==="bn"?"৫-৪-৩-২-১ গ্রাউন্ডিং টেকনিক":"5-4-3-2-1 Grounding Tool"}</h3>
+            <span class="calm-tool-badge">${lang==="bn"?"দুশ্চিন্তা থেকে মনকে ফেরাতে":"Instant Reality Anchor"}</span>
           </div>
           <p class="calm-tool-desc">
-            ${state.lang==="bn"?"কখন ব্যবহার করবেন: অতীত বা ভবিষ্যতের অতিরিক্ত ভাবনায় মন হারিয়ে গেলে। এই টেকনিকটি আপনার ব্রেনকে সরাসরি বর্তমান মুহূর্তে ফিরিয়ে আনে।":"Use this when thoughts spin out of control. It anchors your mind back to the physical present."}
+            ${lang==="bn"?"কখন ব্যবহার করবেন: অতীত বা ভবিষ্যতের অতিরিক্ত ভাবনায় মন হারিয়ে গেলে। এই টেকনিকটি আপনার ব্রেনকে সরাসরি বর্তমান মুহূর্তে ফিরিয়ে আনে।":"Use this when thoughts spin out of control. It anchors your mind back to the physical present."}
           </p>
           <div class="calm-step-box" id="groundStep">${groundingText(0)}</div>
-          <button class="secondary-button" style="width:100%" data-action="next-ground">${t("next")} ➔</button>
+          <button class="secondary-button" style="width:100%" data-action="next-ground">${lang==="bn"?"পরবর্তী ধাপ":"Next"} ➔</button>
         </section>
 
         <section class="calm-tool-card">
           <div class="calm-tool-header">
-            <h3>🧘‍♂️ ${state.lang==="bn"?"বডি স্ক্যান ও পেশির শিথিলতা":"Body Scan Tension Relief"}</h3>
-            <span class="calm-tool-badge">${state.lang==="bn"?"শরীরের টান ও ক্লান্তি মুছতে":"For Physical Relaxation"}</span>
+            <h3>🧘‍♂️ ${lang==="bn"?"বডি স্ক্যান ও পেশির শিথিলতা":"Body Scan Tension Relief"}</h3>
+            <span class="calm-tool-badge">${lang==="bn"?"শরীরের টান ও ক্লান্তি মুছতে":"For Physical Relaxation"}</span>
           </div>
           <p class="calm-tool-desc">
-            ${state.lang==="bn"?"কখন ব্যবহার করবেন: কপাল, কাঁধ বা ঘাড়ে চাপের শক্ত ভাব অনুভব করলে। প্রতিটি অঙ্গের দিকে নজর দিন এবং নিশ্বাস ছাড়ার সাথে সাথে ঢিলা করুন।":"Use this when stress turns into physical tightness in your jaw, shoulders, or neck. Soften step by step."}
+            ${lang==="bn"?"কখন ব্যবহার করবেন: কপাল, কাঁধ বা ঘাড়ে চাপের শক্ত ভাব অনুভব করলে। প্রতিটি অঙ্গের দিকে নজর দিন এবং নিশ্বাস ছাড়ার সাথে সাথে ঢিলা করুন।":"Use this when stress turns into physical tightness in your jaw, shoulders, or neck. Soften step by step."}
           </p>
           <div class="calm-step-box" id="bodyScanStep">${bodyStep}</div>
-          <button class="secondary-button" style="width:100%" data-action="next-body-scan">${t("nextBodyStep")} ➔</button>
+          <button class="secondary-button" style="width:100%" data-action="next-body-scan">${lang==="bn"?"পরবর্তী অঙ্গ":"Next step"} ➔</button>
         </section>
 
         <section class="calm-tool-card">
           <div class="calm-tool-header">
-            <h3>💭 ${state.lang==="bn"?"আত্ম-মমতার বার্তা":"Self-Compassion Thoughts"}</h3>
-            <span class="calm-tool-badge">${state.lang==="bn"?"নিজের প্রতি মায়াশীল হতে":"For Gentle Self-Care"}</span>
+            <h3>💭 ${lang==="bn"?"আত্ম-মমতার বার্তা":"Self-Compassion Thoughts"}</h3>
+            <span class="calm-tool-badge">${lang==="bn"?"নিজের প্রতি মায়াশীল হতে":"For Gentle Self-Care"}</span>
           </div>
           <p class="calm-tool-desc">
-            ${state.lang==="bn"?"কখন ব্যবহার করবেন: আত্মগ্লানি, অপরাধবোধ বা কড়া নিজেকে দোষারোপের সময়। যেভাবে প্রিয় বন্ধুকে সান্ত্বনা দিতেন, নিজেকে সেভাবে বলুন।":"Use this when you are too hard on yourself. Offer yourself the same warmth you would give a friend."}
+            ${lang==="bn"?"কখন ব্যবহার করবেন: আত্মগ্লানি, অপরাধবোধ বা কড়া নিজেকে দোষারোপের সময়। যেভাবে প্রিয় বন্ধুকে সান্ত্বনা দিতেন, নিজেকে সেভাবে বলুন।":"Use this when you are too hard on yourself. Offer yourself the same warmth you would give a friend."}
           </p>
           <blockquote class="kindness-card" id="kindnessPrompt">${kindness}</blockquote>
-          <button class="secondary-button" style="width:100%;margin-top:10px" data-action="next-kindness">${t("anotherPrompt")} 🔄</button>
+          <button class="secondary-button" style="width:100%;margin-top:10px" data-action="next-kindness">${lang==="bn"?"নতুন বার্তা":"Another thought"} 🔄</button>
         </section>
 
         <section class="calm-tool-card">
           <div class="calm-tool-header">
-            <h3>✍️ ${state.lang==="bn"?"মনের ভারী চিন্তা ভ্যানিশ করুন":"Thought Release Box"}</h3>
-            <span class="calm-tool-badge">${state.lang==="bn"?"গোপন কষ্ট মুছে ফেলতে":"Mind Dump & Release"}</span>
+            <h3>✍️ ${lang==="bn"?"মনের ভারী চিন্তা ভ্যানিশ করুন":"Thought Release Box"}</h3>
+            <span class="calm-tool-badge">${lang==="bn"?"গোপন কষ্ট মুছে ফেলতে":"Mind Dump & Release"}</span>
           </div>
           <p class="calm-tool-desc">
-            ${state.lang==="bn"?"কখন ব্যবহার করবেন: যে ক্ষোভ বা কষ্টের কথা কাউকে বলতে পারছেন না, তা এখানে লিখে ভাসিয়ে দিন। এই লেখা কোথাও সেভ থাকে না।":"Type whatever is troubling you. Tap release to watch it vanish forever—nothing is saved anywhere."}
+            ${lang==="bn"?"কখন ব্যবহার করবেন: যে ক্ষোভ বা কষ্টের কথা কাউকে বলতে পারছেন না, তা এখানে লিখে ভাসিয়ে দিন। এই লেখা কোথাও সেভ থাকে না।":"Type whatever is troubling you. Tap release to watch it vanish forever—nothing is saved anywhere."}
           </p>
-          <textarea class="release-textarea" id="releaseText" maxlength="400" placeholder="${state.lang==="bn"?"আপনার চিন্তাটি এখানে লিখুন...":"Write your troubling thought here..."}" style="min-height:90px"></textarea>
-          <button class="secondary-button" style="width:100%;margin-top:10px" data-action="release-thought">${t("releaseButton")}</button>
+          <textarea class="release-textarea" id="releaseText" maxlength="400" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="${lang==="bn"?"আপনার চিন্তাটি এখানে লিখুন...":"Write your troubling thought here..."}" style="min-height:90px;white-space:pre-wrap;word-break:break-word;"></textarea>
+          <button class="secondary-button" style="width:100%;margin-top:10px" data-action="release-thought">${lang==="bn"?"ভাসিয়ে দিন (Vanish)":"Release thought"}</button>
         </section>
       </div>
     </div>
@@ -1944,6 +1963,7 @@ function openCalm(){
 }
 
 function bodyScanText(i){
+  const lang = state.calmLang || state.lang;
   const bn=[
     "ধাপ ১/৬: কপাল ও চোখের চারপাশ লক্ষ্য করুন। নিশ্বাস ছাড়ার সাথে সাথে সেই টানটুকু আলগা হতে দিন।",
     "ধাপ ২/৬: চোয়াল ও মুখমণ্ডল খেয়াল করুন। দাঁতে দাঁত কামড়ে শক্ত করে রেখেছেন কি না দেখুন—মুখ ঢিলা করুন।",
@@ -1960,10 +1980,11 @@ function bodyScanText(i){
     "Step 5/6: Feel the steady support beneath your feet or legs.",
     "Step 6/6: Feel your entire body as one whole, and take a long, refreshing breath."
   ];
-  return (state.lang==="bn"?bn:en)[i%bn.length];
+  return (lang==="bn"?bn:en)[i%bn.length];
 }
 
 function kindnessText(i){
+  const lang = state.calmLang || state.lang;
   const bn=[
     "এই মুহূর্তটি কঠিন হতে পারে—তবু আমাকে সব সমস্যা একবারে সমাধান করতে হবে না। আমি যতটুকু পারছি তা-ই যথেষ্ট।",
     "আমি ধীরে পা ফেলতে পারি; নিজের গতিতেই সব ঠিক হয়ে যাবে। ছোট একটি কোমল পদক্ষেপও সমান মূল্যবান।",
@@ -1978,10 +1999,11 @@ function kindnessText(i){
     "If my energy or capacity is lower today, that is completely okay and natural. We all need rest.",
     "Asking for support is not a sign of weakness—it is a brave act of caring for my well-being."
   ];
-  return (state.lang==="bn"?bn:en)[i%bn.length];
+  return (lang==="bn"?bn:en)[i%bn.length];
 }
 
 function groundingText(i){
+  const lang = state.calmLang || state.lang;
   const bn=[
     "ধাপ ১/৫ (দর্শন): আপনার চারপাশে খেয়াল করুন এবং দেখতে পাচ্ছেন এমন ৫টি জিনিসের নাম মনে মনে বলুন।",
     "ধাপ ২/৫ (স্পর্শ): আপনার শরীর ও কাপড়ের স্পর্শ বা স্পর্শ করতে পারছেন এমন ৪টি জিনিস অনুভব করুন।",
@@ -1996,7 +2018,7 @@ function groundingText(i){
     "Step 4/5 (Smell): Notice 2 scents in the air or around you.",
     "Step 5/5 (Taste): Notice 1 taste in your mouth, or take a refreshing sip of water."
   ];
-  return (state.lang==="bn"?bn:en)[i];
+  return (lang==="bn"?bn:en)[i];
 }
 function toggleBreath(){
   state.breathing=!state.breathing;
@@ -2645,7 +2667,8 @@ const pwa=initPWA({
 });
 
 document.addEventListener("click",e=>{
-  const target=e.target.closest("button,a,[data-action],[data-nav]");if(!target)return;
+  const target=e.target.closest("button,a,[data-action],[data-nav],[data-open-circle]");if(!target)return;
+  if(target.dataset.openCircle){openCircleDiscussionPage(target.dataset.openCircle);return}
   if(!guardAdminAction(target)){e.preventDefault();showToast(state.lang==="bn"?"এই সুবিধাটি বর্তমানে বন্ধ আছে।":"This feature is currently unavailable.");return}
   const action=target.dataset.action;
   if(target.dataset.expandPost){state.expandedPosts=state.expandedPosts||{};state.expandedPosts[target.dataset.expandPost]=true;renderFeed();return}
@@ -2723,8 +2746,8 @@ document.addEventListener("click",e=>{
     case"test-notification":testNotification();break;
     case"theme":toggleTheme();break;
     case"language":toggleLanguage();break;
-    case"set-calm-lang-bn":state.lang="bn";store.set("lang","bn");localizePage();openCalm();break;
-    case"set-calm-lang-en":state.lang="en";store.set("lang","en");localizePage();openCalm();break;
+    case"set-calm-lang-bn":state.calmLang="bn";store.set("calm-lang","bn");openCalm();break;
+    case"set-calm-lang-en":state.calmLang="en";store.set("calm-lang","en");openCalm();break;
     case"profile":openProfile();break;
     case"identity-open":openIdentityGate(true);break;
     case"identity-continue":handleIdentityContinue();break;

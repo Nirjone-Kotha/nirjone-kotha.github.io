@@ -1753,5 +1753,18 @@ body.installed-phone-app.force-mobile-layout .mobile-nav {
   font-size: 12px;
 }
 
+/* Fix text editing space joining and line breaks */
+textarea, .compose-textarea, .comment-textarea, .release-textarea {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  font-family: inherit;
+}
+.post-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 
 

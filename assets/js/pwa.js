@@ -28,7 +28,7 @@ export function initPWA({ onInstallAvailable, onInstalled, onOfflineChange, onUp
   if ("serviceWorker" in navigator && (location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(location.hostname))) {
     window.addEventListener("load", async () => {
       try {
-        registration = await navigator.serviceWorker.register("./sw.js?v=6.6.0", { scope: "./", updateViaCache: "none" });
+        registration = await navigator.serviceWorker.register("./sw.js?v=6.6.1", { scope: "./", updateViaCache: "none" });
         if (registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
         registration.addEventListener("updatefound", () => {
           const worker = registration.installing;
