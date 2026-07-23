@@ -1383,6 +1383,64 @@ function openVideoMoodFilterModal(section="general"){
   </div>`);
 }
 
+function videoFormatControls(section){
+  const selected=state.videoFormat?.[section]||"video";
+  return `<div class="video-format-tabs" role="tablist" aria-label="${state.lang==="bn"?"ভিডিও ধরন":"Video format"}">${VIDEO_FORMATS.map(format=>`<button class="video-format-tab ${selected===format.id?"active":""}" data-video-format="${format.id}" data-video-section="${section}">${escapeHtml(state.lang==="bn"?format.bn:format.en)}</button>`).join("")}</div>`;
+}
+
+function renderIslamicTextCard(item){
+  const liked=Boolean(state.islamicLikes[String(item.id)]);
+  const translationLang=state.islamicTranslations[String(item.id)]||"bn";
+  const translation=translationLang==="en"?(item.en||item.bn):(item.bn||item.en);
+  const article=document.createElement("article");
+  article.className="post-card islamic-card social-content-card";
+  article.dataset.islamicId=String(item.id);
+  article.innerHTML=`<header class="post-head"><div class="post-person"><span class="post-avatar islamic-avatar">${item.kind==="quran"?"☪":item.kind==="hadith"?"📜":"🤲"}</span><span class="post-meta"><strong>${escapeHtml(item.source||t(item.kind))}</strong><small>${escapeHtml(state.lang==="bn"?"আরবি, বাংলা অর্থ ও উৎসের রেফারেন্স":"Arabic text, translation and source reference")}</small></span></div><button class="translation-toggle" data-islamic-lang="${escapeHtml(String(item.id))}">${translationLang==="bn"?"English":"বাংলা"}</button></header>
+  ${item.arabic?`<p class="arabic-text" lang="ar" dir="rtl">${escapeHtml(item.arabic)}</p>`:""}
+  <p class="post-text islamic-translation" lang="${translationLang}">${escapeHtml(translation)}</p>
+  ${item.audio?`<audio class="quran-audio" controls preload="none" src="${escapeHtml(item.audio)}">${escapeHtml(t("sourceUnavailable"))}</audio>`:`<button class="listen-arabic" data-speak-arabic="${encodeURIComponent(item.arabic||"")}">${icon("volume")} ${t("listen")}</button>`}
+  <div class="post-support islamic-rank-summary"><div class="support-cluster"><span class="support-face">❤️</span><span class="support-face">💬</span></div><span class="support-summary">${displayNumber(contentLikeCount(item,state.islamicLikes))} ${state.lang==="bn"?"ভালোবাসা":"likes"} · ${displayNumber(islamicCommentCount(item))} ${state.lang==="bn"?"মন্তব্য":"comments"} · #${displayNumber(islamicRankScore(item))}</span></div>
+  <div class="post-actions islamic-actions"><button class="post-action ${liked?"reacted":""}" data-islamic-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${t("love")}</span><i class="count">${displayNumber(contentLikeCount(item,state.islamicLikes))}</i></button><button class="post-action" data-islamic-comments="${escapeHtml(String(item.id))}">${icon("message")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(islamicCommentCount(item))}</i></button><button class="post-action" data-islamic-share="${escapeHtml(String(item.id))}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button></div>`;
+  return article;
+}
+
+async function renderIslamicFeed(){
+  const requestedTab=state.islamicTab;
+  if(requestedTab!=="islamic-video"&&state.videoLargeView)setVideoLargeView(false);
+  const wrap=$("#feedList");wrap.dataset.feedKind="islamic";
+  setAdSafeMode(true,"islamic-section");
+  renderAdPlacements();
+  $("#desktopAdSlotMount")?.replaceChildren();
+  $("#loadMore").hidden=true;
+  state.videoController?.destroy?.();state.videoController=null;
+  wrap.innerHTML=islamicSubnav()+`<div class="special-feed-loading"><span class="loading-pulse"></span>${state.lang==="bn"?"কনটেন্ট প্রস্তুত হচ্ছে…":"Preparing content…"}</div>`;
+  renderIcons(wrap);
+  if(state.islamicTab==="islamic-video"){
+    const cards=videoItemsForMood(mergeManagedVideos(islamicVideoCatalog,"islamic"),"islamic").map(renderVideoCard);
+    wrap.replaceChildren();
+    const head=document.createElement("div");head.innerHTML=islamicSubnav();wrap.append(...head.children);
+    if(cards.length)wrap.append(...cards);
+    else wrap.insertAdjacentHTML("beforeend",`<section class="empty-state surface-card"><span>🎬</span><h3>${state.lang==="bn"?"এই মুড ও ধরনে এখন কোনো ভিডিও নেই":"No video is available for this mood and format"}</h3><p>${state.lang==="bn"?"অন্য মুড বা ভিডিও ধরন বেছে দেখুন।":"Choose another mood or video format."}</p></section>`);
+    renderIcons(wrap);if(cards.length)setupVideoAutoplay();return;
+  }
+  const mood=selectedIslamicMood();
+  const key=`${state.islamicTab}:${mood||"all"}`;
+  let items=state.islamicCache[key];
+  if(!items){
+    const loader=state.islamicTab==="quran"?loadQuranItems:state.islamicTab==="hadith"?loadHadithItems:loadDuaItems;
+    try{items=await loader(mood,18)}catch{items=[]}
+    state.islamicCache[key]=items;
+  }
+  if(state.feedMode!=="islamic"||state.islamicTab!==requestedTab)return;
+  items.forEach(item=>state.islamicItemIndex.set(String(item.id),item));
+  const sorted=sortIslamicContent(items);
+  wrap.replaceChildren();
+  const head=document.createElement("div");head.innerHTML=islamicSubnav();wrap.append(...head.children);
+  if(sorted.length)wrap.append(...sorted.map(renderIslamicTextCard));
+  else wrap.insertAdjacentHTML("beforeend",`<section class="empty-state surface-card"><span>☪</span><h3>${state.lang==="bn"?"এই মুডে কনটেন্ট পাওয়া যায়নি":"No content was found for this mood"}</h3><p>${state.lang==="bn"?"অন্য মুড বেছে আবার চেষ্টা করুন।":"Choose another mood and try again."}</p></section>`);
+  renderIcons(wrap);
+}
+
 function islamicSubnav(){
   const isVideo=state.islamicTab==="islamic-video";
   const format=isVideo?videoFormatControls("islamic"):"";
