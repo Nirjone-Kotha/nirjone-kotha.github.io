@@ -1246,7 +1246,7 @@ function islamicMoodControls(){
   return `<div class="content-mood-filter" role="group" aria-label="${state.lang==="bn"?"মুড অনুযায়ী ইসলামিক কনটেন্ট":"Islamic content by mood"}">${options.map(item=>`<button class="content-mood-chip ${state.islamicMoodFilter===item.id?"active":""}" data-islamic-mood="${item.id}">${item.emoji} ${escapeHtml(item.label)}</button>`).join("")}</div>`;
 }
 function videoLargeViewControl(){
-  return `<button class="video-large-view-control" type="button" data-video-large-view="true">${icon("expand")}<span>${t("largeView")}</span></button>`;
+  return `<button class="video-large-view-control" type="button" data-video-large-view="true" aria-label="${escapeHtml(t("largeView"))}">${icon("expand")}</button>`;
 }
 function setVideoLargeView(enabled, focusId=""){
   const active=Boolean(enabled);
@@ -1266,7 +1266,7 @@ function setVideoLargeView(enabled, focusId=""){
       exit.className="video-large-exit";
       exit.type="button";
       exit.dataset.action="close-video-large";
-      exit.innerHTML=`${icon("minimize")}<span>${t("exitLargeView")}</span>`;
+      exit.innerHTML=`${icon("minimize")}`;exit.setAttribute("aria-label", t("exitLargeView"));
       document.body.appendChild(exit);
       renderIcons(exit);
     }
@@ -1408,7 +1408,7 @@ function markVideoUnavailable({card,youtubeId,errorCode}){
   if(!youtubeId)return;
   state.unavailableVideoIds.add(youtubeId);saveState();reportUnavailableVideo({youtubeId,errorCode});
   $$(`.video-card[data-youtube-id="${CSS.escape(youtubeId)}"]`).forEach(node=>node.remove());
-  showToast(state.lang==="bn"?"ভিডিওটি আর চালানো যাচ্ছে না, তাই তালিকা থেকে সরানো হয়েছে।":"This video is no longer playable and was removed from the catalogue.");
+  // showToast(state.lang==="bn"?"ভিডিওটি আর চালানো যাচ্ছে না, তাই তালিকা থেকে সরানো হয়েছে।":"This video is no longer playable and was removed from the catalogue.");
   setTimeout(()=>{if(state.feedMode==="islamic")renderIslamicFeed();else if(state.feedMode==="video")renderVideoFeed();},60);
 }
 function markVideoTemporaryError({card}){

@@ -448,9 +448,8 @@ html[data-theme="dark"] .privacy-alert{background:#382e18;color:#ffd987;border-c
   .mobile-search-button{display:inline-flex}
   .social-shell{display:block;padding:14px 10px 90px}
   .left-rail{display:none}
-  .welcome-strip{padding:18px}
-  .welcome-strip h1{font-size:21px}
-  .welcome-strip p{font-size:11px}
+  .welcome-strip{display:none!important}
+  .mobile-menu-button{display:inline-flex}
   .soft-button{padding:0 11px}
   .composer-compact{padding:13px}
   .feed-toolbar{position:sticky;top:calc(var(--topbar) + 5px);z-index:30;padding:6px 0;background:color-mix(in srgb,var(--page),transparent 8%);backdrop-filter:blur(14px)}
