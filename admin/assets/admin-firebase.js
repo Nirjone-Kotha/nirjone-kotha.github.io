@@ -126,13 +126,41 @@ function youtubeId(value) {
   return "";
 }
 
+async function fetchYouTubeMetadata(urlOrId) {
+  let ytId = "";
+  const str = String(urlOrId || "").trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(str)) {
+    ytId = str;
+  } else {
+    const match = str.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+    if (match) ytId = match[1];
+  }
+  if (!ytId) return null;
+  const targetUrl = `https://www.youtube.com/watch?v=${ytId}`;
+  try {
+    const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(targetUrl)}&format=json`);
+    if (res.ok) {
+      const data = await res.json();
+      return { title: data.title || "", channelTitle: data.author_name || "", youtubeId: ytId };
+    }
+  } catch {}
+  try {
+    const res2 = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(targetUrl)}`);
+    if (res2.ok) {
+      const data2 = await res2.json();
+      return { title: data2.title || "", channelTitle: data2.author_name || "", youtubeId: ytId };
+    }
+  } catch {}
+  return null;
+}
+
 function sanitizeVideo(row = {}) {
   const yt = youtubeId(row.youtubeId || row.sourceUrl);
   if (!/^[A-Za-z0-9_-]{11}$/.test(yt)) throw new Error("Valid YouTube URL or ID required.");
   const contentType = row.contentType === "short" ? "short" : "video";
   return {
     id: text(row.id || id("video"), 120), youtubeId: yt, sourceUrl: `https://www.youtube.com/watch?v=${yt}`,
-    title: text(row.title, 220) || "YouTube video", titleBn: text(row.titleBn, 220), channelTitle: text(row.channelTitle, 160),
+    title: text(row.title, 220) || "YouTube video", titleBn: text(row.titleBn, 220), channelTitle: text(row.channelTitle, 160) || "YouTube Creator",
     section: row.section === "islamic" ? "islamic" : "general", contentType,
     moods: [...new Set(list(row.moods).filter(mood => ["happy", "sad", "anxious", "angry", "lonely", "stressed", "tired", "hopeful", "confused", "grateful"].includes(mood)))],
     durationSeconds: int(row.durationSeconds, 0, contentType === "short" ? 90 : 900, 0),
@@ -230,7 +258,14 @@ export async function adminApi(action, { body = null } = {}) {
   const collectionMap = { announcement: "announcements", campaign: "campaigns", video: "videos" };
   const collection = collectionMap[type];
   if (collection && operation === "save") {
-    const item = type === "announcement" ? sanitizeAnnouncement(body) : type === "campaign" ? sanitizeCampaign(body) : sanitizeVideo(body);
+    let item = type === "announcement" ? sanitizeAnnouncement(body) : type === "campaign" ? sanitizeCampaign(body) : sanitizeVideo(body);
+    if (type === "video" && (!item.title || item.title === "YouTube video" || !item.channelTitle || item.channelTitle === "YouTube Creator")) {
+      const meta = await fetchYouTubeMetadata(item.youtubeId || item.sourceUrl);
+      if (meta) {
+        if (!item.title || item.title === "YouTube video") item.title = meta.title;
+        if (!item.channelTitle || item.channelTitle === "YouTube Creator") item.channelTitle = meta.channelTitle;
+      }
+    }
     await sdk.set(sdk.ref(db, `${FIREBASE_PATHS.runtime}/${collection}/${item.id}`), cleanFirebaseValue(item));
     await setRuntimeMeta(context); await writeAudit(context, action, `${type[0].toUpperCase() + type.slice(1)} saved.`, { id: item.id });
     const snapshot = await sdk.get(sdk.ref(db, `${FIREBASE_PATHS.runtime}/${collection}`));
@@ -245,16 +280,29 @@ export async function adminApi(action, { body = null } = {}) {
   }
 
   if (action === "video.bulk") {
-    const links = String(body?.links || "").split(/[\s,;]+/).filter(Boolean).slice(0, 100);
+    const rawLinks = String(body?.links || "").split(/[\s,;]+/).filter(Boolean).slice(0, 100);
     const snapshot = await sdk.get(sdk.ref(db, `${FIREBASE_PATHS.runtime}/videos`));
     const existing = list(snapshot.val()), known = new Set(existing.map(item => item.youtubeId));
     const updates = {}; let added = 0;
-    links.forEach(link => {
+    const metadatas = await Promise.all(rawLinks.map(link => fetchYouTubeMetadata(link)));
+    for (let i = 0; i < rawLinks.length; i++) {
+      const link = rawLinks[i];
+      const meta = metadatas[i];
       try {
-        const item = sanitizeVideo({ ...body, id: id("video"), youtubeId: link, title: body?.title || "YouTube video" });
-        if (!known.has(item.youtubeId)) { updates[item.id] = item; known.add(item.youtubeId); added += 1; }
+        const item = sanitizeVideo({
+          ...body,
+          id: id("video"),
+          youtubeId: meta?.youtubeId || link,
+          title: meta?.title || body?.title || "YouTube video",
+          channelTitle: meta?.channelTitle || body?.channelTitle || "YouTube Creator"
+        });
+        if (item.youtubeId && !known.has(item.youtubeId)) {
+          updates[item.id] = item;
+          known.add(item.youtubeId);
+          added += 1;
+        }
       } catch {}
-    });
+    }
     if (added) await sdk.update(sdk.ref(db, `${FIREBASE_PATHS.runtime}/videos`), cleanFirebaseValue(updates));
     await setRuntimeMeta(context); await writeAudit(context, action, "Bulk video import completed.", { added });
     const result = await sdk.get(sdk.ref(db, `${FIREBASE_PATHS.runtime}/videos`));

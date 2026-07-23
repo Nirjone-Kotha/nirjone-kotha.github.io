@@ -1,4 +1,4 @@
-import { CORE_MOODS, createAdminVideoDraft, createBulkAdminDrafts, validateVideoMetadata } from "../../assets/js/video_catalog.js";
+import { CORE_MOODS, createAdminVideoDraft, createBulkAdminDrafts, createAdminVideoDraftAsync, createBulkAdminDraftsAsync, validateVideoMetadata } from "../../assets/js/video_catalog.js";
 
 const moodLabels={lonely:"Lonely",sad:"Sad",anxious:"Anxious",overwhelmed:"Overwhelmed",angry:"Angry",numb:"Numb",lost:"Lost",hopeful:"Hopeful"};
 const $=selector=>document.querySelector(selector);
@@ -26,8 +26,8 @@ async function upload(){
 }
 
 $("#moods").innerHTML=CORE_MOODS.map(mood=>`<label><input type="checkbox" name="mood" value="${mood}">${moodLabels[mood]}</label>`).join("");
-$("#addSingle").addEventListener("click",()=>{try{append([createAdminVideoDraft({url:$("#single").value,...options()})]);$("#single").value=""}catch(error){alert(error.message)}});
-$("#addBulk").addEventListener("click",()=>{const items=createBulkAdminDrafts({links:$("#bulk").value,...options()});if(!items.length){alert("No valid YouTube links found.");return}append(items)});
+$("#addSingle").addEventListener("click",async()=>{const val=$("#single").value;if(!val)return;$("#status").textContent="Fetching video details...";try{const item=await createAdminVideoDraftAsync({url:val,...options()});append([item]);$("#single").value="";$("#status").textContent=`Added: ${item.title}`}catch(error){alert(error.message)}});
+$("#addBulk").addEventListener("click",async()=>{const val=$("#bulk").value;if(!val)return;$("#status").textContent="Fetching videos details in bulk...";try{const items=await createBulkAdminDraftsAsync({links:val,...options()});if(!items.length){alert("No valid YouTube links found.");return}append(items);$("#bulk").value="";$("#status").textContent=`Added ${items.length} video(s) with automatic titles.`}catch(error){alert(error.message)}});
 $("#clear").addEventListener("click",()=>{drafts=[];render()});
 $("#export").addEventListener("click",download);
 $("#upload").addEventListener("click",()=>upload().catch(error=>alert(error.message)));

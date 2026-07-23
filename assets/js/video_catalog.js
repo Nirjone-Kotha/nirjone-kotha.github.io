@@ -99,6 +99,74 @@ export function parseBulkYouTubeLinks(value=""){
   return [...unique.entries()].map(([youtubeId,raw])=>({youtubeId,raw}));
 }
 
+export async function fetchYouTubeOembed(urlOrId) {
+  let ytId = "";
+  const str = String(urlOrId || "").trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(str)) {
+    ytId = str;
+  } else {
+    const match = str.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+    if (match) ytId = match[1];
+  }
+  if (!ytId) return null;
+  const targetUrl = `https://www.youtube.com/watch?v=${ytId}`;
+  try {
+    const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(targetUrl)}&format=json`);
+    if (res.ok) {
+      const data = await res.json();
+      return { title: data.title || "", channelTitle: data.author_name || "", youtubeId: ytId };
+    }
+  } catch {}
+  try {
+    const res2 = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(targetUrl)}`);
+    if (res2.ok) {
+      const data2 = await res2.json();
+      return { title: data2.title || "", channelTitle: data2.author_name || "", youtubeId: ytId };
+    }
+  } catch {}
+  return null;
+}
+
+export async function createAdminVideoDraftAsync({url,section="general",moods=[],contentType="video",title="",channelTitle=""}={}){
+  const youtubeId=extractYouTubeId(url);
+  if(!youtubeId)throw new Error("Invalid YouTube link");
+  let metaTitle = title;
+  let metaChannel = channelTitle;
+  if (!metaTitle || !metaChannel) {
+    const meta = await fetchYouTubeOembed(youtubeId);
+    if (meta) {
+      if (!metaTitle) metaTitle = meta.title;
+      if (!metaChannel) metaChannel = meta.channelTitle;
+    }
+  }
+  const normalizedType=contentType==="short"?"short":"video";
+  const normalizedMoods=Array.isArray(moods)?[...new Set(moods.filter(m=>CORE_MOODS.includes(m)))]:[];
+  return {
+    id:`${section}-${Date.now()}-${youtubeId}`,
+    section:section==="islamic"?"islamic":"general",
+    moods:normalizedMoods,
+    youtubeId,
+    sourceUrl:`https://www.youtube.com/watch?v=${youtubeId}`,
+    title:String(metaTitle||"YouTube video").trim(),
+    channelTitle:String(metaChannel||"YouTube Creator").trim(),
+    contentType:normalizedType,
+    durationSeconds:0,
+    playbackCapSeconds:VIDEO_LIMITS[normalizedType],
+    aspect:normalizedType==="short"?"portrait":"landscape",
+    thumbnailUrl:youtubeThumbnail(youtubeId),
+    likes:0,
+    enabled:true,
+    featured:false,
+    metadataStatus:metaTitle ? "auto-fetched" : "needs-youtube-api-validation",
+    addedAt:new Date().toISOString()
+  };
+}
+
+export async function createBulkAdminDraftsAsync({links,section="general",moods=[],contentType="video"}={}){
+  const parsed = parseBulkYouTubeLinks(links);
+  return Promise.all(parsed.map(({raw})=>createAdminVideoDraftAsync({url:raw,section,moods,contentType})));
+}
+
 export function createAdminVideoDraft({url,section="general",moods=[],contentType="video",title="",channelTitle=""}={}){
   const youtubeId=extractYouTubeId(url);
   if(!youtubeId)throw new Error("Invalid YouTube link");
