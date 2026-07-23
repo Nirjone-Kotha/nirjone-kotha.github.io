@@ -239,8 +239,25 @@ export function createYouTubeFeedController({
               const isMuted = Boolean(event.target.isMuted?.());
               updateSoundButton(card, isMuted);
               startVolumeMonitor(event.target, card);
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+            } else if (event.data === YT.PlayerState.PAUSED) {
               card.dataset.playerPlaying = "false";
+            } else if (event.data === YT.PlayerState.ENDED) {
+              card.dataset.playerPlaying = "false";
+              showPlayer(card, false);
+              // Auto-advance to next video if NOT in fullscreen mode
+              if (!document.body.classList.contains("video-large-view")) {
+                const nextCard = card.nextElementSibling;
+                if (nextCard && nextCard.classList.contains("video-card")) {
+                  nextCard.scrollIntoView({ behavior: "smooth", block: "center" });
+                  const playBtn = nextCard.querySelector("[data-video-play]");
+                  if (playBtn) {
+                    playBtn.click();
+                  } else {
+                    const nextId = nextCard.dataset.videoId;
+                    if (nextId) play(nextCard, { muted: !sharedSoundEnabled, userInitiated: true });
+                  }
+                }
+              }
             }
           },
           onError: event => {
@@ -374,13 +391,15 @@ export function createYouTubeFeedController({
     cards.forEach(card => updateSoundButton(card, !sharedSoundEnabled));
     if (!cards.length || !("IntersectionObserver" in globalThis)) return;
     observer = new IntersectionObserver(entries => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting && entry.intersectionRatio >= 0.68)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible && visible.target !== activeCard) {
-        play(visible.target, { muted: !sharedSoundEnabled, userInitiated: false });
-      }
-    }, { root: null, threshold: [0.4, 0.68, 0.9], rootMargin: "40px 0px 120px" });
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && entry.target.dataset.playerPlaying === "true") {
+          const videoId = entry.target.dataset.videoId;
+          const player = players.get(videoId);
+          try { player?.pauseVideo?.(); } catch {}
+          entry.target.dataset.playerPlaying = "false";
+        }
+      });
+    }, { root: null, threshold: [0.1, 0.5] });
     cards.forEach(card => observer.observe(card));
   }
 

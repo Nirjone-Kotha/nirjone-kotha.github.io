@@ -2462,6 +2462,21 @@ body.video-large-view .video-compact-action {
   border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
+/* Pointer events override for Fullscreen Reel Mode so touch drag scrolls videos */
+body.video-large-view .youtube-player-host {
+  pointer-events: none !important;
+}
+body.video-large-view .youtube-stage.playing .youtube-player-host {
+  pointer-events: none !important;
+}
+body.video-large-view .video-sound-button,
+body.video-large-view .video-play-button,
+body.video-large-view .video-large-exit,
+body.video-large-view .video-card-meta-bar,
+body.video-large-view .video-card-meta-bar * {
+  pointer-events: auto !important;
+}
+
 /* Fixed Exit Button for Reel Feed */
 .video-large-exit {
   position: fixed !important;
