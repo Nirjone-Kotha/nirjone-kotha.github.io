@@ -1492,10 +1492,41 @@ function renderVideoCard(item){
   const likeCount=contentLikeCount(item,state.videoLikes);
   const article=document.createElement("article");
   article.className=`post-card video-card social-content-card ${portrait?"video-short":"video-landscape"}`;
-  article.dataset.videoId=String(item.id);article.dataset.youtubeId=item.youtubeId;article.dataset.videoCap=String(item.playbackCapSeconds||900);
+  article.dataset.videoId=String(item.id);
+  article.dataset.youtubeId=item.youtubeId;
+  article.dataset.videoCap=String(item.playbackCapSeconds||900);
   const titleText=escapeHtml(state.lang==="bn"?(item.titleBn||item.title):item.title);
   const metaText=`${escapeHtml(item.channelTitle||"YouTube")} · ${durationLabel(item.durationSeconds)} · ${item.contentType==="short"?(state.lang==="bn"?"শর্টস":"Shorts"):(state.lang==="bn"?"ভিডিও":"Video")}`;
-  article.innerHTML=`<div class="youtube-stage ${portrait?"portrait":"landscape"}" data-video-stage="${escapeHtml(String(item.id))}"><div class="youtube-player-host"><div data-youtube-player-host></div></div><img loading="lazy" decoding="async" width="480" height="270" src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)} thumbnail"><button class="video-play-button" data-video-play="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t(\"playVideo\"))}">${icon("play")||"▶"}<span>${t("playVideo")}</span></button><button class="video-sound-button" type="button" data-video-sound="${escapeHtml(String(item.id))}" data-sound-on-label="${escapeHtml(t(\"soundOn\"))}" data-sound-off-label="${escapeHtml(t(\"soundOff\"))}" aria-label="${escapeHtml(t(\"soundOff\""))}"><span class="video-sound-icon" aria-hidden="true">🔊</span><span class="video-sound-label">${t("soundOff")}</span></button><span class="video-ready-label">${state.lang==="bn"?"প্রস্তুত":"Ready"}</span><div class="video-overlay-info"><div class="video-overlay-meta">${metaText}</div><div class="video-overlay-title">${titleText}</div></div></div><div class="video-compact-bar"><button class="video-compact-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"লাইক":"Like"}">${icon("heart")}<span>${displayNumber(likeCount)}</span></button><button class="video-compact-action" data-video-comment="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"সহমর্মিতা":"Sympathy"}">${icon("comment")}<span>${commentCount>0?displayNumber(commentCount):""}</span></button><span class="video-compact-spacer"></span><button class="video-compact-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t(\"largeView\"))}">${icon("expand")}</button></div>`;
+
+  article.innerHTML=`
+    <div class="youtube-stage ${portrait?"portrait":"landscape"}" data-video-stage="${escapeHtml(String(item.id))}">
+      <div class="youtube-player-host"><div data-youtube-player-host></div></div>
+      <img loading="lazy" decoding="async" width="480" height="270" src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)} thumbnail">
+      <button class="video-play-button" data-video-play="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("playVideo"))}">
+        ${icon("play")||"▶"}<span>${t("playVideo")}</span>
+      </button>
+      <button class="video-sound-button" type="button" data-video-sound="${escapeHtml(String(item.id))}" data-sound-on-label="${escapeHtml(t("soundOn"))}" data-sound-off-label="${escapeHtml(t("soundOff"))}" aria-label="${escapeHtml(t("soundOff"))}">
+        <span class="video-sound-icon" aria-hidden="true">🔊</span><span class="video-sound-label">${t("soundOff")}</span>
+      </button>
+      <span class="video-ready-label">${state.lang==="bn"?"প্রস্তুত":"Ready"}</span>
+      <div class="video-overlay-info">
+        <div class="video-overlay-meta">${metaText}</div>
+        <div class="video-overlay-title">${titleText}</div>
+      </div>
+    </div>
+    <div class="video-compact-bar">
+      <button class="video-compact-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"লাইক":"Like"}">
+        ${icon("heart")}<span>${displayNumber(likeCount)}</span>
+      </button>
+      <button class="video-compact-action" data-video-comment="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"সহমর্মিতা":"Sympathy"}">
+        ${icon("comment")}<span>${commentCount>0?displayNumber(commentCount):""}</span>
+      </button>
+      <span class="video-compact-spacer"></span>
+      <button class="video-compact-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("largeView"))}">
+        ${icon("expand")}
+      </button>
+    </div>
+  `;
   return article;
 }
 function renderVideoFeed(){
