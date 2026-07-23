@@ -837,7 +837,7 @@ function saveState(){
 function renderIcons(root=document){
   $$("[data-icon]",root).forEach(el=>{ el.innerHTML = icon(el.dataset.icon); });
 }
-const POST_TTL_MS=183*24*60*60*1000;
+const POST_TTL_MS=365*24*60*60*1000;
 const MOMENT_TTL_MS=72*60*60*1000;
 
 function cleanupExpiredLocalContent(){
@@ -1204,6 +1204,25 @@ function sortedPostEmojis(postMood) {
   return [...POST_EMOJIS].sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
 }
 
+function formatPostTextHTML(p){
+  const fullText = userContentText(p);
+  const lines = fullText.split(/\r?\n/);
+  const isExpanded = Boolean(state.expandedPosts?.[String(p.id)]);
+  const isLong = lines.length > 7 || fullText.length > 300;
+
+  if (!isLong || isExpanded) {
+    return escapeHtml(fullText).replace(/\n/g, "<br>");
+  }
+
+  let previewLines = lines.slice(0, 7).join("\n");
+  if (previewLines.length > 300) {
+    previewLines = previewLines.slice(0, 280) + "…";
+  }
+
+  const seeMoreText = state.lang === "bn" ? "…আরও দেখুন" : "…See more";
+  return `${escapeHtml(previewLines).replace(/\n/g, "<br>")} <button class="see-more-link" data-expand-post="${escapeHtml(String(p.id))}">${seeMoreText}</button>`;
+}
+
 function renderPostCard(p){
   const name=postAlias(p), saved=state.saved.has(String(p.id));
   const followKey=voiceKey(p),following=state.following.has(followKey)||p.isFollowing;
@@ -1215,30 +1234,40 @@ function renderPostCard(p){
   if(p.mood)labels.push(`<span class="mood-chip">${m.emoji||"💬"} ${escapeHtml(moodName(p.mood,p.customMood))}</span>`);
   if(p.need)labels.push(`<span class="need-chip">${escapeHtml(needName(p.need,p.customNeed))}</span>`);
   if(p.topic)labels.push(`<span class="topic-chip">#${escapeHtml(topicName(p.topic,p.customTopic))}</span>`);
-  const expiry=p.isUser?` · ${t("expiresIn")} ${formatExpiry(p.expiresAt)}`:"";
 
   const emojis = sortedPostEmojis(p.mood);
   const totalReactions = POST_EMOJIS.reduce((sum, e) => sum + (p.reactions?.[e.key] || 0) + (state.reactions[`${p.id}:${e.key}`] ? 1 : 0), 0) + reactionCount(p, "hear");
+  const userReactedEmojiObj = POST_EMOJIS.find(e => state.reactions[`${p.id}:${e.key}`]);
+  const userReactedEmoji = userReactedEmojiObj?.emoji;
+  const isPickerOpen = Boolean(state.activeEmojiPicker === String(p.id));
 
   article.innerHTML=`
     <header class="post-head">
       <div class="post-person"><span class="post-avatar">${m.emoji||"💬"}</span><span class="post-meta">
         <span class="post-name-row"><strong>${escapeHtml(name)}</strong>${p.isUser?"":`<button class="follow-button" data-follow="${escapeHtml(followKey)}">${following?(state.lang==="bn"?"অনুসরণ করছেন":"Following"):(state.lang==="bn"?"অনুসরণ করুন":"Follow")}</button>`}</span>
-        <small>${escapeHtml(postTime(p))} · ${state.lang==="bn"?"আসল পরিচয় গোপন":"real identity hidden"}${expiry}</small>
+        <small>${escapeHtml(postTime(p))} · ${state.lang==="bn"?"আসল পরিচয় গোপন":"real identity hidden"}</small>
       </span></div><button class="more-button" data-more="${p.id}" aria-label="More">${icon("more")}</button>
     </header>
     ${labels.length?`<div class="post-labels">${labels.join("")}</div>`:""}
-    <p class="post-text">${escapeHtml(userContentText(p))}</p>
-    <div class="post-support"><div class="support-cluster"><span class="support-face">🫶</span><span class="support-face">🌱</span><span class="support-face">🫂</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"} · #${displayNumber(Math.round(postRankScore(p)))}</span></div>
-    <div class="post-emoji-reactions" aria-label="Express empathy">
-      ${emojis.map(e => {
-        const key = `${p.id}:${e.key}`;
-        const count = (p.reactions?.[e.key] || 0) + (state.reactions[key] ? 1 : 0);
-        const reacted = Boolean(state.reactions[key]);
-        return `<button class="emoji-react-chip ${reacted ? "reacted" : ""}" data-react="${key}" title="${state.lang==="bn"?e.bn:e.en}"><span>${e.emoji}</span>${count > 0 ? `<i class="count">${displayNumber(count)}</i>` : ""}</button>`;
-      }).join("")}
-    </div>
+    <p class="post-text">${formatPostTextHTML(p)}</p>
+    <div class="post-support"><div class="support-cluster"><span class="support-face">🫂</span><span class="support-face">🤍</span><span class="support-face">🫶</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"} · #${displayNumber(Math.round(postRankScore(p)))}</span></div>
+
+    ${isPickerOpen ? `
+      <div class="post-emoji-popover" aria-label="Choose emoji reaction">
+        ${emojis.map(e => {
+          const key = `${p.id}:${e.key}`;
+          const reacted = Boolean(state.reactions[key]);
+          return `<button class="emoji-popover-chip ${reacted ? "reacted" : ""}" data-react="${key}" title="${state.lang==="bn"?e.bn:e.en}"><span>${e.emoji}</span></button>`;
+        }).join("")}
+      </div>
+    ` : ""}
+
     <div class="post-actions">
+      <button class="post-action ${userReactedEmoji ? "reacted" : ""}" data-toggle-emoji-picker="${p.id}">
+        <span class="action-icon-emoji">${userReactedEmoji || "🫂"}</span>
+        <span>${userReactedEmoji ? (state.lang==="bn"?"সহমর্মী":"Reacted") : (state.lang==="bn"?"সহমর্মিতা":"Empathy")}</span>
+        <i class="count">${displayNumber(totalReactions)}</i>
+      </button>
       <button class="post-action" data-comments="${p.id}">${icon("message")}<span>${state.lang==="bn"?"সহমর্মিতা দিন":"Give sympathy"}</span><i class="count">${displayNumber(commentsCount)}</i></button>
       <button class="post-action ${saved?"saved":""}" data-save="${p.id}">${icon("bookmark")}<span>${saved?t("saved"):t("savedCount")}</span></button>
       <button class="post-action" data-share="${p.id}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button>
@@ -1322,79 +1351,82 @@ function setVideoLargeView(enabled, focusId=""){
     requestAnimationFrame(()=>{if(feedColumn)feedColumn.scrollTop=state.videoLargeScrollTop;else window.scrollTo({top:state.videoLargeScrollTop});});
   }
 }
-function videoFormatControls(section){
-  const selected=state.videoFormat?.[section]||"video";
-  return `<div class="video-format-tabs" role="tablist" aria-label="${state.lang==="bn"?"ভিডিও ধরন":"Video format"}">${VIDEO_FORMATS.map(format=>`<button class="video-format-tab ${selected===format.id?"active":""}" data-video-format="${format.id}" data-video-section="${section}">${escapeHtml(state.lang==="bn"?format.bn:format.en)}</button>`).join("")}</div>`;
+function getVideoMoodState(section="general"){
+  state.videoMoodState = state.videoMoodState || store.get("video-mood-state", {
+    general: { tab: "all", filterMood: "" },
+    islamic: { tab: "all", filterMood: "" }
+  });
+  return state.videoMoodState[section] || { tab: "all", filterMood: "" };
 }
+
+function videoMoodControls(section="general"){
+  const st = getVideoMoodState(section);
+  const filterLabel = st.filterMood ? `${moods[st.filterMood]?.emoji || "⚙️"} ${moodName(st.filterMood)}` : (state.lang==="bn" ? "ফিল্টার ⚙️" : "Filter ⚙️");
+
+  return `<div class="video-mood-controls" role="tablist" aria-label="${state.lang==="bn"?"ভিডিও মুড ফিল্টার":"Video mood filter"}">
+    <button class="video-mood-chip ${st.tab==="all"?"active":""}" data-video-mood-tab="all" data-video-section="${section}">${state.lang==="bn"?"সকল (All)":"All"}</button>
+    <button class="video-mood-chip ${st.tab==="my-mood"?"active":""}" data-video-mood-tab="my-mood" data-video-section="${section}">✨ ${state.lang==="bn"?"আমার মুড (My mood)":"My mood"}</button>
+    <button class="video-mood-chip ${st.tab==="filter"?"active":""}" data-video-mood-tab="filter" data-video-section="${section}">${escapeHtml(filterLabel)}</button>
+  </div>`;
+}
+
+function openVideoMoodFilterModal(section="general"){
+  const st = getVideoMoodState(section);
+  const options = CORE_MOODS.map(id => ({ id, label: moodName(id), emoji: moods[id]?.emoji || "💬" }));
+
+  setModal(`${modalHeader(state.lang==="bn"?"মুড বেছে নিন":"Select video mood")}<div class="modal-body">
+    <div class="mini-moods">
+      ${options.map(m => `<button class="mini-mood ${st.filterMood===m.id?"active":""}" data-select-video-filter-mood="${m.id}" data-video-section="${section}">
+        <span>${m.emoji}</span><small>${escapeHtml(m.label)}</small>
+      </button>`).join("")}
+    </div>
+  </div>`);
+}
+
 function islamicSubnav(){
   const isVideo=state.islamicTab==="islamic-video";
   const format=isVideo?videoFormatControls("islamic"):"";
+  const moodCtrl=isVideo?videoMoodControls("islamic"):islamicMoodControls();
   const large=isVideo?videoLargeViewControl():"";
-  return `<section class="special-feed-head surface-card"><div class="special-feed-title-row"><div><span class="eyebrow"><i></i>${t("islamic")}</span><p>${t("islamicFeedIntro")}</p></div>${large}</div><div class="islamic-subtabs" role="tablist">${islamicTabs.map(tab=>`<button class="islamic-subtab ${state.islamicTab===tab.id?"active":""}" data-islamic-tab="${tab.id}">${escapeHtml(state.lang==="bn"?tab.bn:tab.en)}</button>`).join("")}</div>${islamicMoodControls()}${format}</section>`;
+  return `<section class="special-feed-head surface-card"><div class="special-feed-title-row"><div><span class="eyebrow"><i></i>${t("islamic")}</span><p>${t("islamicFeedIntro")}</p></div>${large}</div><div class="islamic-subtabs" role="tablist">${islamicTabs.map(tab=>`<button class="islamic-subtab ${state.islamicTab===tab.id?"active":""}" data-islamic-tab="${tab.id}">${escapeHtml(state.lang==="bn"?tab.bn:tab.en)}</button>`).join("")}</div>${moodCtrl}${format}</section>`;
 }
-function renderIslamicTextCard(item){
-  const liked=Boolean(state.islamicLikes[String(item.id)]);
-  const translationLang=state.islamicTranslations[String(item.id)]||"bn";
-  const translation=translationLang==="en"?(item.en||item.bn):(item.bn||item.en);
-  const article=document.createElement("article");
-  article.className="post-card islamic-card social-content-card";
-  article.dataset.islamicId=String(item.id);
-  article.innerHTML=`<header class="post-head"><div class="post-person"><span class="post-avatar islamic-avatar">${item.kind==="quran"?"☪":item.kind==="hadith"?"📜":"🤲"}</span><span class="post-meta"><strong>${escapeHtml(item.source||t(item.kind))}</strong><small>${escapeHtml(state.lang==="bn"?"আরবি, বাংলা অর্থ ও উৎসের রেফারেন্স":"Arabic text, translation and source reference")}</small></span></div><button class="translation-toggle" data-islamic-lang="${escapeHtml(String(item.id))}">${translationLang==="bn"?"English":"বাংলা"}</button></header>
-  ${item.arabic?`<p class="arabic-text" lang="ar" dir="rtl">${escapeHtml(item.arabic)}</p>`:""}
-  <p class="post-text islamic-translation" lang="${translationLang}">${escapeHtml(translation)}</p>
-  ${item.audio?`<audio class="quran-audio" controls preload="none" src="${escapeHtml(item.audio)}">${escapeHtml(t("sourceUnavailable"))}</audio>`:`<button class="listen-arabic" data-speak-arabic="${encodeURIComponent(item.arabic||"")}">${icon("volume")} ${t("listen")}</button>`}
-  <div class="post-support islamic-rank-summary"><div class="support-cluster"><span class="support-face">❤️</span><span class="support-face">💬</span></div><span class="support-summary">${displayNumber(contentLikeCount(item,state.islamicLikes))} ${state.lang==="bn"?"ভালোবাসা":"likes"} · ${displayNumber(islamicCommentCount(item))} ${state.lang==="bn"?"মন্তব্য":"comments"} · #${displayNumber(islamicRankScore(item))}</span></div>
-  <div class="post-actions islamic-actions"><button class="post-action ${liked?"reacted":""}" data-islamic-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${t("love")}</span><i class="count">${displayNumber(contentLikeCount(item,state.islamicLikes))}</i></button><button class="post-action" data-islamic-comments="${escapeHtml(String(item.id))}">${icon("message")}<span>${state.lang==="bn"?"সহমর্মিতা দিন":"Give sympathy"}</span><i class="count">${displayNumber(islamicCommentCount(item))}</i></button><button class="post-action" data-islamic-share="${escapeHtml(String(item.id))}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button></div>`;
-  return article;
-}
-async function renderIslamicFeed(){
-  const requestedTab=state.islamicTab;
-  if(requestedTab!=="islamic-video"&&state.videoLargeView)setVideoLargeView(false);
-  const wrap=$("#feedList");wrap.dataset.feedKind="islamic";
-  setAdSafeMode(true,"islamic-section");
-  renderAdPlacements();
-  $("#desktopAdSlotMount")?.replaceChildren();
-  $("#loadMore").hidden=true;
-  state.videoController?.destroy?.();state.videoController=null;
-  wrap.innerHTML=islamicSubnav()+`<div class="special-feed-loading"><span class="loading-pulse"></span>${state.lang==="bn"?"কনটেন্ট প্রস্তুত হচ্ছে…":"Preparing content…"}</div>`;
-  renderIcons(wrap);
-  if(state.islamicTab==="islamic-video"){
-    const cards=videoItemsForMood(mergeManagedVideos(islamicVideoCatalog,"islamic"),"islamic").map(renderVideoCard);
-    wrap.replaceChildren();
-    const head=document.createElement("div");head.innerHTML=islamicSubnav();wrap.append(...head.children);
-    if(cards.length)wrap.append(...cards);
-    else wrap.insertAdjacentHTML("beforeend",`<section class="empty-state surface-card"><span>🎬</span><h3>${state.lang==="bn"?"এই মুড ও ধরনে এখন কোনো ভিডিও নেই":"No video is available for this mood and format"}</h3><p>${state.lang==="bn"?"অন্য মুড বা ভিডিও ধরন বেছে দেখুন।":"Choose another mood or video format."}</p></section>`);
-    renderIcons(wrap);if(cards.length)setupVideoAutoplay();return;
+
+function videoItemsForMood(catalog, section="general"){
+  const st = getVideoMoodState(section);
+  const format = state.videoFormat?.[section] || "video";
+  let items = catalog.filter(item => item.enabled !== false && !state.unavailableVideoIds.has(item.youtubeId) && item.contentType === format);
+
+  if (st.tab === "my-mood") {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayCheckin = (state.checkins || []).find(c => c.date === todayStr);
+    const targetMood = todayCheckin?.mood || state.preferredMood || effectivePreferredMood();
+    if (targetMood) {
+      const matching = items.filter(item => item.moods?.includes(targetMood));
+      const fallback = items.filter(item => !item.moods?.length);
+      const rest = items.filter(item => item.moods?.length && !item.moods?.includes(targetMood));
+      items = [...matching, ...fallback, ...rest];
+    }
+  } else if (st.tab === "filter" && st.filterMood) {
+    const primary = items.filter(item => item.moods?.includes(st.filterMood));
+    const dashboardMood = effectivePreferredMood();
+    const secondary = items.filter(item => dashboardMood && item.moods?.includes(dashboardMood) && !item.moods?.includes(st.filterMood));
+    const undefinedMoods = items.filter(item => !item.moods?.length);
+    const remaining = items.filter(item => !primary.includes(item) && !secondary.includes(item) && !undefinedMoods.includes(item));
+    items = [...primary, ...secondary, ...undefinedMoods, ...remaining];
+  } else {
+    // Tab === "all"
+    items = [...items];
   }
-  const mood=selectedIslamicMood();
-  const key=`${state.islamicTab}:${mood||"all"}`;
-  let items=state.islamicCache[key];
-  if(!items){
-    const loader=state.islamicTab==="quran"?loadQuranItems:state.islamicTab==="hadith"?loadHadithItems:loadDuaItems;
-    try{items=await loader(mood,18)}catch{items=[]}
-    state.islamicCache[key]=items;
-  }
-  if(state.feedMode!=="islamic"||state.islamicTab!==requestedTab)return;
-  items.forEach(item=>state.islamicItemIndex.set(String(item.id),item));
-  const sorted=sortIslamicContent(items);
-  wrap.replaceChildren();
-  const head=document.createElement("div");head.innerHTML=islamicSubnav();wrap.append(...head.children);
-  if(sorted.length)wrap.append(...sorted.map(renderIslamicTextCard));
-  else wrap.insertAdjacentHTML("beforeend",`<section class="empty-state surface-card"><span>☪</span><h3>${state.lang==="bn"?"এই মুডে কনটেন্ট পাওয়া যায়নি":"No content was found for this mood"}</h3><p>${state.lang==="bn"?"অন্য মুড বেছে আবার চেষ্টা করুন।":"Choose another mood and try again."}</p></section>`);
-  renderIcons(wrap);
+
+  const seen = new Set();
+  return sortVideoContent(items).filter(item => {
+    const key = item.youtubeId;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 24);
 }
-function videoItemsForMood(catalog,section="general"){
-  const preferred=section==="islamic"?selectedIslamicMood():preferredContentMood("video");
-  const format=state.videoFormat?.[section]||"video";
-  let items=catalog.filter(item=>item.enabled!==false&&!state.unavailableVideoIds.has(item.youtubeId)&&item.contentType===format);
-  if(preferred){
-    const exact=items.filter(item=>item.moods?.includes(preferred));
-    const allMood=items.filter(item=>!item.moods?.length);
-    items=[...exact,...allMood];
-  }
-  const seen=new Set();
-  return sortVideoContent(items).filter(item=>{const key=item.youtubeId;if(seen.has(key))return false;seen.add(key);return true;}).slice(0,20);
-}
+
 function durationLabel(seconds){
   const value=Math.max(0,Number(seconds||0));const m=Math.floor(value/60),sec=Math.floor(value%60);
   return `${m}:${String(sec).padStart(2,"0")}`;
@@ -1419,7 +1451,7 @@ function renderVideoFeed(){
   state.videoController?.destroy?.();state.videoController=null;
   const items=videoItemsForMood(mergeManagedVideos(generalVideoCatalog,"general"),"general");
   wrap.replaceChildren();
-  const intro=document.createElement("section");intro.className="special-feed-head surface-card";intro.innerHTML=`<div class="special-feed-title-row"><div><span class="eyebrow"><i></i>${t("video")}</span><p>${t("videoFeedIntro")}</p></div>${videoLargeViewControl()}</div>${videoFormatControls("general")}`;wrap.appendChild(intro);
+  const intro=document.createElement("section");intro.className="special-feed-head surface-card";intro.innerHTML=`<div class="special-feed-title-row"><div><span class="eyebrow"><i></i>${t("video")}</span><p>${t("videoFeedIntro")}</p></div>${videoLargeViewControl()}</div>${videoMoodControls("general")}${videoFormatControls("general")}`;wrap.appendChild(intro);
   if(!items.length)wrap.insertAdjacentHTML("beforeend",`<section class="empty-state surface-card"><span>🎬</span><h3>${state.lang==="bn"?"এই মুড ও ধরনে এখন কোনো ভিডিও নেই":"No video is available for this mood and format"}</h3><p>${state.lang==="bn"?"অন্য মুড বা ভিডিও ধরন বেছে দেখুন।":"Choose another mood or video format."}</p></section>`);
   items.forEach((item,index)=>{
     wrap.appendChild(renderVideoCard(item));
@@ -2332,6 +2364,19 @@ document.addEventListener("click",e=>{
   const target=e.target.closest("button,a,[data-action],[data-nav]");if(!target)return;
   if(!guardAdminAction(target)){e.preventDefault();showToast(state.lang==="bn"?"এই সুবিধাটি বর্তমানে বন্ধ আছে।":"This feature is currently unavailable.");return}
   const action=target.dataset.action;
+  if(target.dataset.expandPost){state.expandedPosts=state.expandedPosts||{};state.expandedPosts[target.dataset.expandPost]=true;renderFeed();return}
+  if(target.dataset.toggleEmojiPicker){state.activeEmojiPicker=state.activeEmojiPicker===target.dataset.toggleEmojiPicker?null:target.dataset.toggleEmojiPicker;renderFeed();return}
+  if(target.dataset.videoMoodTab){
+    const sec=target.dataset.videoSection==="islamic"?"islamic":"general";
+    state.videoMoodState=state.videoMoodState||{general:{tab:"all",filterMood:""},islamic:{tab:"all",filterMood:""}};
+    state.videoMoodState[sec].tab=target.dataset.videoMoodTab;
+    if(target.dataset.videoMoodTab==="filter"){
+      openVideoMoodFilterModal(sec);
+    }else{
+      sec==="islamic"?renderIslamicFeed():renderVideoFeed();
+    }
+    return;
+  }
   if(target.dataset.nav){e.preventDefault();navigate(target.dataset.nav);return}
   if(target.dataset.feed){state.feedMode=target.dataset.feed;state.shown=10;renderFeed();updateNav();return}
   if(target.dataset.islamicTab){state.islamicTab=target.dataset.islamicTab;store.set("islamic-tab",state.islamicTab);renderIslamicFeed();return}
