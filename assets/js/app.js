@@ -1785,15 +1785,171 @@ function clearIdentityLocalData(){IDENTITY_LOCAL_KEYS.forEach(key=>store.remove(
 async function handleIdentitySignOut(){if(!confirm(state.lang==="bn"?"এই device থেকে password profile sign out করবেন? Firebase-এ সংরক্ষিত data মুছবে না।":"Sign out of the password profile on this device? Synced Firebase data will not be deleted."))return;try{clearIdentityLocalData();store.set("identity-choice","guest");await signOutUserIdentity()}finally{location.reload()}}
 
 function openProfile(){
-  const supportCount=Object.values(state.reactions).filter(Boolean).length;
-  setPage(`${pageHeader(t("profileTitle"))}<div class="modal-body"><section class="profile-hero"><div class="profile-large">${initials(alias())}</div><h2>${escapeHtml(alias())}</h2><p>${t("profileCopy")}</p></section>
-    ${identityStatusMarkup()}
-    <section class="profile-name-editor"><label for="displayNameInput">${t("displayNameLabel")}</label><div class="profile-name-row"><input id="displayNameInput" type="text" maxlength="32" autocomplete="nickname" value="${escapeHtml(state.displayName)}" placeholder="${escapeHtml(t("displayNamePlaceholder"))}" /><button class="primary-button" data-action="save-display-name">${t("saveDisplayName")}</button></div><small>${t("displayNameHint")}</small></section>
-    <div class="profile-stats"><button class="stat-box stat-button" data-action="profile-posts"><strong>${displayNumber(state.userPosts.length)}</strong><small>${t("posts")}</small><em>${state.lang==="bn"?"দেখুন ও পরিচালনা করুন":"View and manage"}</em></button><div class="stat-box"><strong>${displayNumber(supportCount)}</strong><small>${t("supportSent")}</small></div><div class="stat-box"><strong>${displayNumber(state.saved.size)}</strong><small>${t("savedCount")}</small></div></div>
-    <section class="notification-settings-card"><span>${icon("bell")}</span><div><strong>${t("enableNotifications")}</strong><small>${t("notificationPermissionCopy")}</small></div><button class="secondary-button" data-action="enable-notifications">${t("enableNotifications")}</button><button class="quiet-link" data-action="test-notification">${t("testNotification")}</button></section>
-    <section class="profile-share-card"><span>${icon("share")}</span><div><strong>${t("shareSite")}</strong><small>${t("profileShareHint")}</small></div><button class="primary-button" data-action="share-site">${t("shareSite")}</button></section>
-    <button class="secondary-button" style="width:100%" data-action="new-alias">${icon("refresh")} ${t("useSuggestedName")}</button><button class="secondary-button" style="width:100%;margin-top:9px" data-action="language">${state.lang==="en"?"বাংলায় ব্যবহার করুন":"Use in English"}</button><button class="secondary-button" style="width:100%;margin-top:9px" data-action="toggle-motion">${state.motion?(state.lang==="bn"?"অ্যানিমেশন কমান":"Reduce animation"):(state.lang==="bn"?"অ্যানিমেশন চালু করুন":"Enable animation")}</button><button class="secondary-button" style="width:100%;margin-top:9px" data-action="contact-us">${icon("mail")} ${t("contactUs")}</button><button class="secondary-button" style="width:100%;margin-top:9px" data-action="cookie-settings">${icon("sliders")} ${t("cookieSettings")}</button><p class="profile-video-notice">${icon("play")} ${t("videoOwnershipNotice")}</p><a class="secondary-button profile-public-link" href="${localizedPath(state.lang,"about")}">${icon("book")} ${t("aboutApp")}</a><div class="data-actions"><button class="secondary-button" data-action="export-data">${icon("download")} ${t("exportData")}</button><button class="danger-button" data-action="reset-data">${t("resetData")}</button></div><p style="margin:14px 0 0;color:var(--muted);font-size:10px;text-align:center">${t("demoPrivacy")} · ${escapeHtml(platformName())}</p>
-  </div>`);
+  const supportCount = Object.values(state.reactions).filter(Boolean).length;
+  
+  setPage(`${pageHeader(t("profileTitle"))}
+    <div class="modal-body direct-page-body profile-page-container">
+      
+      <!-- Modern Profile Hero Header -->
+      <section class="profile-modern-hero">
+        <div class="profile-avatar-orbit">
+          <span class="profile-avatar-inner">${initials(alias())}</span>
+          <button class="profile-avatar-edit-btn" data-action="new-alias" title="${state.lang==="bn"?"নতুন নাম বেছে নিন":"Change alias"}">
+            ${icon("refresh")}
+          </button>
+        </div>
+        
+        <div class="profile-identity-info">
+          <h2>${escapeHtml(alias())}</h2>
+          <p class="profile-privacy-tag">
+            <span>🔒</span> ${state.lang==="bn"?"আপনার আসল পরিচয় পুরোপুরি সুরক্ষিত ও গোপন রয়েছে":"Your real identity stays completely private"}
+          </p>
+        </div>
+      </section>
+
+      <!-- Account Security / Password Profile Banner -->
+      <div class="profile-security-banner">
+        ${identityStatusMarkup()}
+      </div>
+
+      <!-- Quick Stats Row -->
+      <div class="profile-stats-grid">
+        <button class="profile-stat-card" data-action="profile-posts">
+          <span class="stat-icon">📝</span>
+          <div class="stat-meta">
+            <strong>${displayNumber(state.userPosts.length)}</strong>
+            <small>${t("posts")}</small>
+          </div>
+          <span class="stat-badge">${state.lang==="bn"?"দেখুন ➔":"View ➔"}</span>
+        </button>
+
+        <div class="profile-stat-card">
+          <span class="stat-icon">🫶</span>
+          <div class="stat-meta">
+            <strong>${displayNumber(supportCount)}</strong>
+            <small>${t("supportSent")}</small>
+          </div>
+        </div>
+
+        <div class="profile-stat-card">
+          <span class="stat-icon">🔖</span>
+          <div class="stat-meta">
+            <strong>${displayNumber(state.saved.size)}</strong>
+            <small>${t("savedCount")}</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Display Name / Custom Nickname Editor Card -->
+      <section class="profile-card-box">
+        <div class="profile-card-title">
+          <span>✏️</span>
+          <h3>${t("displayNameLabel")}</h3>
+        </div>
+        <p class="profile-card-desc">${t("displayNameHint")}</p>
+        <div class="profile-name-row">
+          <input id="displayNameInput" type="text" maxlength="32" autocomplete="nickname" value="${escapeHtml(state.displayName)}" placeholder="${escapeHtml(t("displayNamePlaceholder"))}" />
+          <button class="primary-button" data-action="save-display-name">${t("saveDisplayName")}</button>
+        </div>
+      </section>
+
+      <!-- App Download & Share Section -->
+      <section class="profile-download-card">
+        <div class="download-card-header">
+          <span class="download-card-icon">${icon("download")}</span>
+          <div>
+            <strong>${state.lang==="bn"?"অফিসিয়াল অ্যাপ ইনস্টল ও ডাউনলোড":"Install & Download Official App"}</strong>
+            <small>${state.lang==="bn"?"অ্যান্ড্রয়েড, আইফোন বা কম্পিউটারে সরাসরি অ্যাপ ডাউনলোড করুন":"Download directly on Android, iPhone, or Desktop"}</small>
+          </div>
+        </div>
+        <div class="download-link-box">
+          <code>${escapeHtml(installationUrl())}</code>
+          <button class="secondary-button" style="padding:4px 10px;font-size:11px;border-radius:8px;display:inline-flex;align-items:center;gap:4px" data-action="copy-install-link" title="${state.lang==="bn"?"লিংক কপি করুন":"Copy app link"}">
+            ${icon("copy")} <span>${state.lang==="bn"?"কপি":"Copy"}</span>
+          </button>
+        </div>
+        <div class="download-card-actions">
+          <button class="primary-button" style="padding:9px 12px;font-size:11.5px" data-action="install">
+            ${icon("download")} <span>${state.lang==="bn"?"সরাসরি ডাউনলোড/ইনস্টল":"Download/Install"}</span>
+          </button>
+          <button class="secondary-button" style="padding:9px 12px;font-size:11.5px" data-action="share-app-link">
+            ${icon("share")} <span>${state.lang==="bn"?"লিংক শেয়ার করুন":"Share Link"}</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- App Settings & Actions Grid -->
+      <section class="profile-settings-group">
+        <h3 class="group-heading">${state.lang==="bn"?"অ্যাপ সেটিং ও সুবিধা (Settings)":"App Settings & Controls"}</h3>
+
+        <div class="settings-action-list">
+          <button class="setting-item-btn" data-action="enable-notifications">
+            <span class="setting-item-icon">🔔</span>
+            <div class="setting-item-text">
+              <strong>${t("enableNotifications")}</strong>
+              <small>${t("notificationPermissionCopy")}</small>
+            </div>
+            <span class="setting-item-arrow">➔</span>
+          </button>
+
+          <button class="setting-item-btn" data-action="language">
+            <span class="setting-item-icon">🌐</span>
+            <div class="setting-item-text">
+              <strong>${state.lang==="bn"?"ভাষা পরিবর্তন (Language)":"Switch Language"}</strong>
+              <small>${state.lang==="en"?"Use app in English":"অ্যাপ বাংলায় ব্যবহার করুন"}</small>
+            </div>
+            <span class="setting-item-pill">${state.lang==="bn"?"বাংলা 🇧🇩":"English 🌐"}</span>
+          </button>
+
+          <button class="setting-item-btn" data-action="toggle-motion">
+            <span class="setting-item-icon">✨</span>
+            <div class="setting-item-text">
+              <strong>${state.lang==="bn"?"অ্যানিমেশন নিয়ন্ত্রণ (Motion)":"Animation Controls"}</strong>
+              <small>${state.motion?(state.lang==="bn"?"মসৃণ অ্যানিমেশন চালু আছে":"Smooth animations enabled"):(state.lang==="bn"?"অ্যানিমেশন কমানো আছে":"Reduced motion active")}</small>
+            </div>
+            <span class="setting-item-arrow">➔</span>
+          </button>
+
+          <button class="setting-item-btn" data-action="share-site">
+            <span class="setting-item-icon">📣</span>
+            <div class="setting-item-text">
+              <strong>${t("shareSite")}</strong>
+              <small>${t("profileShareHint")}</small>
+            </div>
+            <span class="setting-item-arrow">➔</span>
+          </button>
+
+          <button class="setting-item-btn" data-action="contact-us">
+            <span class="setting-item-icon">✉️</span>
+            <div class="setting-item-text">
+              <strong>${t("contactUs")}</strong>
+              <small>${state.lang==="bn"?"সরাসরি আমাদের ইমেইল বা মেসেজ পাঠান":"Send us email or message directly"}</small>
+            </div>
+            <span class="setting-item-arrow">➔</span>
+          </button>
+
+          <button class="setting-item-btn" data-action="cookie-settings">
+            <span class="setting-item-icon">🍪</span>
+            <div class="setting-item-text">
+              <strong>${t("cookieSettings")}</strong>
+              <small>${t("cookieSettingsCopy")}</small>
+            </div>
+            <span class="setting-item-arrow">➔</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Data Options & Reset Footer -->
+      <section class="profile-footer-zone">
+        <div class="data-actions-row">
+          <button class="secondary-button" data-action="export-data">${icon("download")} ${t("exportData")}</button>
+          <button class="danger-button" data-action="reset-data">${t("resetData")}</button>
+        </div>
+        <p class="profile-copyright-note">${t("demoPrivacy")} · ${escapeHtml(platformName())}</p>
+      </section>
+
+    </div>
+  `);
 }
 function openProfilePosts(){
   const ownPosts=state.userPosts.map(post=>({...post,isUser:true})).sort((a,b)=>(b.created||0)-(a.created||0));
@@ -2590,6 +2746,20 @@ async function copyInstallLink(){
     showToast(t("linkCopied"));
   }catch{showToast(value)}
 }
+async function shareAppLink(){
+  const url = installationUrl();
+  const title = state.lang==="bn" ? "মনের কথা (Moner Kotha) অ্যাপ ডাউনলোড করুন" : "Download Moner Kotha App";
+  const text = siteShareText();
+  if(navigator.share){
+    try {
+      await navigator.share({ title, text, url });
+      showToast(state.lang==="bn"?"অ্যাপের লিংক শেয়ার করা হয়েছে।":"App link shared successfully.");
+      return;
+    } catch(e) {}
+  }
+  await copyText(`${title}\n${text}\n${url}`);
+  showToast(state.lang==="bn"?"অ্যাপের ডাইরেক্ট ডাউনলোড লিংক কপি হয়েছে।":"App download link copied to clipboard.");
+}
 function handleInstall(){
   if(platform.standalone){showToast(t("installed"));return}
   openInstallChooser();
@@ -2736,6 +2906,7 @@ document.addEventListener("click",e=>{
     case"install-phone":chooseInstallTarget("phone");break;
     case"install-desktop":chooseInstallTarget("desktop");break;
     case"copy-install-link":copyInstallLink();break;
+    case"share-app-link":shareAppLink();break;
     case"retry-online":location.reload();break;
     case"apply-update":state.updateAction?.();break;
     case"export-data":exportLocalData();break;
