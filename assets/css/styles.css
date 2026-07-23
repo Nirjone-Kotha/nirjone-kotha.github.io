@@ -1382,4 +1382,202 @@ body.installed-phone-app.force-mobile-layout .social-shell {
   border-color: var(--brand);
 }
 
+/* Zero-gap bottom navigation docking for mobile app & mobile browser */
+body.force-mobile-layout .mobile-nav,
+body.installed-phone-app.force-mobile-layout .mobile-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: calc(66px + var(--safe-bottom)) !important;
+  padding: 4px 6px max(6px, var(--safe-bottom)) !important;
+  border-radius: 22px 22px 0 0 !important;
+  box-shadow: 0 -6px 32px rgba(0,0,0,0.14) !important;
+  backdrop-filter: blur(24px) !important;
+  background: color-mix(in srgb, var(--surface), transparent 3%) !important;
+}
+
+/* 30-Day Mood Dashboard & Emotional Trigger Styles */
+.emotional-checkin-card {
+  border: 1.5px solid color-mix(in srgb, var(--brand), transparent 75%);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand), transparent 94%), var(--surface));
+  box-shadow: 0 8px 26px rgba(0,0,0,0.04);
+}
+.emotional-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.emotional-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+.emotional-card-head strong {
+  display: block;
+  font-size: 15px;
+  color: var(--text);
+}
+.emotional-card-head small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+.emotional-copy {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.mood-dashboard-panel {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  background: var(--surface);
+}
+.mood-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.mood-dashboard-header h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.avg-mood-pill {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--brand);
+  background: var(--brand-soft);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.mood-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.mood-stat-box {
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  text-align: center;
+}
+.mood-stat-box strong {
+  display: block;
+  font-size: 18px;
+  color: var(--brand);
+}
+.mood-stat-box small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.mood-bar-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.mood-bar-item {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.mood-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.mood-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--brand);
+  transition: width 0.4s var(--ease);
+}
+
+.mood-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+.calendar-day-chip {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+.calendar-day-chip.filled {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+}
+.calendar-day-chip small {
+  font-size: 8px;
+  color: var(--muted);
+}
+
+/* Support Group Discussion Hub */
+.circle-hero-banner {
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand), transparent 90%), var(--surface));
+  border: 1px solid var(--line);
+}
+.circle-hero-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.circle-hero-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.circle-hero-title span {
+  font-size: 28px;
+}
+.circle-hero-title h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.circle-daily-prompt {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: var(--surface);
+}
+.circle-daily-prompt strong {
+  display: block;
+  font-size: 13px;
+  color: var(--brand);
+  margin-bottom: 4px;
+}
+.circle-daily-prompt p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
 

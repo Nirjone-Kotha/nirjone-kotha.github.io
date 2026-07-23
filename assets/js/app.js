@@ -1990,8 +1990,163 @@ function openSafety(fromRisk=false){
   setPage(`${pageHeader(t("safetyTitle"))}<div class="safety-hero direct-safety-hero"><div class="safety-symbol">${icon("shield")}</div><p>${t("safetyCopy")}</p></div>
   <div class="modal-body"><div class="safety-actions"><a class="danger-button" href="tel:999" style="text-decoration:none">${icon("shield")} ${t("call999")}</a><button class="secondary-button" data-action="copy-safety-message">${icon("message")} ${t("tellSomeone")}</button><button class="secondary-button" data-action="close-modal">${icon("check")} ${t("safeWithSomeone")}</button></div><ul class="safety-list"><li>${t("safetySteps")}</li><li>${t("demoOnly")}</li></ul></div>`);
 }
+function calculate30DayMoodStats(){
+  const now = Date.now();
+  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+  const recent = (state.checkins || []).filter(c => (now - (c.at || 0)) <= thirtyDaysMs);
+  const total = recent.length;
+
+  const counts = {};
+  recent.forEach(c => {
+    if (c.mood) counts[c.mood] = (counts[c.mood] || 0) + 1;
+  });
+
+  let topMood = "";
+  let topCount = 0;
+  Object.entries(counts).forEach(([m, cnt]) => {
+    if (cnt > topCount) { topCount = cnt; topMood = m; }
+  });
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const checkedInToday = Boolean((state.checkins || []).find(c => c.date === todayStr || (c.at && new Date(c.at).toISOString().slice(0,10) === todayStr)));
+
+  return { recent, total, counts, topMood, topCount, checkedInToday };
+}
+
+function openFeelingsPage(){
+  state.view="feelings";updateNav();
+  const stats = calculate30DayMoodStats();
+
+  const emotionalCopyBn = `আমরা আপনার মনের খোঁজ রাখতে পারিনি… গত ৩০ দিনে আপনার অনুভূতির ডায়রি প্রায় শূন্য দেখাচ্ছে। নিজের যত্ন নেওয়া শুরু হয় প্রতিদিন অন্তত ১টি সেকেন্ড নিজের অনুভূতির মুখোমুখি হওয়ার মাধ্যমে। আপনি কি মানসিক চাপে আছেন, একাকী বোধ করছেন নাকি আজ একটু ভালো আছেন—তা না জানতে পারলে আমরা আপনার জন্য সঠিক সান্ত্বনা ও সাহায্য পৌঁছাতে পারছি না। আপনার আজকের অনুভূতি প্রকাশ করে নীরবতা ভাঙুন।`;
+  const emotionalCopyEn = `We missed keeping track of your heart… your feeling log has been empty recently. Caring for yourself begins by listening to your own mind for just 1 second a day. If we don't know how your heart is doing, we cannot recommend the right comfort and support. Break the silence and share how you feel right now.`;
+
+  const topMoodObj = moods[stats.topMood] || { emoji: "✨", bn: "অনুলিখিত", en: "Unrecorded" };
+  const avgMoodLabel = stats.total > 0
+    ? `${topMoodObj.emoji} ${localText(topMoodObj)} (${state.lang==="bn"?"বিগত ৩০ দিনের গড় মুড":"30-Day Average Mood"})`
+    : (state.lang==="bn" ? "✨ কোনো রেকর্ড নেই" : "✨ No logs yet");
+
+  const calendarChips = [];
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 86400000);
+    const dateStr = d.toISOString().slice(0, 10);
+    const log = (state.checkins || []).find(c => c.date === dateStr || (c.at && new Date(c.at).toISOString().slice(0,10) === dateStr));
+    const emoji = log?.mood ? (moods[log.mood]?.emoji || "❤️") : "·";
+    calendarChips.push(`<div class="calendar-day-chip ${log ? "filled" : ""}"><small>${d.getDate()}</small><span>${emoji}</span></div>`);
+  }
+
+  const moodBars = Object.entries(stats.counts).sort((a, b) => b[1] - a[1]).map(([mKey, cnt]) => {
+    const pct = Math.round((cnt / (stats.total || 1)) * 100);
+    const mObj = moods[mKey] || { emoji: "💬", bn: mKey, en: mKey };
+    return `<div class="mood-bar-item">
+      <span>${mObj.emoji} ${escapeHtml(localText(mObj))}</span>
+      <div class="mood-bar-track"><div class="mood-bar-fill" style="width:${pct}%"></div></div>
+      <strong>${pct}%</strong>
+    </div>`;
+  }).join("");
+
+  setPage(`${pageHeader(state.lang==="bn"?"অনুভূতি ও ৩০ দিনের মুড ড্যাশবোর্ড":"Feelings & 30-Day Mood Dashboard")}
+    <div class="modal-body direct-page-body">
+      ${(!stats.checkedInToday || stats.total < 3) ? `
+        <section class="emotional-checkin-card">
+          <div class="emotional-card-head">
+            <span class="emotional-icon">💔</span>
+            <div>
+              <strong>${state.lang==="bn"?"আমরা আপনার মনের খোঁজ রাখতে পারিনি…":"We missed keeping track of your heart…"}</strong>
+              <small>${state.lang==="bn"?"নিজের অনুভূতির যত্ন নিন":"Take a moment to listen to your mind"}</small>
+            </div>
+          </div>
+          <p class="emotional-copy">${state.lang==="bn" ? emotionalCopyBn : emotionalCopyEn}</p>
+        </section>
+      ` : ""}
+
+      <section class="mood-dashboard-panel">
+        <div class="mood-dashboard-header">
+          <h3>${state.lang==="bn"?"আজ আপনি কেমন আছেন?":"How are you feeling right now?"}</h3>
+          <span class="avg-mood-pill">${escapeHtml(avgMoodLabel)}</span>
+        </div>
+        <p style="color:var(--muted);font-size:12px;margin:0 0 12px">${t("checkinPrompt")}</p>
+        <div class="choice-grid">
+          ${Object.entries(moods).map(([k,m]) => `<button class="choice-chip ${state.selectedCheckin===k?"active":""}" data-checkin-page="${k}">${m.emoji} ${escapeHtml(localText(m))}</button>`).join("")}
+        </div>
+        <input class="custom-choice-input" id="checkinCustomMoodPage" maxlength="60" placeholder="${escapeHtml(t("customMoodPlaceholder"))}" ${state.selectedCheckin==="other"?"":"hidden"}>
+        <button class="primary-button" style="width:100%;margin-top:14px" data-action="save-checkin-page">${t("saveFeeling")}</button>
+      </section>
+
+      <section class="mood-dashboard-panel">
+        <div class="mood-dashboard-header">
+          <h3>📊 ${state.lang==="bn"?"বিগত ৩০ দিনের পরিসংখ্যান (Mood Dashboard)":"30-Day Mood Dashboard"}</h3>
+        </div>
+        <div class="mood-stats-grid">
+          <div class="mood-stat-box"><strong>${stats.total}</strong><small>${state.lang==="bn"?"মোট চেক-ইন":"Total Logged"}</small></div>
+          <div class="mood-stat-box"><strong>${stats.total ? Math.round((stats.total/30)*100) : 0}%</strong><small>${state.lang==="bn"?"ধারাবাহিকতা":"Consistency"}</small></div>
+          <div class="mood-stat-box"><strong>${topMoodObj.emoji}</strong><small>${state.lang==="bn"?"সর্বাধিক মুড":"Top Mood"}</small></div>
+        </div>
+
+        ${moodBars ? `<div class="mood-bar-list">${moodBars}</div>` : `<p style="color:var(--muted);font-size:12px;text-align:center">${state.lang==="bn"?"এখনো ৩০ দিনের কোনো হিসেব জমা হয়নি। চেক-ইন করুন!":"No 30-day logs recorded yet. Start by checking in above!"}</p>`}
+
+        <h4 style="font-size:13px;margin:14px 0 6px">${state.lang==="bn"?"বিগত ৩০ দিনের অনুভূতির ক্যালেন্ডার:":"Last 30-Day Log Calendar:"}</h4>
+        <div class="mood-calendar-grid">${calendarChips.join("")}</div>
+      </section>
+    </div>
+  `);
+}
+
 function openCheckin(){
-  setModal(`${modalHeader(t("todayCheckin"))}<div class="modal-body"><p style="color:var(--muted);font-size:12px">${t("checkinPrompt")}</p><div class="choice-grid"><button class="choice-chip ${!state.selectedCheckin?"active":""}" data-checkin-modal="__skip__">${t("skip")}</button>${Object.entries(moods).map(([k,m])=>`<button class="choice-chip ${state.selectedCheckin===k?"active":""}" data-checkin-modal="${k}">${m.emoji} ${escapeHtml(localText(m))}</button>`).join("")}</div><input class="custom-choice-input" id="checkinCustomMood" maxlength="60" placeholder="${escapeHtml(t("customMoodPlaceholder"))}" ${state.selectedCheckin==="other"?"":"hidden"}><button class="primary-button" style="width:100%;margin-top:16px" data-action="save-checkin-modal">${t("saveFeeling")}</button></div>`);
+  openFeelingsPage();
+}
+
+function openCircleDiscussionPage(circleId){
+  const circle = circles.find(c => String(c.id) === String(circleId));
+  if (!circle) return;
+
+  const joined = state.joined.has(String(circle.id));
+  const posts = allPosts().filter(p => p.circle === circle.id || p.topic === circle.id);
+
+  setPage(`${pageHeader(escapeHtml(localText(circle,"bn","en")),"circles-page")}
+    <div class="modal-body direct-page-body">
+      <section class="circle-hero-banner">
+        <div class="circle-hero-head">
+          <div class="circle-hero-title">
+            <span>${circle.emoji || "👥"}</span>
+            <div>
+              <h2>${escapeHtml(localText(circle,"bn","en"))}</h2>
+              <small style="color:var(--muted);font-size:11px">${formatCompact(circle.members||120)} ${state.lang==="bn"?"সদস্য যুক্ত আছেন":"members active"}</small>
+            </div>
+          </div>
+          <button class="secondary-button ${joined ? "joined" : ""}" data-join="${circle.id}">
+            ${joined ? (state.lang==="bn"?"✓ যুক্ত আছেন":"✓ Joined") : (state.lang==="bn"?"+ যুক্ত হোন":"+ Join group")}
+          </button>
+        </div>
+        <p style="font-size:12px;line-height:1.5;margin:0">${escapeHtml(localText(circle,"description_bn","description_en"))}</p>
+      </section>
+
+      <section class="circle-daily-prompt">
+        <strong>💡 ${state.lang==="bn"?"আজকের গ্রুপ প্রশ্ন (Daily Prompt):":"Daily Group Support Prompt:"}</strong>
+        <p>${state.lang==="bn" ? "আজকের দিনে এমন কোন ছোট্ট অভ্যাস বা চিন্তা আপনাকে একটু ভালো বোধ করতে সাহায্য করেছিল?" : "What is 1 small practice or thought that helped you stay calm today?"}</p>
+        <button class="primary-button" style="width:100%" data-action="compose">${icon("pen")} ${state.lang==="bn"?"গ্রুপে নতুন গল্প শেয়ার করুন":"Share post in group"}</button>
+      </section>
+
+      <h3 style="font-size:15px;margin:16px 0 10px">${state.lang==="bn"?"গ্রুপের নতুন আলোচনা (Group Feed)":"Group Discussions"}</h3>
+      <div id="circleFeedList" class="feed-list"></div>
+    </div>
+  `);
+
+  const wrap = $("#circleFeedList");
+  if (wrap) {
+    if (posts.length) {
+      posts.forEach((p, idx) => {
+        wrap.appendChild(renderPostCard(p));
+        const position = idx + 1;
+        if (shouldInsertInFeedAd(position) && isAdSlotEnabled({ placement: AD_PLACEMENTS.FEED_IN_FEED, slotId: `circle-feed-${position}`, context: "circles" })) {
+          const slot = createAdSlot({ placement: AD_PLACEMENTS.FEED_IN_FEED, slotId: `circle-feed-${position}`, context: "circles", position, format: "native-in-feed", className: "feed-ad-slot" });
+          if (slot) wrap.appendChild(slot);
+        }
+      });
+    } else {
+      wrap.innerHTML = `<section class="empty-state surface-card"><span>👥</span><h3>${state.lang==="bn"?"এই গ্রুপে এখনো কোনো পোস্ট করা হয়নি":"No group posts yet"}</h3><p>${state.lang==="bn"?"প্রথম ব্যক্তি হিসেবে আপনার চিন্তা প্রকাশ করুন।":"Be the first to start a conversation in this group."}</p></section>`;
+    }
+    renderIcons(wrap);
+  }
 }
 
 function saveDisplayName(){
@@ -2178,6 +2333,7 @@ function saveCheckin(close=false){
 function navigate(view){
   if(view==="circles"){directPageReturnView=state.view;openCircles();return}
   if(view==="calm"){directPageReturnView=state.view;openCalm();return}
+  if(view==="feelings"||view==="checkin"){directPageReturnView=state.view;openFeelingsPage();return}
   state.view=view;state.shown=10;
   if(view==="explore"){state.feedMode="for-you";state.moodFilter="all";state.topicFilter="all"}
   renderFeed();updateNav();scrollTo({top:0,behavior:state.motion?"smooth":"auto"});
@@ -2395,6 +2551,8 @@ document.addEventListener("click",e=>{
   if(target.dataset.speakArabic){speakArabic(target.dataset.speakArabic);return}
   if(target.dataset.checkinMood){selectPreferredMood(target.dataset.checkinMood);return}
   if(target.dataset.checkinModal){selectPreferredMood(target.dataset.checkinModal,{reopen:true});return}
+  if(target.dataset.checkinPage){selectPreferredMood(target.dataset.checkinPage);openFeelingsPage();return}
+  if(target.dataset.openCircle){openCircleDiscussionPage(target.dataset.openCircle);return}
   if(target.dataset.draftMood!==undefined){state.draftMood=target.dataset.draftMood==="__skip__"?"":target.dataset.draftMood;$$("[data-draft-mood]").forEach(x=>x.classList.toggle("active",x===target));const input=$("#customMoodInput");if(input)input.hidden=state.draftMood!=="other";return}
   if(target.dataset.draftNeed!==undefined){state.draftNeed=target.dataset.draftNeed==="__skip__"?"":target.dataset.draftNeed;$$("[data-draft-need]").forEach(x=>x.classList.toggle("active",x===target));const input=$("#customNeedInput");if(input)input.hidden=state.draftNeed!=="other";if(state.draftNeed==="safety"){closeModal();openSafety(true)}return}
   if(target.dataset.draftTopic){state.draftTopic=target.dataset.draftTopic;$$("[data-draft-topic]").forEach(x=>x.classList.toggle("active",x===target));const input=$("#customTopicInput");if(input)input.hidden=state.draftTopic!=="other";return}
@@ -2459,9 +2617,21 @@ document.addEventListener("click",e=>{
     case"copy-share-caption":copyShareCaption();break;
     case"download-share-card":downloadShareCard();break;
     case"safety":openSafety();break;
-    case"checkin":openCheckin();break;
+    case"checkin":openFeelingsPage();break;
     case"save-checkin":saveCheckin();break;
     case"save-checkin-modal":saveCheckin(true);break;
+    case"save-checkin-page":{
+      const customMood=String($("#checkinCustomMoodPage")?.value||"").trim();
+      if(state.selectedCheckin==="other"&&customMood){
+        state.checkins.unshift({mood:"other",customMood,at:Date.now()});
+      }else if(state.selectedCheckin){
+        state.checkins.unshift({mood:state.selectedCheckin,at:Date.now()});
+      }
+      saveState();
+      showToast(t("checkedIn"));
+      openFeelingsPage();
+      break;
+    }
     case"next-quote":state.quoteIndex=(state.quoteIndex+1)%quotes.length;store.set("quote",state.quoteIndex);renderQuote();break;
     case"new-alias":changeAlias();break;
     case"save-display-name":saveDisplayName();break;
