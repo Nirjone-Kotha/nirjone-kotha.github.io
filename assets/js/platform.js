@@ -64,6 +64,26 @@ export function initPlatform() {
   document.body?.classList.toggle("device-tablet", isTablet);
   document.body?.classList.toggle("device-desktop", deviceType === "desktop");
 
+  /* Prevent zoom-out from breaking the mobile layout.
+     On installed phone apps / mobile browser layouts, lock the viewport scale
+     and add a recovery listener that resets zoom if it strays. */
+  if (phoneAppLayout) {
+    const vp = document.querySelector('meta[name="viewport"]');
+    if (vp) vp.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
+    if (window.visualViewport) {
+      let resetTimer;
+      window.visualViewport.addEventListener("resize", () => {
+        clearTimeout(resetTimer);
+        const s = window.visualViewport.scale;
+        if (s < 0.95 || s > 1.15) {
+          resetTimer = setTimeout(() => {
+            if (vp) vp.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
+          }, 200);
+        }
+      });
+    }
+  }
+
   function vibrate(pattern) {
     try {
       if (typeof navigator.vibrate === "function") navigator.vibrate(pattern);

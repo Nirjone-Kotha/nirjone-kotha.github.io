@@ -927,7 +927,7 @@ body.force-desktop-layout .feed-column{scrollbar-width:thin}
 .mobile-bottom-calm{display:none}
 .welcome-strip{padding:16px 18px;gap:14px}.welcome-strip h1{font-size:clamp(22px,2.8vw,35px);margin:7px 0 4px}.welcome-strip p{margin:0;line-height:1.5}.mood-select-button{min-height:48px;padding:8px 11px}.mood-select-icon{width:34px;height:34px}.mood-select-copy strong{font-size:10.5px}.mood-select-copy small{font-size:8px}
 .special-feed-head{padding:15px 17px;margin-bottom:12px}.special-feed-head p{color:var(--muted);margin:7px 0 0;font-size:10.5px;line-height:1.55}.islamic-subtabs{display:flex;gap:7px;overflow-x:auto;margin-top:12px;padding-bottom:2px;scrollbar-width:none}.islamic-subtabs::-webkit-scrollbar{display:none}.islamic-subtab{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 12px;white-space:nowrap;font-size:10px;font-weight:850}.islamic-subtab.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-.special-feed-loading{display:flex;align-items:center;justify-content:center;gap:9px;padding:40px;color:var(--muted);font-size:11px}.loading-pulse{width:10px;height:10px;border-radius:50%;background:var(--brand);animation:pulse 1.4s infinite}.islamic-card{border-color:color-mix(in srgb,var(--brand),transparent 72%)}.islamic-avatar{background:linear-gradient(135deg,#e8f6ee,#dff5f2);color:#075d52}.arabic-text{font-family:"Noto Naskh Arabic","Segoe UI",serif;font-size:clamp(24px,4vw,34px);line-height:1.95;text-align:right;margin:14px 0;color:var(--text);word-break:break-word;overflow-wrap:anywhere}.islamic-translation{font-size:15.5px;word-break:break-word;overflow-wrap:anywhere}.quran-audio{display:block;width:100%;margin:12px 0 4px;height:42px}
+.special-feed-loading{display:flex;align-items:center;justify-content:center;gap:9px;padding:40px;color:var(--muted);font-size:11px}.loading-pulse{width:10px;height:10px;border-radius:50%;background:var(--brand);animation:pulse 1.4s infinite}.islamic-card{border-color:color-mix(in srgb,var(--brand),transparent 72%)}.islamic-avatar{background:linear-gradient(135deg,#e8f6ee,#dff5f2);color:#075d52}.arabic-text{font-family:"Noto Naskh Arabic","Segoe UI",serif;font-size:clamp(24px,4vw,34px);line-height:1.95;text-align:right;margin:14px 0;color:var(--text);word-break:break-word;overflow-wrap:anywhere;max-width:100%;direction:rtl}.islamic-translation{font-size:15.5px;word-break:break-word;overflow-wrap:anywhere;max-width:100%}.quran-audio{display:block;width:100%;margin:12px 0 4px;height:42px}
 .video-card{overflow:hidden}.youtube-stage{position:relative;width:100%;overflow:hidden;border-radius:16px;background:linear-gradient(135deg,#0b2f2c,#153e3a);margin:12px 0;display:grid;place-items:center}.youtube-stage.landscape{aspect-ratio:16/9}.youtube-stage.portrait{aspect-ratio:9/16;max-height:620px;max-width:360px;margin-inline:auto}.youtube-stage img,.youtube-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}.youtube-stage.thumbnail-missing::before{content:"Moner Kotha Video";color:#fff;font-weight:900;letter-spacing:.04em}.video-play-button{position:relative;z-index:2;min-width:118px;height:48px;border:0;border-radius:999px;background:rgba(255,255,255,.94);color:#073f39;box-shadow:0 12px 35px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;gap:8px;font-size:10px;font-weight:900}.video-play-button .icon-svg{width:20px;height:20px}.youtube-stage.playing img,.youtube-stage.playing .video-play-button{display:none}.video-disclosure{margin:6px 0 12px;color:var(--muted);font-size:9px;line-height:1.5}.video-short{max-width:520px;margin-inline:auto}.install-button span:last-child{display:inline!important}
 @media(max-width:760px){body.force-mobile-layout{overflow:auto}.welcome-strip{padding:13px}.welcome-strip>div{min-width:0}.mood-select-button{width:auto;min-width:132px}.mood-select-copy small{display:none}.special-feed-head{padding:13px}.youtube-stage.portrait{max-height:70dvh}.arabic-text{font-size:28px}}
 @media(max-width:430px){.welcome-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}.welcome-strip h1{font-size:25px}.welcome-strip p{font-size:10px}.mood-select-button{min-width:48px;width:48px;padding:6px}.mood-select-copy{display:none}.mood-select-icon{width:34px;height:34px}.install-button{min-width:92px!important;max-width:none!important}.install-button span:last-child{display:inline!important}}
@@ -994,9 +994,9 @@ body{background:color-mix(in srgb,var(--page),#e9eef0 24%)}
 
 html[data-layout="mobile"]{overscroll-behavior-y:none}
 body.installed-phone-app.force-mobile-layout{
-  width:100%;max-width:100%;overflow-x:hidden;overflow-y:auto;
+  width:100%!important;max-width:100vw!important;overflow-x:hidden!important;overflow-y:auto;
   overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;
-  touch-action:pan-y pinch-zoom;
+  touch-action:pan-y;min-width:0!important;
 }
 body.installed-phone-app.force-mobile-layout .social-shell{
   width:100%;max-width:100%;overflow:visible;
@@ -1074,17 +1074,31 @@ body.installed-phone-app.force-mobile-layout .topbar{height:calc(58px + var(--sa
 body.installed-phone-app.force-mobile-layout .topbar-inner{height:58px;padding:0 10px;gap:6px}
 body.installed-phone-app.force-mobile-layout .brand-logo-wrap{width:42px;height:42px;border:0;background:transparent;box-shadow:none}
 body.installed-phone-app.force-mobile-layout .brand-logo{width:100%;height:100%}
-body.installed-phone-app.force-mobile-layout .top-actions{gap:5px}
+body.installed-phone-app.force-mobile-layout .top-actions{gap:3px}
 body.installed-phone-app.force-mobile-layout .mobile-menu-button{display:inline-flex!important}
 body.installed-phone-app.force-mobile-layout .icon-button,
-body.installed-phone-app.force-mobile-layout .safety-top{width:40px;height:40px;border-radius:13px}
+body.installed-phone-app.force-mobile-layout .safety-top{width:36px;height:36px;border-radius:12px}
+body.installed-phone-app.force-mobile-layout .safety-top span:last-child{display:none!important}
+body.installed-phone-app.force-mobile-layout .install-button{max-width:90px;padding:0 8px;font-size:9px}
+body.installed-phone-app.force-mobile-layout .brand-copy{display:none!important}
 body.installed-phone-app.force-mobile-layout .install-button[hidden]{display:none!important}
 body.installed-phone-app.force-mobile-layout .social-shell{padding:9px 8px calc(94px + var(--safe-bottom));overflow:visible}
-body.installed-phone-app.force-mobile-layout .feed-column{display:flex;flex-direction:column;gap:9px}
+body.installed-phone-app.force-mobile-layout .feed-column{display:flex;flex-direction:column;gap:9px;min-width:0!important;max-width:100%!important}
+body.installed-phone-app.force-mobile-layout .feed-column *{max-width:100%;box-sizing:border-box}
+body.installed-phone-app.force-mobile-layout .special-feed-head{overflow:hidden;border-radius:18px}
+body.installed-phone-app.force-mobile-layout .post-card{overflow:hidden;max-width:100%}
+body.installed-phone-app.force-mobile-layout .quran-audio{max-width:100%}
 
-body.installed-phone-app.force-mobile-layout .welcome-strip{
+body.installed-phone-app.force-mobile-layout .welcome-strip#welcomeStrip{
   display:none!important
 }
+body.installed-phone-app.force-mobile-layout .mobile-bottom-calm{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;
+  order:7;margin:0;padding:14px!important;border-radius:18px;min-height:90px;gap:10px
+}
+body.installed-phone-app.force-mobile-layout .mobile-bottom-calm h2{font-size:18px;line-height:1.15;margin:4px 0 2px}
+body.installed-phone-app.force-mobile-layout .mobile-bottom-calm p{font-size:11px;line-height:1.35}
+body.installed-phone-app.force-mobile-layout .mobile-bottom-calm .eyebrow{font-size:9px}
 body.installed-phone-app.force-mobile-layout .welcome-strip::after{width:120px;height:120px;right:-50px;top:-60px}
 body.installed-phone-app.force-mobile-layout .welcome-strip h1{font-size:21px!important;line-height:1.12;margin:5px 0 3px;max-width:240px}
 body.installed-phone-app.force-mobile-layout .welcome-strip p{
@@ -1131,7 +1145,7 @@ body.installed-phone-app.force-mobile-layout .feed-tabs{
   width:100%;padding:4px;border-radius:15px
 }
 body.installed-phone-app.force-mobile-layout .feed-tab{
-  min-width:0;padding:7px 3px!important;font-size:9px!important;line-height:1.15;text-align:center;white-space:normal!important
+  min-width:0;padding:8px 4px!important;font-size:10.5px!important;line-height:1.15;text-align:center;white-space:normal!important;font-weight:700
 }
 body.installed-phone-app.force-mobile-layout .filter-button{
   width:44px;min-width:44px;height:auto;min-height:64px;padding:0;border-radius:15px;display:grid;place-items:center
@@ -1141,10 +1155,15 @@ body.installed-phone-app.force-mobile-layout .filter-button .icon-svg{width:21px
 body.installed-phone-app.force-mobile-layout .active-filter-bar{order:4;margin:0}
 body.installed-phone-app.force-mobile-layout #feedList{order:5;display:grid;gap:10px}
 body.installed-phone-app.force-mobile-layout #loadMore{order:6;margin:0}
-body.installed-phone-app.force-mobile-layout .post-card{border-radius:17px;padding:14px 13px 10px}
+body.installed-phone-app.force-mobile-layout .post-card{border-radius:18px;padding:15px 14px 11px;overflow:hidden}
+body.installed-phone-app.force-mobile-layout .post-text{font-size:15.5px!important;line-height:1.6}
+body.installed-phone-app.force-mobile-layout .post-meta strong{font-size:13px}
+body.installed-phone-app.force-mobile-layout .post-meta small{font-size:11px}
+body.installed-phone-app.force-mobile-layout .post-action .count{font-size:11px}
 body.installed-phone-app.force-mobile-layout .mobile-nav{
-  height:66px;left:8px;right:8px;border-radius:20px;box-shadow:0 10px 34px rgba(22,52,48,.16)
+  height:68px;left:6px;right:6px;border-radius:22px;box-shadow:0 10px 34px rgba(22,52,48,.16);backdrop-filter:blur(24px)
 }
+body.installed-phone-app.force-mobile-layout .mobile-nav button small{font-size:9px;font-weight:600}
 
 @media(max-width:420px){
   body.installed-phone-app.force-mobile-layout .welcome-strip h1{font-size:19px!important;max-width:205px}
