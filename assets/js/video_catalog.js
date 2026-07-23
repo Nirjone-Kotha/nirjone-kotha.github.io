@@ -25,16 +25,11 @@ const GENERAL_BASE = [
 ];
 
 const ISLAMIC_BASE = [
-  {youtubeId:"6UWIS09J7xA",title:"Small good deeds and a fresh start",channel:"YouTube creator",contentType:"video",durationSeconds:355,aspect:"landscape"},
-  {youtubeId:"3x5YQYa-4Us",title:"The value of istighfar",channel:"YouTube creator",contentType:"video",durationSeconds:312,aspect:"landscape"},
-  {youtubeId:"7-dG0wjd8P8",title:"Recitation and translation",channel:"YouTube creator",contentType:"video",durationSeconds:145,aspect:"landscape"},
-  {youtubeId:"mUWix9NyIRg",title:"Soothing Qur'an recitation",channel:"YouTube creator",contentType:"video",durationSeconds:432,aspect:"landscape"},
-  {youtubeId:"xLe1vAECJXg",title:"Ayat al-Kursi for peace and protection",channel:"YouTube creator",contentType:"short",durationSeconds:62,aspect:"portrait"},
-  {youtubeId:"RQVfKdW7sgU",title:"A short Islamic reflection",channel:"YouTube creator",contentType:"video",durationSeconds:649,aspect:"landscape"},
-  {youtubeId:"vxIz0FNf1rc",title:"Prayer as a living connection",channel:"YouTube creator",contentType:"video",durationSeconds:339,aspect:"landscape"},
-  {youtubeId:"i8bAfMc4eJM",title:"A recitation that brings calm",channel:"YouTube creator",contentType:"video",durationSeconds:450,aspect:"landscape"},
-  {youtubeId:"2sqrDpeh0CU",title:"Peaceful Qur'an recitation",channel:"YouTube creator",contentType:"video",durationSeconds:775,aspect:"landscape"},
-  {youtubeId:"qWQJmJqQRCk",title:"A brief reminder of hope",channel:"YouTube creator",contentType:"short",durationSeconds:90,aspect:"portrait"}
+  {youtubeId:"SUh9KIuqIyY",title:"Surah Ar-Rahman - Soothing Recitation",channel:"Mishary Rashid Alafasy",contentType:"video",durationSeconds:420,aspect:"landscape"},
+  {youtubeId:"R3L5v_0G9pM",title:"Surah Yaseen - Peace for Broken Hearts",channel:"Mishary Rashid Alafasy",contentType:"video",durationSeconds:510,aspect:"landscape"},
+  {youtubeId:"jW_n-W41JSI",title:"Surah Al-Mulk - Night Protection & Calm",channel:"Mishary Rashid Alafasy",contentType:"video",durationSeconds:390,aspect:"landscape"},
+  {youtubeId:"EOy77foLSEU",title:"Surah Ar-Rahman with Translation",channel:"AYAT Recitations",contentType:"video",durationSeconds:480,aspect:"landscape"},
+  {youtubeId:"kYJj2M7h2k4",title:"Surah Al-Mulk - Heartfelt Recitation",channel:"Mishary Rashid Alafasy",contentType:"video",durationSeconds:380,aspect:"landscape"}
 ];
 
 const MOOD_LABELS = {
