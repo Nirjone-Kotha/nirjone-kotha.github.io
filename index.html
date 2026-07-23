@@ -31,7 +31,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./assets/icons/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="./assets/css/styles.css?v=6.1.0" />
+  <link rel="stylesheet" href="./assets/css/styles.css?v=6.2.0" />
 </head>
 <body>
   <noscript><div class="noscript-banner">JavaScript is required for the social app. Public information is available in <a href="/bn/">বাংলা</a> and <a href="/en/">English</a>.</div></noscript>
@@ -151,6 +151,18 @@
         <section class="feed-list" id="feedList" aria-live="polite" data-nosnippet></section>
 
         <button class="load-more" id="loadMore"><span data-t="showMore">Show more</span><span data-icon="chevron-down"></span></button>
+
+        <section class="welcome-strip surface-card mobile-bottom-calm" id="mobileCalmStrip">
+          <div>
+            <span class="eyebrow"><i></i><span data-t="safeSocial">A calm social space</span></span>
+            <h2 id="mobileWelcomeTitle">How are you feeling today?</h2>
+            <p data-t="welcomeCopy">Share what is on your mind, listen to others, or simply stay for a while.</p>
+          </div>
+          <button class="soft-button mood-select-button" data-action="checkin">
+            <span class="mood-select-icon" data-icon="heart"></span>
+            <span class="mood-select-copy"><strong data-t="moodCheckin">Choose your mood</strong><small data-t="moodButtonHint">See matching posts first</small></span>
+          </button>
+        </section>
       </main>
 
       <aside class="right-rail">
@@ -196,7 +208,7 @@
 
     <nav class="mobile-nav" aria-label="Mobile navigation">
       <button class="active" data-nav="home"><span data-icon="home"></span><small data-t="home">Home</small></button>
-      <button data-action="checkin"><span data-icon="heart"></span><small data-t="todayCheckin">Feeling</small></button>
+      <button data-action="checkin"><span data-icon="heart"></span><small data-t="navFeelings">Feelings</small></button>
       <button class="mobile-compose" data-action="compose"><span data-icon="plus"></span></button>
       <button data-nav="circles"><span data-icon="users"></span><small data-t="circles">Support groups</small></button>
       <button data-action="profile"><span data-icon="user"></span><small data-t="profile">Profile</small></button>
@@ -246,6 +258,6 @@
       }, true);
     })();
   </script>
-  <script type="module" src="./assets/js/app.js?v=6.1.0" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
+  <script type="module" src="./assets/js/app.js?v=6.2.0" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
 </body>
 </html>

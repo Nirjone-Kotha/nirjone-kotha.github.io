@@ -112,6 +112,8 @@ const translations = {
     "showMore": "Show more posts",
     "oneMinute": "Takes one minute",
     "todayCheckin": "Choose how you feel",
+    "navFeelings": "Feelings",
+    "myMood": "My mood",
     "checkinPrompt": "Pick the feeling closest to you. Matching posts will appear first in your feed.",
     "saveFeeling": "Save mood",
     "community": "Community",
@@ -338,16 +340,17 @@ const translations = {
     "postDeleted": "Your post was deleted.",
     "expiresIn": "Automatically deletes in",
     "sixMonths": "6 months",
+    "oneYear": "1 year",
     "moments": "Stories",
     "addMoment": "Add story",
     "momentTitle": "Create a story",
-    "momentCopy": "Share a short line or one mood emoji. It disappears automatically after 48 hours.",
-    "momentText": "Short text",
-    "momentMood": "Mood emoji",
-    "momentPlaceholder": "Write a short story…",
-    "findMood": "Search 200 mood expressions",
-    "publishMoment": "Post story",
-    "momentAdded": "Story published. It will disappear automatically after 48 hours.",
+    "momentPlaceholder": "What is on your mind? Keep it short and honest.",
+    "momentCopy": "Share a short line or one mood emoji. It disappears automatically.",
+    "momentText": "Text story",
+    "momentMood": "Mood story",
+    "findMood": "Find a mood…",
+    "publishMoment": "Share story",
+    "momentAdded": "Story published. It will disappear automatically.",
     "momentDeleted": "The expired story was removed.",
     "empathy": "Care",
     "empathySent": "Your empathy was sent.",
@@ -437,6 +440,7 @@ const translations = {
     "displayNameSaved": "আপনার নাম সংরক্ষণ করা হয়েছে।",
     "displayNameInvalid": "যোগাযোগের তথ্য ছাড়া ১ থেকে ৩২ অক্ষরের একটি নাম লিখুন।",
     "useSuggestedName": "প্রস্তাবিত একটি নাম ব্যবহার করুন",
+    "navFeelings": "অনুভূতি",
     "posts": "আপনার পোস্ট",
     "supportSent": "পাঠানো সহমর্মিতা",
     "savedCount": "সংরক্ষিত পোস্ট",
@@ -706,6 +710,7 @@ const state = {
   moments: store.get("story-moments", []),
   momentReactions: store.get("story-reactions", {}),
   momentComments: store.get("story-comments", {}),
+  videoComments: store.get("video-comments", {}),
   checkins: store.get("checkins", []),
   notifications: store.get("notifications", notificationsSeed),
   activePost: null,
@@ -737,7 +742,7 @@ const state = {
   updateAction: null
 };
 
-const IDENTITY_LOCAL_KEYS=["alias-index","display-name","preferred-mood","saved","following","joined","reactions","comment-reactions","user-posts","comments","story-moments","story-reactions","story-comments","islamic-likes","islamic-translations","islamic-mood-filter","video-likes","video-format","unavailable-video-ids","islamic-tab","checkins","notifications"];
+const IDENTITY_LOCAL_KEYS=["alias-index","display-name","preferred-mood","saved","following","joined","reactions","comment-reactions","user-posts","comments","story-moments","story-reactions","story-comments","video-comments","islamic-likes","islamic-translations","islamic-mood-filter","video-likes","video-format","unavailable-video-ids","islamic-tab","checkins","notifications"];
 let identitySnapshot=getIdentityState();
 let identityHydrating=false;
 let identityCanSync=false;
@@ -746,7 +751,7 @@ let identitySyncTimer=0;
 function identityPayload(){return {
   aliasIndex:state.aliasIndex,displayName:state.displayName,preferredMood:state.preferredMood,
   saved:[...state.saved],following:[...state.following],joined:[...state.joined],reactions:state.reactions,commentReactions:state.commentReactions,
-  userPosts:state.userPosts,userComments:state.userComments,moments:state.moments,momentReactions:state.momentReactions,momentComments:state.momentComments,
+  userPosts:state.userPosts,userComments:state.userComments,moments:state.moments,momentReactions:state.momentReactions,momentComments:state.momentComments,videoComments:state.videoComments,
   islamicLikes:state.islamicLikes,islamicTranslations:state.islamicTranslations,islamicMoodFilter:state.islamicMoodFilter,
   videoLikes:state.videoLikes,videoFormat:state.videoFormat,unavailableVideoIds:[...state.unavailableVideoIds],islamicTab:state.islamicTab,
   checkins:state.checkins,notifications:state.notifications
@@ -758,11 +763,11 @@ function applyIdentityPayload(data){if(!data||typeof data!=="object")return;iden
   state.saved=new Set(Array.isArray(data.saved)?data.saved:[]);state.following=new Set(Array.isArray(data.following)?data.following:[]);state.joined=new Set(Array.isArray(data.joined)?data.joined:[]);
   state.reactions=data.reactions&&typeof data.reactions==="object"?data.reactions:{};state.commentReactions=data.commentReactions&&typeof data.commentReactions==="object"?data.commentReactions:{};
   state.userPosts=Array.isArray(data.userPosts)?data.userPosts:[];state.userComments=data.userComments&&typeof data.userComments==="object"?data.userComments:{};
-  state.moments=Array.isArray(data.moments)?data.moments:[];state.momentReactions=data.momentReactions&&typeof data.momentReactions==="object"?data.momentReactions:{};state.momentComments=data.momentComments&&typeof data.momentComments==="object"?data.momentComments:{};
+  state.moments=Array.isArray(data.moments)?data.moments:[];state.momentReactions=data.momentReactions&&typeof data.momentReactions==="object"?data.momentReactions:{};state.momentComments=data.momentComments&&typeof data.momentComments==="object"?data.momentComments:{};state.videoComments=data.videoComments&&typeof data.videoComments==="object"?data.videoComments:{};
   state.islamicLikes=data.islamicLikes&&typeof data.islamicLikes==="object"?data.islamicLikes:{};state.islamicTranslations=data.islamicTranslations&&typeof data.islamicTranslations==="object"?data.islamicTranslations:{};state.islamicMoodFilter=String(data.islamicMoodFilter||"preferred");
   state.videoLikes=data.videoLikes&&typeof data.videoLikes==="object"?data.videoLikes:{};state.videoFormat=data.videoFormat&&typeof data.videoFormat==="object"?data.videoFormat:{general:"video",islamic:"video"};state.unavailableVideoIds=new Set(Array.isArray(data.unavailableVideoIds)?data.unavailableVideoIds:[]);state.islamicTab=String(data.islamicTab||"quran");
   state.checkins=Array.isArray(data.checkins)?data.checkins:[];state.notifications=Array.isArray(data.notifications)?data.notifications:notificationsSeed;
-  store.batch({"alias-index":state.aliasIndex,"display-name":state.displayName,"preferred-mood":state.preferredMood,saved:[...state.saved],following:[...state.following],joined:[...state.joined],reactions:state.reactions,"comment-reactions":state.commentReactions,"user-posts":state.userPosts,comments:state.userComments,"story-moments":state.moments,"story-reactions":state.momentReactions,"story-comments":state.momentComments,"islamic-likes":state.islamicLikes,"islamic-translations":state.islamicTranslations,"islamic-mood-filter":state.islamicMoodFilter,"video-likes":state.videoLikes,"video-format":state.videoFormat,"unavailable-video-ids":[...state.unavailableVideoIds],"islamic-tab":state.islamicTab,checkins:state.checkins,notifications:state.notifications});
+  store.batch({"alias-index":state.aliasIndex,"display-name":state.displayName,"preferred-mood":state.preferredMood,saved:[...state.saved],following:[...state.following],joined:[...state.joined],reactions:state.reactions,"comment-reactions":state.commentReactions,"user-posts":state.userPosts,comments:state.userComments,"story-moments":state.moments,"story-reactions":state.momentReactions,"story-comments":state.momentComments,"video-comments":state.videoComments,"islamic-likes":state.islamicLikes,"islamic-translations":state.islamicTranslations,"islamic-mood-filter":state.islamicMoodFilter,"video-likes":state.videoLikes,"video-format":state.videoFormat,"unavailable-video-ids":[...state.unavailableVideoIds],"islamic-tab":state.islamicTab,checkins:state.checkins,notifications:state.notifications});
   identityHydrating=false;cleanupExpiredLocalContent();localizePage();renderFeed();renderCircleStories();renderCircleList();updateNav();
 }
 async function hydrateSignedInIdentity(){if(identitySnapshot.status!=="authenticated")return;identityHydrating=true;try{const remote=await loadUserAppData();if(remote)applyIdentityPayload(remote);else await saveUserAppData(identityPayload());identityCanSync=true;store.set("identity-choice","account")}catch(error){console.warn("Unable to restore password profile",error)}finally{identityHydrating=false}}
@@ -833,7 +838,7 @@ function renderIcons(root=document){
   $$("[data-icon]",root).forEach(el=>{ el.innerHTML = icon(el.dataset.icon); });
 }
 const POST_TTL_MS=183*24*60*60*1000;
-const MOMENT_TTL_MS=48*60*60*1000;
+const MOMENT_TTL_MS=72*60*60*1000;
 
 function cleanupExpiredLocalContent(){
   const now=Date.now();
@@ -1366,7 +1371,10 @@ function renderVideoCard(item){
   article.innerHTML=`<header class="post-head"><div class="post-person"><span class="post-avatar">${item.section==="islamic"?"☪":"▶"}</span><span class="post-meta"><strong>${escapeHtml(state.lang==="bn"?(item.titleBn||item.title):item.title)}</strong><small>${escapeHtml(item.channelTitle||"YouTube")} · ${durationLabel(item.durationSeconds)} · ${item.contentType==="short"?(state.lang==="bn"?"শর্টস":"Shorts"):(state.lang==="bn"?"ভিডিও":"Video")}</small></span></div><button class="video-card-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("largeView"))}">${icon("expand")}</button></header>
   <div class="youtube-stage ${portrait?"portrait":"landscape"}" data-video-stage="${escapeHtml(String(item.id))}"><div class="youtube-player-host"><div data-youtube-player-host></div></div><img loading="lazy" decoding="async" width="480" height="270" src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)} thumbnail"><button class="video-play-button" data-video-play="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("playVideo"))}">${icon("play")||"▶"}<span>${t("playVideo")}</span></button><button class="video-sound-button" type="button" data-video-sound="${escapeHtml(String(item.id))}" data-sound-on-label="${escapeHtml(t("soundOn"))}" data-sound-off-label="${escapeHtml(t("soundOff"))}" aria-label="${escapeHtml(t("soundOff"))}"><span class="video-sound-icon" aria-hidden="true">🔊</span><span class="video-sound-label">${t("soundOff")}</span></button><span class="video-ready-label">${state.lang==="bn"?"পরবর্তী ভিডিও প্রস্তুত":"Ready"}</span></div>
   <div class="post-support"><div class="support-cluster"><span class="support-face">❤️</span></div><span class="support-summary">${displayNumber(contentLikeCount(item,state.videoLikes))} ${state.lang==="bn"?"লাইক":"likes"}</span></div>
-  <div class="post-actions video-actions"><button class="post-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${state.lang==="bn"?"লাইক":"Like"}</span><i class="count">${displayNumber(contentLikeCount(item,state.videoLikes))}</i></button></div>`;
+  <div class="post-actions video-actions">
+    <button class="post-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${state.lang==="bn"?"লাইক":"Like"}</span><i class="count">${displayNumber(contentLikeCount(item,state.videoLikes))}</i></button>
+    <button class="post-action" data-video-comment="${escapeHtml(String(item.id))}">${icon("comment")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(commentBucket("video",item.id).length)}</i></button>
+  </div>`;
   return article;
 }
 function renderVideoFeed(){
@@ -1573,10 +1581,20 @@ function submitPost(){
 
 function commentRank(c){return Number(c.empathy||0)+(state.commentReactions[String(c.id)]?1:0);}
 function commentBucket(kind,id){
+  if(kind==="video"){
+    const list=state.videoComments[String(id)]||[];
+    const now=Date.now();
+    return list.filter(c=>(now-(c.created||0))<=365*24*60*60*1000);
+  }
   if(kind==="moment")return state.momentComments[String(id)]||[];
   return state.userComments[String(id)]||[];
 }
 function resolveCommentSubject(id,kind="post"){
+  if(kind==="video"){
+    const allVideos=[...generalVideoCatalog,...islamicVideoCatalog];
+    const item=allVideos.find(x=>String(x.id)===String(id));if(!item)return null;
+    return {id:String(id),avatar:"🎬",name:item.titleBn||item.title,time:item.channelTitle||"YouTube",text:item.titleBn||item.title,mood:"other"};
+  }
   if(kind==="islamic"){
     const item=state.islamicItemIndex.get(String(id));if(!item)return null;
     return {id:String(id),avatar:item.kind==="quran"?"☪":item.kind==="hadith"?"📜":"🤲",name:item.source||t(item.kind),time:state.lang==="bn"?"ইসলামিক কনটেন্ট":"Islamic content",text:item.bn||item.en||"",mood:"other"};
@@ -1605,7 +1623,9 @@ function submitComment(){
   if(!validation.ok){if(validation.reason==="urgent-risk"){showToast(state.lang==="bn"?"মন্তব্যটি আরও নিরাপদ ভাষায় লিখুন।":"Please rewrite the comment using safer language.");return}showToast(communityValidationMessage(validation));return}
   const key=state.activePost;
   const record={id:`comment-${globalThis.crypto?.randomUUID?.()||Date.now()}`,created:Date.now(),alias_bn:aliasPairs[state.aliasIndex][0],alias_en:aliasPairs[state.aliasIndex][1],displayName:state.displayName,content:text,contentLang:"auto",userGenerated:true,empathy:0};
-  if(state.activeCommentKind==="moment"){
+  if(state.activeCommentKind==="video"){
+    state.videoComments[key]=state.videoComments[key]||[];state.videoComments[key].push(record);
+  }else if(state.activeCommentKind==="moment"){
     state.momentComments[key]=state.momentComments[key]||[];state.momentComments[key].push(record);
   }else{
     state.userComments[key]=state.userComments[key]||[];state.userComments[key].push(record);
@@ -2246,6 +2266,7 @@ document.addEventListener("click",e=>{
   if(target.dataset.islamicShare){shareIslamicContent(target.dataset.islamicShare);return}
   if(target.dataset.videoFormat){const section=target.dataset.videoSection==="islamic"?"islamic":"general";state.videoFormat[section]=target.dataset.videoFormat==="short"?"short":"video";store.set("video-format",state.videoFormat);section==="islamic"?renderIslamicFeed():renderVideoFeed();return}
   if(target.dataset.videoLike){toggleVideoLike(target.dataset.videoLike);return}
+  if(target.dataset.videoComment){openComments(target.dataset.videoComment,"video");return}
   if(target.dataset.videoPlay){const card=target.closest(".video-card");activateVideoCard(card,{muted:false,userInitiated:true});return}
   if(target.dataset.videoSound){const card=target.closest(".video-card");toggleVideoSound(card);return}
   if(target.dataset.videoLargeView){setVideoLargeView(true,state.activeVideoId||"");return}
