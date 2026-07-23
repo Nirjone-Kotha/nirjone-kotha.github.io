@@ -1790,20 +1790,26 @@ function openProfile(){
   setPage(`${pageHeader(t("profileTitle"))}
     <div class="modal-body direct-page-body profile-page-container">
       
-      <!-- Modern Profile Hero Header -->
+      <!-- Modern Premium Profile Hero Header -->
       <section class="profile-modern-hero">
-        <div class="profile-avatar-orbit">
-          <span class="profile-avatar-inner">${initials(alias())}</span>
-          <button class="profile-avatar-edit-btn" data-action="new-alias" title="${state.lang==="bn"?"নতুন নাম বেছে নিন":"Change alias"}">
-            ${icon("refresh")}
-          </button>
-        </div>
-        
-        <div class="profile-identity-info">
-          <h2>${escapeHtml(alias())}</h2>
-          <p class="profile-privacy-tag">
-            <span>🔒</span> ${state.lang==="bn"?"আপনার আসল পরিচয় পুরোপুরি সুরক্ষিত ও গোপন রয়েছে":"Your real identity stays completely private"}
-          </p>
+        <div class="profile-cover-backdrop"></div>
+        <div class="profile-hero-content">
+          <div class="profile-avatar-orbit">
+            <span class="profile-avatar-inner">${initials(alias())}</span>
+            <button class="profile-avatar-edit-btn" data-action="new-alias" title="${state.lang==="bn"?"নতুন নাম বেছে নিন":"Change alias"}">
+              ${icon("refresh")}
+            </button>
+          </div>
+          
+          <div class="profile-identity-info">
+            <div class="profile-name-badge-row">
+              <h2>${escapeHtml(alias())}</h2>
+              <span class="profile-verified-pill"><i></i>${state.lang==="bn"?"পরিচয় গোপন":"Anonymous"}</span>
+            </div>
+            <p class="profile-privacy-tag">
+              <span>🛡️</span> ${state.lang==="bn"?"আপনার আসল পরিচয় সম্পূর্ণ সুরক্ষিত ও গোপন রয়েছে":"Your real identity stays 100% private and protected"}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -1820,7 +1826,7 @@ function openProfile(){
             <strong>${displayNumber(state.userPosts.length)}</strong>
             <small>${t("posts")}</small>
           </div>
-          <span class="stat-badge">${state.lang==="bn"?"দেখুন ➔":"View ➔"}</span>
+          <span class="stat-badge">${state.lang==="bn"?"ম্যানেজ করুন ➔":"Manage ➔"}</span>
         </button>
 
         <div class="profile-stat-card">
@@ -1858,7 +1864,7 @@ function openProfile(){
         <div class="download-card-header">
           <span class="download-card-icon">${icon("download")}</span>
           <div>
-            <strong>${state.lang==="bn"?"অফিসিয়াল অ্যাপ ইনস্টল ও ডাউনলোড":"Install & Download Official App"}</strong>
+            <strong>${state.lang==="bn"?"অফিসিয়াল অ্যাপ ইনস্টল ও ডাউনলোড":"Install & Download App"}</strong>
             <small>${state.lang==="bn"?"অ্যান্ড্রয়েড, আইফোন বা কম্পিউটারে সরাসরি অ্যাপ ডাউনলোড করুন":"Download directly on Android, iPhone, or Desktop"}</small>
           </div>
         </div>
@@ -1870,7 +1876,7 @@ function openProfile(){
         </div>
         <div class="download-card-actions">
           <button class="primary-button" style="padding:9px 12px;font-size:11.5px" data-action="install">
-            ${icon("download")} <span>${state.lang==="bn"?"সরাসরি ডাউনলোড/ইনস্টল":"Download/Install"}</span>
+            ${icon("download")} <span>${state.lang==="bn"?"সরাসরি ইনস্টল করুন":"Install App"}</span>
           </button>
           <button class="secondary-button" style="padding:9px 12px;font-size:11.5px" data-action="share-app-link">
             ${icon("share")} <span>${state.lang==="bn"?"লিংক শেয়ার করুন":"Share Link"}</span>
@@ -1880,9 +1886,18 @@ function openProfile(){
 
       <!-- App Settings & Actions Grid -->
       <section class="profile-settings-group">
-        <h3 class="group-heading">${state.lang==="bn"?"অ্যাপ সেটিং ও সুবিধা (Settings)":"App Settings & Controls"}</h3>
+        <h3 class="group-heading">${state.lang==="bn"?"অ্যাপের পছন্দ ও সেটিংস (Settings)":"Preferences & Settings"}</h3>
 
         <div class="settings-action-list">
+          <button class="setting-item-btn" data-action="language">
+            <span class="setting-item-icon">🌐</span>
+            <div class="setting-item-text">
+              <strong>${state.lang==="bn"?"ভাষা রূপান্তর (Language)":"Switch Language"}</strong>
+              <small>${state.lang==="en"?"Use app in English":"অ্যাপ বাংলায় ব্যবহার করুন"}</small>
+            </div>
+            <span class="setting-item-pill">${state.lang==="bn"?"🇧🇩 বাংলা":"🌐 English"}</span>
+          </button>
+
           <button class="setting-item-btn" data-action="enable-notifications">
             <span class="setting-item-icon">🔔</span>
             <div class="setting-item-text">
@@ -1892,26 +1907,17 @@ function openProfile(){
             <span class="setting-item-arrow">➔</span>
           </button>
 
-          <button class="setting-item-btn" data-action="language">
-            <span class="setting-item-icon">🌐</span>
-            <div class="setting-item-text">
-              <strong>${state.lang==="bn"?"ভাষা পরিবর্তন (Language)":"Switch Language"}</strong>
-              <small>${state.lang==="en"?"Use app in English":"অ্যাপ বাংলায় ব্যবহার করুন"}</small>
-            </div>
-            <span class="setting-item-pill">${state.lang==="bn"?"বাংলা 🇧🇩":"English 🌐"}</span>
-          </button>
-
           <button class="setting-item-btn" data-action="toggle-motion">
             <span class="setting-item-icon">✨</span>
             <div class="setting-item-text">
               <strong>${state.lang==="bn"?"অ্যানিমেশন নিয়ন্ত্রণ (Motion)":"Animation Controls"}</strong>
-              <small>${state.motion?(state.lang==="bn"?"মসৃণ অ্যানিমেশন চালু আছে":"Smooth animations enabled"):(state.lang==="bn"?"অ্যানিমেশন কমানো আছে":"Reduced motion active")}</small>
+              <small>${state.motion?(state.lang==="bn"?"মসৃণ অ্যানিমেশন চালু আছে":"Smooth animations active"):(state.lang==="bn"?"অ্যানিমেশন কমানো আছে":"Reduced motion active")}</small>
             </div>
             <span class="setting-item-arrow">➔</span>
           </button>
 
           <button class="setting-item-btn" data-action="share-site">
-            <span class="setting-item-icon">📣</span>
+            <span class="setting-item-icon">📢</span>
             <div class="setting-item-text">
               <strong>${t("shareSite")}</strong>
               <small>${t("profileShareHint")}</small>
@@ -1923,7 +1929,7 @@ function openProfile(){
             <span class="setting-item-icon">✉️</span>
             <div class="setting-item-text">
               <strong>${t("contactUs")}</strong>
-              <small>${state.lang==="bn"?"সরাসরি আমাদের ইমেইল বা মেসেজ পাঠান":"Send us email or message directly"}</small>
+              <small>${state.lang==="bn"?"সরাসরি আমাদের সাথে কথা বলুন":"Get in touch with support"}</small>
             </div>
             <span class="setting-item-arrow">➔</span>
           </button>
