@@ -1631,5 +1631,127 @@ body.installed-phone-app.force-mobile-layout .mobile-nav {
   line-height: 1.5;
 }
 
+/* Calm Space Explanatory Hero & Smart Tools */
+.calm-hero-guide {
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand), transparent 90%), var(--surface));
+  border: 1.5px solid color-mix(in srgb, var(--brand), transparent 75%);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.04);
+}
+.calm-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.calm-hero-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+.calm-hero-top h2 {
+  margin: 0;
+  font-size: 17px;
+  color: var(--text);
+}
+.calm-hero-top small {
+  display: block;
+  font-size: 11px;
+  color: var(--brand);
+  font-weight: 800;
+  margin-top: 2px;
+}
+.calm-hero-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+.calm-lang-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 750;
+  color: var(--muted);
+}
+.calm-lang-btn {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.calm-lang-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.calm-lang-btn.active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+.calm-tool-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px;
+  background: var(--surface);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  margin-bottom: 14px;
+}
+.calm-tool-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.calm-tool-header h3 {
+  margin: 0;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.calm-tool-badge {
+  font-size: 10px;
+  font-weight: 850;
+  color: var(--brand);
+  background: var(--brand-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.calm-tool-desc {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+.calm-step-box {
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.calm-step-box strong {
+  color: var(--brand);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
 
 

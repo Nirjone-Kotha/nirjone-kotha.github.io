@@ -1837,32 +1837,165 @@ function openCalm(){
   state.view="calm";updateNav();state.groundingStep=0;state.bodyScanStep=0;state.resetSeconds=60;
   const bodyStep=bodyScanText(0);
   const kindness=kindnessText(state.kindnessIndex);
-  setPage(`${pageHeader(t("calmTitle"))}<div class="modal-body"><p class="modal-intro">${t("calmCopy")}</p>
-    <div class="calm-layout">
-      <section class="calm-panel calm-featured"><h3>${t("breathing")}</h3><p>${state.lang==="bn"?"চার গুনে শ্বাস নিন, একটু থামুন, তারপর ধীরে ছাড়ুন।":"Breathe in for four counts, pause briefly, then breathe out slowly."}</p><div class="breath-orb" id="breathOrb"><span id="breathLabel">${t("breatheIn")}</span></div><button class="primary-button" data-action="toggle-breath">${t("start")}</button></section>
-      <section class="calm-panel"><h3>${t("quickReset")}</h3><p>${t("quickResetCopy")}</p><div class="reset-clock" id="resetClock" aria-live="polite">01:00</div><button class="secondary-button" style="width:100%" data-action="start-reset">${t("startReset")}</button></section>
-      <section class="calm-panel"><h3>${t("sound")}</h3><div class="sound-buttons"><button class="sound-button" data-sound="rain">${t("rain")}</button><button class="sound-button" data-sound="ocean">${t("ocean")}</button><button class="sound-button" data-sound="tone">${t("tone")}</button><button class="sound-button" data-sound="off">${t("off")}</button></div></section>
-      <section class="calm-panel"><h3>${t("grounding")}</h3><div class="ground-step" id="groundStep">${groundingText(0)}</div><button class="secondary-button" style="width:100%;margin-top:10px" data-action="next-ground">${t("next")}</button></section>
-      <section class="calm-panel"><h3>${t("bodyScan")}</h3><p>${t("bodyScanCopy")}</p><div class="ground-step" id="bodyScanStep">${bodyStep}</div><button class="secondary-button" style="width:100%;margin-top:10px" data-action="next-body-scan">${t("nextBodyStep")}</button></section>
-      <section class="calm-panel"><h3>${t("kindnessPrompt")}</h3><p>${t("kindnessPromptCopy")}</p><blockquote class="kindness-card" id="kindnessPrompt">${kindness}</blockquote><button class="secondary-button" style="width:100%" data-action="next-kindness">${t("anotherPrompt")}</button></section>
-      <section class="calm-panel sensory-panel"><h3>${t("sensoryRefresh")}</h3><p>${t("sensoryRefreshCopy")}</p><div class="sensory-dots" aria-hidden="true"><i></i><i></i><i></i></div></section>
-      <section class="calm-panel"><h3>${t("release")}</h3><p>${t("releaseCopy")}</p><textarea class="release-textarea" id="releaseText" maxlength="400" style="margin-top:10px;min-height:90px"></textarea><button class="secondary-button" style="width:100%;margin-top:8px" data-action="release-thought">${t("releaseButton")}</button></section>
+
+  const heroTitleBn = "শান্ত ঘর (Calm Space) কীভাবে ব্যবহার করবেন?";
+  const heroTitleEn = "How Calm Space helps you find instant peace";
+
+  const heroDescBn = "যখন আপনার প্রচণ্ড মানসিক চাপ, দুশ্চিন্তা বা বুক ধড়ফড় অনুভব হয়—তখন এই সরঞ্জামগুলো আপনার মনকে শান্ত করতে এবং স্নায়ুকে শিথিল করতে সাহায্য করে। নিচের যেকোনো একটি টুল বেছে নিয়ে ১-২ মিনিট চেষ্টা করুন।";
+  const heroDescEn = "When you feel anxious, overwhelmed, or stressed—these tools bring immediate relaxation to your mind and body. Choose a tool below to begin.";
+
+  setPage(`${pageHeader(state.lang==="bn"?"শান্ত ঘর (Calm Space)":"Calm Space")}
+    <div class="modal-body direct-page-body">
+      <section class="calm-hero-guide">
+        <div class="calm-hero-top">
+          <span class="calm-hero-icon">🌿</span>
+          <div>
+            <h2>${state.lang==="bn"?heroTitleBn:heroTitleEn}</h2>
+            <small>${state.lang==="bn"?"বিজ্ঞানসম্মত মানসিক প্রশান্তির সরঞ্জাম":"Science-backed relaxation tools"}</small>
+          </div>
+        </div>
+        <p class="calm-hero-desc">${state.lang==="bn"?heroDescBn:heroDescEn}</p>
+        <div class="calm-lang-bar">
+          <span>${state.lang==="bn"?"পড়ুন আপনার ভাষায় / Read in:": "Read in:"}</span>
+          <button class="calm-lang-btn ${state.lang==="bn"?"active":""}" data-action="set-calm-lang-bn">🇧🇩 বাংলা</button>
+          <button class="calm-lang-btn ${state.lang==="en"?"active":""}" data-action="set-calm-lang-en">🌐 English</button>
+        </div>
+      </section>
+
+      <div class="calm-layout">
+        <section class="calm-tool-card">
+          <div class="calm-tool-header">
+            <h3>🌬️ ${state.lang==="bn"?"৪-৭-৮ গভীর নিশ্বাসের ব্যায়াম":"4-7-8 Deep Breathing Exercise"}</h3>
+            <span class="calm-tool-badge">${state.lang==="bn"?"অ্যাংজাইটি ও প্যানিক কমানোর জন্য":"For Panic & Anxiety"}</span>
+          </div>
+          <p class="calm-tool-desc">
+            ${state.lang==="bn"?"কখন ব্যবহার করবেন: বুক ধড়ফড় করলে, খুব ভয় লাগলে বা হঠাৎ মানসিক চাপ বাড়লে। ৪ সেকেন্ড শ্বাস নিন, ৪ সেকেন্ড আটকে রাখুন, এরপর ধীরে নিশ্বাস ছাড়ুন।":"Use this when your heart is racing or anxiety spikes. Breathe in for 4s, hold for 4s, then release slowly for 4s."}
+          </p>
+          <div class="breath-orb" id="breathOrb"><span id="breathLabel">${t("breatheIn")}</span></div>
+          <button class="primary-button" style="width:100%" data-action="toggle-breath">${t("start")}</button>
+        </section>
+
+        <section class="calm-tool-card">
+          <div class="calm-tool-header">
+            <h3>🎧 ${state.lang==="bn"?"প্রশান্তিদায়ক প্রাকৃতিক শব্দ":"Calming Soundscape"}</h3>
+            <span class="calm-tool-badge">${state.lang==="bn"?"মনোযোগ ও ঘুমানোর জন্য":"For Focus & Sleep"}</span>
+          </div>
+          <p class="calm-tool-desc">
+            ${state.lang==="bn"?"কখন ব্যবহার করবেন: পড়ার সময়, কাজে মনোযোগ দিতে বা রাতে নিশ্চিন্তে ঘুমানোর জন্য। হেডফোন ব্যবহার করলে ভালো লাগবে।":"Use this to block distractions, calm racing thoughts, or fall asleep peacefully. Headset recommended."}
+          </p>
+          <div class="sound-buttons">
+            <button class="sound-button" data-sound="rain">🌧️ ${t("rain")}</button>
+            <button class="sound-button" data-sound="ocean">🌊 ${t("ocean")}</button>
+            <button class="sound-button" data-sound="tone">🎵 ${t("tone")}</button>
+            <button class="sound-button" data-sound="off">⏹️ ${t("off")}</button>
+          </div>
+        </section>
+
+        <section class="calm-tool-card">
+          <div class="calm-tool-header">
+            <h3>🌿 ${state.lang==="bn"?"৫-৪-৩-২-১ গ্রাউন্ডিং টেকনিক":"5-4-3-2-1 Grounding Tool"}</h3>
+            <span class="calm-tool-badge">${state.lang==="bn"?"দুশ্চিন্তা থেকে মনকে ফেরাতে":"Instant Reality Anchor"}</span>
+          </div>
+          <p class="calm-tool-desc">
+            ${state.lang==="bn"?"কখন ব্যবহার করবেন: অতীত বা ভবিষ্যতের অতিরিক্ত ভাবনায় মন হারিয়ে গেলে। এই টেকনিকটি আপনার ব্রেনকে সরাসরি বর্তমান মুহূর্তে ফিরিয়ে আনে।":"Use this when thoughts spin out of control. It anchors your mind back to the physical present."}
+          </p>
+          <div class="calm-step-box" id="groundStep">${groundingText(0)}</div>
+          <button class="secondary-button" style="width:100%" data-action="next-ground">${t("next")} ➔</button>
+        </section>
+
+        <section class="calm-tool-card">
+          <div class="calm-tool-header">
+            <h3>🧘‍♂️ ${state.lang==="bn"?"বডি স্ক্যান ও পেশির শিথিলতা":"Body Scan Tension Relief"}</h3>
+            <span class="calm-tool-badge">${state.lang==="bn"?"শরীরের টান ও ক্লান্তি মুছতে":"For Physical Relaxation"}</span>
+          </div>
+          <p class="calm-tool-desc">
+            ${state.lang==="bn"?"কখন ব্যবহার করবেন: কপাল, কাঁধ বা ঘাড়ে চাপের শক্ত ভাব অনুভব করলে। প্রতিটি অঙ্গের দিকে নজর দিন এবং নিশ্বাস ছাড়ার সাথে সাথে ঢিলা করুন।":"Use this when stress turns into physical tightness in your jaw, shoulders, or neck. Soften step by step."}
+          </p>
+          <div class="calm-step-box" id="bodyScanStep">${bodyStep}</div>
+          <button class="secondary-button" style="width:100%" data-action="next-body-scan">${t("nextBodyStep")} ➔</button>
+        </section>
+
+        <section class="calm-tool-card">
+          <div class="calm-tool-header">
+            <h3>💭 ${state.lang==="bn"?"আত্ম-মমতার বার্তা":"Self-Compassion Thoughts"}</h3>
+            <span class="calm-tool-badge">${state.lang==="bn"?"নিজের প্রতি মায়াশীল হতে":"For Gentle Self-Care"}</span>
+          </div>
+          <p class="calm-tool-desc">
+            ${state.lang==="bn"?"কখন ব্যবহার করবেন: আত্মগ্লানি, অপরাধবোধ বা কড়া নিজেকে দোষারোপের সময়। যেভাবে প্রিয় বন্ধুকে সান্ত্বনা দিতেন, নিজেকে সেভাবে বলুন।":"Use this when you are too hard on yourself. Offer yourself the same warmth you would give a friend."}
+          </p>
+          <blockquote class="kindness-card" id="kindnessPrompt">${kindness}</blockquote>
+          <button class="secondary-button" style="width:100%;margin-top:10px" data-action="next-kindness">${t("anotherPrompt")} 🔄</button>
+        </section>
+
+        <section class="calm-tool-card">
+          <div class="calm-tool-header">
+            <h3>✍️ ${state.lang==="bn"?"মনের ভারী চিন্তা ভ্যানিশ করুন":"Thought Release Box"}</h3>
+            <span class="calm-tool-badge">${state.lang==="bn"?"গোপন কষ্ট মুছে ফেলতে":"Mind Dump & Release"}</span>
+          </div>
+          <p class="calm-tool-desc">
+            ${state.lang==="bn"?"কখন ব্যবহার করবেন: যে ক্ষোভ বা কষ্টের কথা কাউকে বলতে পারছেন না, তা এখানে লিখে ভাসিয়ে দিন। এই লেখা কোথাও সেভ থাকে না।":"Type whatever is troubling you. Tap release to watch it vanish forever—nothing is saved anywhere."}
+          </p>
+          <textarea class="release-textarea" id="releaseText" maxlength="400" placeholder="${state.lang==="bn"?"আপনার চিন্তাটি এখানে লিখুন...":"Write your troubling thought here..."}" style="min-height:90px"></textarea>
+          <button class="secondary-button" style="width:100%;margin-top:10px" data-action="release-thought">${t("releaseButton")}</button>
+        </section>
+      </div>
     </div>
-  </div>`);
+  `);
 }
+
 function bodyScanText(i){
-  const bn=["কপাল ও চোখের চারপাশ ঢিলা করতে পারেন কি না খেয়াল করুন।","চোয়াল ও জিহ্বা শক্ত হয়ে আছে কি না খেয়াল করুন।","কাঁধ নামিয়ে হাত দুটোকে ভারী হতে দিন।","বুক ও পেটের স্বাভাবিক ওঠানামা দেখুন।","পা মেঝে বা বিছানায় কোথায় স্পর্শ করছে খেয়াল করুন।","পুরো শরীরকে একসঙ্গে অনুভব করে একটি স্বাভাবিক শ্বাস নিন।"];
-  const en=["Notice whether your forehead and the space around your eyes can soften.","Notice whether your jaw or tongue is holding tension.","Let your shoulders lower and allow your arms to feel heavy.","Notice the natural movement of your chest and abdomen.","Notice where your feet or legs meet a steady surface.","Feel your body as a whole and take one ordinary breath."];
+  const bn=[
+    "ধাপ ১/৬: কপাল ও চোখের চারপাশ লক্ষ্য করুন। নিশ্বাস ছাড়ার সাথে সাথে সেই টানটুকু আলগা হতে দিন।",
+    "ধাপ ২/৬: চোয়াল ও মুখমণ্ডল খেয়াল করুন। দাঁতে দাঁত কামড়ে শক্ত করে রেখেছেন কি না দেখুন—মুখ ঢিলা করুন।",
+    "ধাপ ৩/৬: কাঁধ দুটো একটু নামিয়ে আনুন এবং হাত দুটোকে হালকা হতে দিন।",
+    "ধাপ ৪/৬: বুক ও পেটের দিকে নজর দিন। স্বাভাবিকভাবে ওপর-নিচে হওয়া নিশ্বাসের ছন্দ অনুভব করুন।",
+    "ধাপ ৫/৬: আপনার পা দুটো মেঝে বা বিছানায় কীভাবে স্পর্শ করে আছে তা খেয়াল করুন।",
+    "ধাপ ৬/৬: এবার পুরো শরীরকে এক সঙ্গে মেলাক অনুভব করুন এবং ১টি দীর্ঘ আরামদায়ক নিশ্বাস নিন।"
+  ];
+  const en=[
+    "Step 1/6: Notice your forehead and eyes. Let any tight tension melt away as you exhale.",
+    "Step 2/6: Notice your jaw. Unclench your teeth and allow your mouth to relax softly.",
+    "Step 3/6: Lower your shoulders away from your ears and let your arms feel comfortably heavy.",
+    "Step 4/6: Feel your chest and abdomen rhythmically rise and fall with each breath.",
+    "Step 5/6: Feel the steady support beneath your feet or legs.",
+    "Step 6/6: Feel your entire body as one whole, and take a long, refreshing breath."
+  ];
   return (state.lang==="bn"?bn:en)[i%bn.length];
 }
+
 function kindnessText(i){
-  const bn=["এই মুহূর্তটি কঠিন—তবু আমাকে সবকিছু একসঙ্গে সমাধান করতে হবে না।","আমি ধীরে চলতে পারি; ছোট একটি নিরাপদ পদক্ষেপও গুরুত্বপূর্ণ।","যেভাবে বন্ধুকে শুনতাম, সেভাবেই নিজের অনুভূতিটিও শুনতে পারি।","আজ আমার সক্ষমতা কম হলে সেটিও বাস্তব এবং গ্রহণযোগ্য।","সহায়তা চাওয়া দুর্বলতা নয়; এটি নিজের যত্নের একটি অংশ।"];
-  const en=["This moment is difficult, and I do not have to solve everything at once.","I can move slowly; one small safe step still matters.","I can listen to my own feelings with the care I would offer a friend.","It is real and acceptable if my capacity is lower today.","Asking for support is not weakness; it is part of caring for myself."];
+  const bn=[
+    "এই মুহূর্তটি কঠিন হতে পারে—তবু আমাকে সব সমস্যা একবারে সমাধান করতে হবে না। আমি যতটুকু পারছি তা-ই যথেষ্ট।",
+    "আমি ধীরে পা ফেলতে পারি; নিজের গতিতেই সব ঠিক হয়ে যাবে। ছোট একটি কোমল পদক্ষেপও সমান মূল্যবান।",
+    "যেভাবে একজন প্রিয় বন্ধুকে পরম মমতায় শুনতাম, সেভাবেই আমি আমার নিজের কষ্টটুকু বোঝার চেষ্টা করব।",
+    "আজ আমার মানসিক শক্তি কিছুটা কম হলেও তা স্বাভাবিক ও সর্বাংশে গ্রহণযোগ্য। মানুষ মাত্রই রিচার্জ দরকার হয়।",
+    "অন্যের সাহায্য চাওয়া দুর্বলতা নয়; বরং এটি নিজের প্রতি ভালোবাসা প্রকাশ করার একটি সাহসী পদক্ষেপ।"
+  ];
+  const en=[
+    "This moment is tough—yet I don't have to solve everything all at once. Doing what I can today is enough.",
+    "I can move at my own gentle pace. Even the smallest safe step forward is valuable progress.",
+    "I will listen to my own feelings with the exact same warmth and care I would offer to a dear friend.",
+    "If my energy or capacity is lower today, that is completely okay and natural. We all need rest.",
+    "Asking for support is not a sign of weakness—it is a brave act of caring for my well-being."
+  ];
   return (state.lang==="bn"?bn:en)[i%bn.length];
 }
+
 function groundingText(i){
-  const bn=["দেখতে পাচ্ছেন এমন ৫টি জিনিসের নাম বলুন।","ছুঁতে পারছেন এমন ৪টি জিনিস খেয়াল করুন।","শুনতে পাচ্ছেন এমন ৩টি শব্দ শুনুন।","গন্ধ পাচ্ছেন এমন ২টি জিনিস খুঁজুন।","স্বাদ পাচ্ছেন এমন ১টি জিনিস খেয়াল করুন।"];
-  const en=["Name 5 things you can see.","Notice 4 things you can feel.","Listen for 3 things you can hear.","Find 2 things you can smell.","Notice 1 thing you can taste."];
+  const bn=[
+    "ধাপ ১/৫ (দর্শন): আপনার চারপাশে খেয়াল করুন এবং দেখতে পাচ্ছেন এমন ৫টি জিনিসের নাম মনে মনে বলুন।",
+    "ধাপ ২/৫ (স্পর্শ): আপনার শরীর ও কাপড়ের স্পর্শ বা স্পর্শ করতে পারছেন এমন ৪টি জিনিস অনুভব করুন।",
+    "ধাপ ৩/৫ (শ্রবণ): আপনার আসেপাশে বা দূর থেকে ভেসে আসা ৩টি শব্দ মনোযোগ দিয়ে শুনুন।",
+    "ধাপ ৪/৫ (স্বাদ/ঘ্রাণ): বাতাসে বা আপনার আশপাশে ভেসে আসা ২টি স্বাভাবিক ঘ্রাণ অনুভব করার চেষ্টা করুন।",
+    "ধাপ ৫/৫ (স্বাদ): আপনার মুখে থাকা ১টি স্বাদ অনুভব করুন (বা ১ চুমুক পানি পান করুন)।"
+  ];
+  const en=[
+    "Step 1/5 (Sight): Look around you right now and mentally name 5 distinct objects you see.",
+    "Step 2/5 (Touch): Feel 4 physical sensations (e.g. your feet on the floor, your clothes on skin).",
+    "Step 3/5 (Hearing): Listen carefully and identify 3 subtle sounds in your surroundings.",
+    "Step 4/5 (Smell): Notice 2 scents in the air or around you.",
+    "Step 5/5 (Taste): Notice 1 taste in your mouth, or take a refreshing sip of water."
+  ];
   return (state.lang==="bn"?bn:en)[i];
 }
 function toggleBreath(){
@@ -2590,6 +2723,8 @@ document.addEventListener("click",e=>{
     case"test-notification":testNotification();break;
     case"theme":toggleTheme();break;
     case"language":toggleLanguage();break;
+    case"set-calm-lang-bn":state.lang="bn";store.set("lang","bn");localizePage();openCalm();break;
+    case"set-calm-lang-en":state.lang="en";store.set("lang","en");localizePage();openCalm();break;
     case"profile":openProfile();break;
     case"identity-open":openIdentityGate(true);break;
     case"identity-continue":handleIdentityContinue();break;
