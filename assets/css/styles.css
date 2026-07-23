@@ -2632,3 +2632,152 @@ body.video-large-view .video-card-meta-bar * {
     font-weight: 600 !important;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   HIGHLY PROFESSIONAL, SMART & MODERN DESKTOP MODE DESIGN
+   (Applies strictly to Desktop Mode - min-width: 761px)
+   ───────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+  /* 1. Remove Filter Posts button from top right toolbar on Desktop */
+  .feed-toolbar .filter-button,
+  .filter-button[data-action="filter"] {
+    display: none !important;
+  }
+
+  /* 2. Sleek Modern Feed Toolbar */
+  .feed-toolbar {
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 16px !important;
+    padding: 6px 10px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+    margin-bottom: 16px !important;
+  }
+
+  .feed-tabs {
+    gap: 6px !important;
+  }
+
+  .feed-tab {
+    padding: 8px 18px !important;
+    border-radius: 20px !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border: 0 !important;
+  }
+
+  .feed-tab:hover {
+    color: var(--text) !important;
+    background: color-mix(in srgb, var(--brand), transparent 93%) !important;
+  }
+
+  .feed-tab.active {
+    background: var(--brand) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--brand), transparent 70%) !important;
+  }
+
+  /* 3. Highly Professional Special Feed Header (Video & Islamic Sections) */
+  .special-feed-head {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--brand), transparent 94%), var(--surface)) !important;
+    border: 1px solid color-mix(in srgb, var(--brand), transparent 84%) !important;
+    border-radius: 20px !important;
+    padding: 22px 24px !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03) !important;
+    margin-bottom: 20px !important;
+  }
+
+  .special-feed-title-row h2,
+  .special-feed-title-row .eyebrow {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: var(--text) !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .special-feed-title-row p {
+    font-size: 13.5px !important;
+    color: var(--muted) !important;
+    margin-top: 4px !important;
+  }
+
+  /* Segmented Controls for Subtabs, Video Format & Mood Filters */
+  .islamic-subtabs,
+  .video-format-controls,
+  .video-mood-controls {
+    background: color-mix(in srgb, var(--text), transparent 95%) !important;
+    padding: 5px !important;
+    border-radius: 24px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin-top: 12px !important;
+    border: 1px solid color-mix(in srgb, var(--line), transparent 40%) !important;
+  }
+
+  .islamic-subtab,
+  .video-format-chip,
+  .video-mood-chip {
+    border-radius: 18px !important;
+    padding: 7px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+    border: 0 !important;
+    background: transparent !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .islamic-subtab:hover,
+  .video-format-chip:hover,
+  .video-mood-chip:hover {
+    color: var(--text) !important;
+  }
+
+  .islamic-subtab.active,
+  .video-format-chip.active,
+  .video-mood-chip.active {
+    background: var(--surface) !important;
+    color: var(--brand) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    font-weight: 700 !important;
+  }
+
+  /* 4. Refined Modern Topbar for Desktop */
+  .topbar {
+    background: color-mix(in srgb, var(--surface), transparent 4%) !important;
+    backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid var(--line) !important;
+    padding: 10px 24px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02) !important;
+  }
+
+  .search-box {
+    border-radius: 22px !important;
+    background: color-mix(in srgb, var(--text), transparent 96%) !important;
+    border: 1px solid var(--line) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .search-box:focus-within {
+    background: var(--surface) !important;
+    border-color: var(--brand) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand), transparent 85%) !important;
+  }
+
+  /* 5. Desktop Sidebar Rail Cards Enhancement */
+  .left-rail .nav-card,
+  .right-rail .surface-card {
+    border-radius: 18px !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03) !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+  }
+
+  .left-rail .nav-card:hover,
+  .right-rail .surface-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+  }
+}
