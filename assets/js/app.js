@@ -3148,6 +3148,26 @@ document.addEventListener("input",e=>{
 });
 
 document.addEventListener("keydown",e=>{
+  if(state.videoLargeView){
+    if(["ArrowDown","PageDown"].includes(e.key)){
+      e.preventDefault();
+      const currentCard=e.target.closest(".video-card")||document.querySelector(".video-card");
+      const nextCard=currentCard?.nextElementSibling;
+      if(nextCard&&nextCard.classList.contains("video-card")){
+        nextCard.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      return;
+    }
+    if(["ArrowUp","PageUp"].includes(e.key)){
+      e.preventDefault();
+      const currentCard=e.target.closest(".video-card")||document.querySelector(".video-card");
+      const prevCard=currentCard?.previousElementSibling;
+      if(prevCard&&prevCard.classList.contains("video-card")){
+        prevCard.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      return;
+    }
+  }
   if(e.key==="Enter" && e.target?.id==="identityPassword"){e.preventDefault();handleIdentityContinue();return}
   if(e.key==="Enter" && e.target?.id==="displayNameInput"){e.preventDefault();saveDisplayName();return}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#globalSearch")?.focus()}
@@ -3158,6 +3178,41 @@ document.addEventListener("keydown",e=>{
   }
   if(e.key==="Escape"){if(state.videoLargeView)setVideoLargeView(false);else if(!$("#modalLayer").hidden)closeModal();else if(!$("#drawerLayer").hidden)closeDrawer()}
 });
+
+let reelTouchStartY = 0;
+let reelTouchStartX = 0;
+
+document.addEventListener("touchstart", e => {
+  if (!state.videoLargeView) return;
+  const touch = e.touches[0];
+  if (!touch) return;
+  reelTouchStartY = touch.clientY;
+  reelTouchStartX = touch.clientX;
+}, { passive: true });
+
+document.addEventListener("touchend", e => {
+  if (!state.videoLargeView) return;
+  const touch = e.changedTouches[0];
+  if (!touch) return;
+  const deltaY = reelTouchStartY - touch.clientY;
+  const deltaX = Math.abs(reelTouchStartX - touch.clientX);
+
+  if (Math.abs(deltaY) > 35 && Math.abs(deltaY) > deltaX * 1.1) {
+    const currentCard = e.target.closest(".video-card") || document.querySelector(".video-card");
+    if (!currentCard) return;
+    if (deltaY > 0) {
+      const nextCard = currentCard.nextElementSibling;
+      if (nextCard && nextCard.classList.contains("video-card")) {
+        nextCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      const prevCard = currentCard.previousElementSibling;
+      if (prevCard && prevCard.classList.contains("video-card")) {
+        prevCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }
+}, { passive: true });
 
 $("#loadMore").addEventListener("click",()=>{state.shown+=10;renderFeed()});
 function completeAppStartup(){

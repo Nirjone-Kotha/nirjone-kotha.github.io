@@ -2378,6 +2378,7 @@ body.video-large-view .feed-column {
   overflow-y: scroll !important;
   overscroll-behavior-y: contain !important;
   -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
   padding: 0 !important;
   margin: 0 !important;
   background: #000000 !important;
@@ -2397,6 +2398,7 @@ body.video-large-view #feedList {
   gap: 0 !important;
   display: block !important;
   background: #000000 !important;
+  touch-action: pan-y !important;
 }
 
 body.video-large-view .video-card {
@@ -2417,6 +2419,7 @@ body.video-large-view .video-card {
   justify-content: center !important;
   position: relative !important;
   box-shadow: none !important;
+  touch-action: pan-y !important;
 }
 
 body.video-large-view .video-card .youtube-stage.landscape {
