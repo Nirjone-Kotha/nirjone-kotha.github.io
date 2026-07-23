@@ -2944,6 +2944,7 @@ document.addEventListener("click",e=>{
   if(target.dataset.videoFormat){const section=target.dataset.videoSection==="islamic"?"islamic":"general";state.videoFormat[section]=target.dataset.videoFormat==="short"?"short":"video";store.set("video-format",state.videoFormat);section==="islamic"?renderIslamicFeed():renderVideoFeed();return}
   if(target.dataset.videoLike){toggleVideoLike(target.dataset.videoLike);return}
   if(target.dataset.videoComment){openComments(target.dataset.videoComment,"video");return}
+  if(target.dataset.videoShare){shareVideo(target.dataset.videoShare);return}
   if(target.dataset.videoPlay){const card=target.closest(".video-card");activateVideoCard(card,{muted:false,userInitiated:true});return}
   if(target.dataset.videoSound){const card=target.closest(".video-card");toggleVideoSound(card);return}
   if(target.dataset.videoLargeView){setVideoLargeView(true,state.activeVideoId||"");return}

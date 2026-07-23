@@ -1019,8 +1019,12 @@ body{background:color-mix(in srgb,var(--page),#e9eef0 24%)}
 
 .youtube-player-host{position:absolute;inset:0;width:100%;height:100%;z-index:1}.youtube-player-host iframe{width:100%;height:100%;border:0}
 .youtube-stage img{z-index:2}.video-play-button{z-index:3}.youtube-stage.playing .youtube-player-host{z-index:4}.youtube-stage.loading::after{content:"";position:absolute;width:34px;height:34px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .9s linear infinite;z-index:5}
-.video-ready-label{display:none;position:absolute;right:9px;bottom:9px;z-index:4;border-radius:999px;background:rgba(8,38,35,.76);color:#fff;padding:5px 8px;font-size:8px;font-weight:850}.video-prepared:not(.playing) .video-ready-label{display:block}
-.video-temporary-error .youtube-stage::after{content:"ভিডিওটি এখন চালু করা যাচ্ছে না";position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:20px;text-align:center;background:rgba(8,38,35,.86);color:#fff;font-weight:850}.video-actions{grid-template-columns:1fr!important}.video-actions .post-action{max-width:220px;margin-inline:auto;width:100%}
+.video-temporary-error .youtube-stage::after{content:"ভিডিওটি এখন চালু করা যাচ্ছে না";position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:20px;text-align:center;background:rgba(8,38,35,.86);color:#fff;font-weight:850}
+.video-actions{display:flex!important;align-items:center!important;justify-content:space-around!important;gap:8px!important;grid-template-columns:none!important;padding:8px 0 2px!important;margin-top:6px!important;border-top:1px solid var(--line)!important}
+.video-action-btn{flex:1;height:36px;border:1px solid var(--line);background:var(--surface-soft);border-radius:20px;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text);font-size:12px;font-weight:800;cursor:pointer;transition:all .2s var(--ease)}
+.video-action-btn:hover{background:var(--surface);color:var(--brand);border-color:var(--brand)}
+.video-action-btn.reacted{color:var(--danger);border-color:var(--danger);background:var(--danger-soft)}
+.video-action-btn .action-count{font-weight:800;font-size:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .moment-selected-preview{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0;padding:12px;border:1px solid var(--brand);border-radius:14px;background:var(--brand-soft);color:var(--brand)}.moment-selected-preview span{font-size:32px}.moment-selected-preview strong{font-size:12px}.story-publish-button[hidden]{display:none!important}
