@@ -2501,3 +2501,134 @@ body.video-large-view .video-card-meta-bar * {
   background: rgba(0, 0, 0, 0.95) !important;
   transform: scale(1.05) !important;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   FACEBOOK FEED STYLE ENHANCEMENT (Mobile Installed App & Mobile Layout)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  body.force-mobile-layout #feedList,
+  body.installed-phone-app.force-mobile-layout #feedList {
+    background: color-mix(in srgb, var(--surface-soft, #f0f2f5), transparent 10%) !important;
+    gap: 8px !important;
+    padding-bottom: 90px !important;
+  }
+
+  body.force-mobile-layout .post-card,
+  body.installed-phone-app.force-mobile-layout .post-card,
+  body.force-mobile-layout .video-card:not(.video-large-view *),
+  body.installed-phone-app.force-mobile-layout .video-card:not(.video-large-view *) {
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    margin-inline: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: var(--surface) !important;
+    padding: 12px 14px 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  body.force-mobile-layout .post-card::before,
+  body.installed-phone-app.force-mobile-layout .post-card::before {
+    display: none !important;
+  }
+
+  /* Facebook Post Head */
+  body.force-mobile-layout .post-head,
+  body.installed-phone-app.force-mobile-layout .post-head {
+    margin-bottom: 8px !important;
+  }
+
+  body.force-mobile-layout .post-avatar,
+  body.installed-phone-app.force-mobile-layout .post-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    font-size: 18px !important;
+  }
+
+  body.force-mobile-layout .post-meta strong,
+  body.installed-phone-app.force-mobile-layout .post-meta strong {
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+  }
+
+  body.force-mobile-layout .post-meta small,
+  body.installed-phone-app.force-mobile-layout .post-meta small {
+    font-size: 11.5px !important;
+    color: var(--muted) !important;
+  }
+
+  /* Facebook Post Text */
+  body.force-mobile-layout .post-text,
+  body.installed-phone-app.force-mobile-layout .post-text {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Facebook Post Support / Meta Stats Row */
+  body.force-mobile-layout .post-support,
+  body.installed-phone-app.force-mobile-layout .post-support {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 8px 0 !important;
+    margin-top: 6px !important;
+    border-top: 1px solid color-mix(in srgb, var(--line), transparent 50%) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 50%) !important;
+    font-size: 12.5px !important;
+    color: var(--muted) !important;
+  }
+
+  body.force-mobile-layout .support-summary,
+  body.installed-phone-app.force-mobile-layout .support-summary {
+    font-size: 12px !important;
+  }
+
+  /* Facebook Action Bar (4 equal grid buttons across bottom) */
+  body.force-mobile-layout .post-actions,
+  body.installed-phone-app.force-mobile-layout .post-actions {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    padding: 4px 0 0 !important;
+    margin-top: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  body.force-mobile-layout .post-action,
+  body.installed-phone-app.force-mobile-layout .post-action {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    height: 38px !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+    padding: 0 4px !important;
+  }
+
+  body.force-mobile-layout .post-action:active,
+  body.installed-phone-app.force-mobile-layout .post-action:active {
+    background: color-mix(in srgb, var(--text), transparent 92%) !important;
+  }
+
+  body.force-mobile-layout .post-action.reacted,
+  body.installed-phone-app.force-mobile-layout .post-action.reacted {
+    color: var(--brand, #1877f2) !important;
+  }
+
+  body.force-mobile-layout .post-action .count,
+  body.installed-phone-app.force-mobile-layout .post-action .count {
+    font-style: normal !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+  }
+}
