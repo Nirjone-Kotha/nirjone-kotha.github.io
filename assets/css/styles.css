@@ -553,7 +553,7 @@ button,a,input,textarea,[tabindex]{-webkit-tap-highlight-color:transparent}
 .offline-banner[hidden]{display:none}
 .offline-banner button{border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.12);color:#fff;padding:5px 10px;font-weight:800}
 .topbar{top:var(--safe-top)}
-.install-button{height:40px;border:0;border-radius:12px;padding:0 12px;display:inline-flex;align-items:center;gap:7px;background:var(--brand);color:#fff;font-weight:800;box-shadow:0 8px 22px color-mix(in srgb,var(--brand),transparent 75%)}
+.install-button{height:40px;border:0;border-radius:12px;padding:0 12px;display:inline-flex;align-items:center;gap:7px;background:var(--brand);color:#fff;font-weight:800;white-space:nowrap;box-shadow:0 8px 22px color-mix(in srgb,var(--brand),transparent 75%)}
 .install-button:hover{transform:translateY(-2px)}
 .platform-pill{height:30px;display:inline-flex;align-items:center;gap:6px;padding:0 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface-soft);color:var(--muted);font-size:10px;white-space:nowrap}
 .platform-pill i,.mini-status-row i{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 3px color-mix(in srgb,var(--mint),transparent 84%)}
