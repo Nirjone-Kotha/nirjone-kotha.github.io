@@ -78,13 +78,12 @@ export const topics = {
 };
 
 export const circles = [
-  { id:"late-night", icon:"moon", bn:"রাতজাগা সঙ্গী", en:"Late-night company", members:1842, online:126, description_bn:"রাতে মন ভারী হলে নীরবে পাশে থাকার জায়গা।", description_en:"A quiet circle for nights that feel heavier." },
-  { id:"study", icon:"book", bn:"পড়াশোনার চাপ", en:"Study pressure", members:1280, online:83, description_bn:"পরীক্ষা, ভবিষ্যৎ ও প্রত্যাশার চাপ নিয়ে কথা বলুন।", description_en:"Talk about exams, expectations and uncertainty." },
-  { id:"jobs-pressure", icon:"briefcase", bn:"চাকরির চাপ", en:"Job pressure", members:964, online:61, description_bn:"চাকরি, কর্মস্থল, দায়িত্ব ও ভবিষ্যৎ নিয়ে চাপ ভাগ করুন।", description_en:"Share pressure around jobs, work, responsibility and the future." },
-  { id:"personal-life", icon:"user", bn:"ব্যক্তিগত জীবন", en:"Personal life", members:1370, online:88, description_bn:"নিজের জীবন, আত্মসম্মান, সিদ্ধান্ত ও একান্ত অনুভূতি নিয়ে কথা বলুন।", description_en:"Talk about personal life, self-worth, decisions and private feelings." },
-  { id:"family", icon:"home", bn:"পরিবার ও সম্পর্ক", en:"Family & relationships", members:1516, online:94, description_bn:"যে কথাগুলো ঘরের মানুষকে বলা কঠিন।", description_en:"For words that are difficult to say at home." },
-  { id:"healing", icon:"leaf", bn:"ধীরে সুস্থ হওয়া", en:"Healing slowly", members:2210, online:142, description_bn:"একদিনে নয়—ছোট ছোট কোমল পদক্ষেপে এগোনো।", description_en:"Gentle progress, one small step at a time." },
-  { id:"small-wins", icon:"sun", bn:"আজকের ছোট জয়", en:"Small wins today", members:1134, online:70, description_bn:"আজকের ক্ষুদ্র ভালো মুহূর্তগুলো মনে রাখি।", description_en:"A place to notice the small good moments." }
+  { id:"late-night", icon:"moon", emoji:"🌙", bn:"রাতজাগা সঙ্গী", en:"Late-night company", members:1842, online:126, description_bn:"রাতে মন ভারী হলে নীরবে পাশে থাকার জায়গা।", description_en:"A quiet circle for nights that feel heavier." },
+  { id:"move-on", icon:"heart", emoji:"❤️‍🩹", bn:"সম্পর্ক কাটিয়ে ওঠা (Move on)", en:"Move on from relationship", members:2450, online:185, description_bn:"সম্পর্কের কষ্ট, ব্রেকআপ ও নতুন করে পথচলার জায়গা।", description_en:"A supportive space to process heartbreak, breakups and moving forward." },
+  { id:"study", icon:"book", emoji:"📚", bn:"পড়াশোনার চাপ", en:"Study pressure", members:1280, online:83, description_bn:"পরীক্ষা, ভবিষ্যৎ ও প্রত্যাশার চাপ নিয়ে কথা বলুন।", description_en:"Talk about exams, expectations and uncertainty." },
+  { id:"jobs-pressure", icon:"briefcase", emoji:"💼", bn:"চাকরির চাপ", en:"Job pressure", members:964, online:61, description_bn:"চাকরি, কর্মস্থল, দায়িত্ব ও ভবিষ্যৎ নিয়ে চাপ ভাগ করুন।", description_en:"Share pressure around jobs, work, responsibility and the future." },
+  { id:"personal-life", icon:"user", emoji:"👤", bn:"ব্যক্তিগত জীবন", en:"Personal life", members:1370, online:88, description_bn:"নিজের জীবন, আত্মসম্মান, সিদ্ধান্ত ও একান্ত অনুভূতি নিয়ে কথা বলুন।", description_en:"Talk about personal life, self-worth, decisions and private feelings." },
+  { id:"family", icon:"home", emoji:"🏠", bn:"পরিবার ও সম্পর্ক", en:"Family & relationships", members:1516, online:94, description_bn:"যে কথাগুলো ঘরের মানুষকে বলা কঠিন।", description_en:"For words that are difficult to say at home." }
 ];
 
 export const momentMoods = [

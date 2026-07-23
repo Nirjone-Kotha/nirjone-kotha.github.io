@@ -1250,7 +1250,7 @@ function renderPostCard(p){
     </header>
     ${labels.length?`<div class="post-labels">${labels.join("")}</div>`:""}
     <p class="post-text">${formatPostTextHTML(p)}</p>
-    <div class="post-support"><div class="support-cluster"><span class="support-face">🫂</span><span class="support-face">🤍</span><span class="support-face">🫶</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"} · #${displayNumber(Math.round(postRankScore(p)))}</span></div>
+    <div class="post-support"><div class="support-cluster"><span class="support-face">🫂</span><span class="support-face">🤍</span><span class="support-face">🫶</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"}</span></div>
 
     ${isPickerOpen ? `
       <div class="post-emoji-popover" aria-label="Choose emoji reaction">
@@ -2117,13 +2117,8 @@ function openCircleDiscussionPage(circleId){
             ${joined ? (state.lang==="bn"?"✓ যুক্ত আছেন":"✓ Joined") : (state.lang==="bn"?"+ যুক্ত হোন":"+ Join group")}
           </button>
         </div>
-        <p style="font-size:12px;line-height:1.5;margin:0">${escapeHtml(localText(circle,"description_bn","description_en"))}</p>
-      </section>
-
-      <section class="circle-daily-prompt">
-        <strong>💡 ${state.lang==="bn"?"আজকের গ্রুপ প্রশ্ন (Daily Prompt):":"Daily Group Support Prompt:"}</strong>
-        <p>${state.lang==="bn" ? "আজকের দিনে এমন কোন ছোট্ট অভ্যাস বা চিন্তা আপনাকে একটু ভালো বোধ করতে সাহায্য করেছিল?" : "What is 1 small practice or thought that helped you stay calm today?"}</p>
-        <button class="primary-button" style="width:100%" data-action="compose">${icon("pen")} ${state.lang==="bn"?"গ্রুপে নতুন গল্প শেয়ার করুন":"Share post in group"}</button>
+        <p style="font-size:12px;line-height:1.5;margin:0 0 10px">${escapeHtml(localText(circle,"description_bn","description_en"))}</p>
+        <button class="primary-button" style="width:100%;margin-top:10px" data-action="compose">${icon("pen")} ${state.lang==="bn"?"গ্রুপে নতুন গল্প শেয়ার করুন":"Share post in group"}</button>
       </section>
 
       <h3 style="font-size:15px;margin:16px 0 10px">${state.lang==="bn"?"গ্রুপের নতুন আলোচনা (Group Feed)":"Group Discussions"}</h3>
