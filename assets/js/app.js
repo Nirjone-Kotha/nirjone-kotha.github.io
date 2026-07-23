@@ -74,7 +74,6 @@ const ICONS = {
   volume:'<path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"></path>',
   volumeOff:'<path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="m22 9-6 6M16 9l6 6"></path>',
   expand:'<path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path>',
-  arrowsMaximize:'<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>',
   minimize:'<path d="M8 8H3V3M16 8h5V3M8 16H3v5M16 16h5v5"></path>',
   menu:'<path d="M4 6h16M4 12h16M4 18h16"></path>',
   timer:'<circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l3 2M9 2h6"></path>',
@@ -1320,7 +1319,7 @@ function videoLargeViewControl(){
 function setVideoLargeView(enabled, focusId=""){
   const active=Boolean(enabled);
   if(active===state.videoLargeView){
-    if(active&&focusId)requestAnimationFrame(()=>document.querySelector(`.video-card[data-video-id="${CSS.escape(String(focusId))}"]`)?.scrollIntoView({block:"center",behavior:"smooth"}));
+    if(active&&focusId)requestAnimationFrame(()=>document.querySelector(`.video-card[data-video-id="${CSS.escape(String(focusId))}"]`)?.scrollIntoView({block:"start",behavior:"smooth"}));
     return;
   }
   const feedColumn=$("#mainContent");
@@ -1341,7 +1340,7 @@ function setVideoLargeView(enabled, focusId=""){
     }
     requestAnimationFrame(()=>{
       const card=focusId?document.querySelector(`.video-card[data-video-id="${CSS.escape(String(focusId))}"]`):document.querySelector(".video-card");
-      card?.scrollIntoView({block:"center",behavior:"smooth"});
+      card?.scrollIntoView({block:"start",behavior:"smooth"});
     });
   }else{
     state.videoLargeView=false;
@@ -1505,9 +1504,6 @@ function renderVideoCard(item){
       <img loading="lazy" decoding="async" width="480" height="270" src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)} thumbnail">
       <button class="video-play-button" data-video-play="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("playVideo"))}">
         ${icon("play")||"▶"}<span>${t("playVideo")}</span>
-      </button>
-      <button class="video-stage-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("largeView"))}">
-        ${icon("arrowsMaximize")||icon("expand")}
       </button>
       <button class="video-sound-button" type="button" data-video-sound="${escapeHtml(String(item.id))}" data-sound-on-label="${escapeHtml(t("soundOn"))}" data-sound-off-label="${escapeHtml(t("soundOff"))}" aria-label="${escapeHtml(t("soundOff"))}">
         <span class="video-sound-icon" aria-hidden="true">🔊</span><span class="video-sound-label">${t("soundOff")}</span>

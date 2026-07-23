@@ -1096,14 +1096,6 @@ body.installed-phone-app.force-mobile-layout .story-bubble{scroll-snap-align:sta
 .video-sound-button:hover{background:rgba(8,31,29,.94)}
 .video-sound-button.muted{background:rgba(128,39,54,.82)}
 .video-sound-icon{font-size:15px;line-height:1}.video-sound-label{white-space:nowrap}
-.video-stage-expand{
-  position:absolute;right:10px;top:10px;z-index:7;width:36px;height:36px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.42);background:rgba(8,31,29,.78);color:#fff;backdrop-filter:blur(12px);
-  box-shadow:0 6px 22px rgba(0,0,0,.22);display:inline-flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .18s var(--ease)
-}
-.video-stage-expand:hover{background:rgba(8,31,29,.94);transform:scale(1.08)}
-.video-stage-expand .icon-svg{width:17px;height:17px}
 .youtube-stage:not(.playing) .video-sound-button{opacity:.92}
 .video-ready-label{right:auto;left:10px}
 
@@ -1127,16 +1119,16 @@ body.video-large-view .social-shell{
 body.video-large-view .feed-column{
   position:fixed!important;inset:0!important;z-index:9000!important;width:100%!important;max-width:none!important;
   height:100dvh!important;max-height:none!important;overflow-y:auto!important;overscroll-behavior-y:contain;
-  padding:42px max(12px,env(safe-area-inset-right)) 28px max(12px,env(safe-area-inset-left))!important;
-  background:var(--page);scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-gutter:auto
+  padding:58px max(12px,env(safe-area-inset-right)) 28px max(12px,env(safe-area-inset-left))!important;
+  background:var(--page);scroll-snap-type:y proximity;scrollbar-gutter:auto
 }
-body.video-large-view #feedList{width:min(820px,100%);margin:0 auto;display:grid;gap:20px}
+body.video-large-view #feedList{width:min(820px,100%);margin:0 auto;display:grid;gap:16px}
 body.video-large-view #feedList>.special-feed-head{display:none!important}
 body.video-large-view .video-card,
-body.video-large-view .feed-ad-slot{scroll-snap-align:center;scroll-margin-top:42px}
-body.video-large-view .video-card{min-height:calc(100dvh - 70px);display:flex;flex-direction:column;justify-content:center}
-body.video-large-view .video-card .youtube-stage.landscape{width:100%;max-height:76dvh;border-radius:16px!important}
-body.video-large-view .video-card .youtube-stage.portrait{height:min(76dvh,780px);max-height:none;border-radius:16px!important}
+body.video-large-view .feed-ad-slot{scroll-snap-align:start;scroll-margin-top:58px}
+body.video-large-view .video-card{min-height:calc(100dvh - 82px);display:flex;flex-direction:column;justify-content:center}
+body.video-large-view .video-card .youtube-stage.landscape{width:100%;max-height:72dvh}
+body.video-large-view .video-card .youtube-stage.portrait{height:min(72dvh,760px);max-height:none}
 .video-large-exit{
   position:fixed;z-index:9100;top:max(10px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));
   min-height:40px;padding:0 13px;border-radius:999px;background:color-mix(in srgb,var(--surface),transparent 4%);
