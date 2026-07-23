@@ -1319,12 +1319,12 @@ function islamicMoodControls(){
   return `<div class="content-mood-filter" role="group" aria-label="${state.lang==="bn"?"মুড অনুযায়ী ইসলামিক কনটেন্ট":"Islamic content by mood"}">${options.map(item=>`<button class="content-mood-chip ${state.islamicMoodFilter===item.id?"active":""}" data-islamic-mood="${item.id}">${item.emoji} ${escapeHtml(item.label)}</button>`).join("")}</div>`;
 }
 function videoLargeViewControl(){
-  return `<button class="video-large-view-control" type="button" data-video-large-view="true" aria-label="${escapeHtml(t("largeView"))}">${icon("expand")}</button>`;
+  return "";
 }
 function setVideoLargeView(enabled, focusId=""){
   const active=Boolean(enabled);
   if(active===state.videoLargeView){
-    if(active&&focusId)requestAnimationFrame(()=>document.querySelector(`.video-card[data-video-id="${CSS.escape(String(focusId))}"]`)?.scrollIntoView({block:"start",behavior:"smooth"}));
+    if(active&&focusId)requestAnimationFrame(()=>document.querySelector(`.video-card[data-video-id="${CSS.escape(String(focusId))}"]`)?.scrollIntoView({block:"start",behavior:"auto"}));
     return;
   }
   const feedColumn=$("#mainContent");
@@ -1339,13 +1339,13 @@ function setVideoLargeView(enabled, focusId=""){
       exit.className="video-large-exit";
       exit.type="button";
       exit.dataset.action="close-video-large";
-      exit.innerHTML=`${icon("minimize")}`;exit.setAttribute("aria-label", t("exitLargeView"));
+      exit.innerHTML=`✕`;
+      exit.setAttribute("aria-label", t("exitLargeView"));
       document.body.appendChild(exit);
-      renderIcons(exit);
     }
     requestAnimationFrame(()=>{
       const card=focusId?document.querySelector(`.video-card[data-video-id="${CSS.escape(String(focusId))}"]`):document.querySelector(".video-card");
-      card?.scrollIntoView({block:"start",behavior:"smooth"});
+      card?.scrollIntoView({block:"start",behavior:"auto"});
     });
   }else{
     state.videoLargeView=false;
@@ -1535,9 +1535,6 @@ function renderVideoCard(item){
         </button>
         <button class="video-compact-action" data-video-comment="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"সহমর্মিতা":"Sympathy"}">
           ${icon("comment")}<span>${commentCount>0?displayNumber(commentCount):""}</span>
-        </button>
-        <button class="video-compact-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("largeView"))}">
-          ${icon("expand")}
         </button>
       </div>
     </div>
