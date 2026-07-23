@@ -847,6 +847,8 @@ body.force-desktop-layout .post-name-row{max-width:none}
 .public-nav-link,.app-footer a,.menu-action-card{text-decoration:none;color:inherit}
 .mobile-menu-button{display:none}
 .app-footer{max-width:1440px;margin:0 auto 28px;padding:0 24px;color:var(--muted);font-size:11px}
+@media (min-width: 900px){.app-footer{display:none!important}}
+body.force-desktop-layout .app-footer{display:none!important}
 .app-footer nav{display:flex;flex-wrap:wrap;gap:8px 15px;align-items:center;margin-bottom:8px}
 .app-footer a,.app-footer button{border:0;background:transparent;padding:4px 0;color:var(--muted);font-weight:750}
 .app-footer a:hover,.app-footer button:hover{color:var(--brand)}
