@@ -1674,10 +1674,8 @@ function renderFeed(){
       .filter(node=>node.dataset.feedKey)
       .map(node=>[node.dataset.feedKey,node])
   );
-  const desiredKeys=new Set();
-
+  wrap.replaceChildren();
   descriptors.forEach((descriptor,index)=>{
-    desiredKeys.add(descriptor.key);
     let node;
     if(descriptor.kind==="ad"){
       node=existingByKey.get(descriptor.key) || createAdSlot({
@@ -1694,16 +1692,8 @@ function renderFeed(){
       node=renderPostCard(descriptor.post);
       node.dataset.feedKey=descriptor.key;
       node.style.animation=`modalIn .45s var(--ease) ${Math.min(descriptor.index,6)*35}ms both`;
-      const previous=existingByKey.get(descriptor.key);
-      if(previous)previous.replaceWith(node);
     }
-
-    const current=wrap.children[index];
-    if(current!==node)wrap.insertBefore(node,current||null);
-  });
-
-  [...wrap.children].forEach(node=>{
-    if(node.dataset.feedKey && !desiredKeys.has(node.dataset.feedKey))node.remove();
+    wrap.appendChild(node);
   });
 
   $("#loadMore").hidden=visible.length>=list.length;
