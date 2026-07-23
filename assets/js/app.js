@@ -1279,41 +1279,97 @@ function formatExpiry(expiresAt){
   return state.lang==="bn"?`${toBn(days)} দিনে`:`${days} days`;
 }
 
-function selectedIslamicMood(){
-  if(state.islamicMoodFilter==="all")return "";
-  if(state.islamicMoodFilter==="preferred")return effectivePreferredMood();
-  return CORE_MOODS.includes(state.islamicMoodFilter)?state.islamicMoodFilter:"";
+function getIslamicTextMoodState(){
+  state.islamicTextMoodState = state.islamicTextMoodState || store.get("islamic-text-mood-state", {
+    tab: "all",
+    filterMood: ""
+  });
+  return state.islamicTextMoodState;
 }
+
+function selectedIslamicMood(){
+  const st = getIslamicTextMoodState();
+  if (st.tab === "all") return "";
+  if (st.tab === "my-mood") {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayCheckin = (state.checkins || []).find(c => c.date === todayStr);
+    return todayCheckin?.mood || state.preferredMood || effectivePreferredMood();
+  }
+  if (st.tab === "filter" && st.filterMood) return st.filterMood;
+  return "";
+}
+
 function preferredContentMood(section=state.feedMode){
   if(section==="islamic")return selectedIslamicMood();
   return state.moodFilter!=="all" ? state.moodFilter : effectivePreferredMood();
 }
+
 function contentLikeCount(item,bucket){
   return Number(item.likes||0)+(bucket[String(item.id)]?1:0);
 }
 function islamicCommentCount(item){return (state.userComments[String(item.id)]||[]).length;}
 function islamicRankScore(item){return contentLikeCount(item,state.islamicLikes)*2+islamicCommentCount(item)*3;}
+
 function sortIslamicContent(items){
-  const preferred=selectedIslamicMood();
-  return [...items].sort((a,b)=>{
-    const am=preferred&&a.moods?.includes(preferred)?1:0,bm=preferred&&b.moods?.includes(preferred)?1:0;
-    return bm-am||islamicRankScore(b)-islamicRankScore(a)||String(a.id).localeCompare(String(b.id));
-  });
+  const st = getIslamicTextMoodState();
+
+  if (st.tab === "my-mood") {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayCheckin = (state.checkins || []).find(c => c.date === todayStr);
+    const targetMood = todayCheckin?.mood || state.preferredMood || effectivePreferredMood();
+
+    if (targetMood) {
+      const matching = items.filter(item => item.moods?.includes(targetMood));
+      const remaining = items.filter(item => !item.moods?.includes(targetMood));
+
+      matching.sort((a, b) => islamicRankScore(b) - islamicRankScore(a));
+      remaining.sort((a, b) => islamicRankScore(b) - islamicRankScore(a));
+
+      return [...matching, ...remaining];
+    }
+  } else if (st.tab === "filter" && st.filterMood) {
+    // Primary: items matching selected filterMood
+    const primary = items.filter(item => item.moods?.includes(st.filterMood));
+    primary.sort((a, b) => islamicRankScore(b) - islamicRankScore(a));
+
+    // Secondary: items matching user's 30-day dashboard mood
+    const dashboardMood = effectivePreferredMood();
+    const secondary = items.filter(item => dashboardMood && item.moods?.includes(dashboardMood) && !primary.includes(item));
+    secondary.sort((a, b) => islamicRankScore(b) - islamicRankScore(a));
+
+    // Remaining items sorted by ranking score
+    const remaining = items.filter(item => !primary.includes(item) && !secondary.includes(item));
+    remaining.sort((a, b) => islamicRankScore(b) - islamicRankScore(a));
+
+    return [...primary, ...secondary, ...remaining];
+  }
+
+  // Default: tab === "all" -> Sorted by ranking score (likes*2 + comments*3) across all items
+  return [...items].sort((a, b) => islamicRankScore(b) - islamicRankScore(a) || String(a.id).localeCompare(String(b.id)));
 }
-function sortVideoContent(items){
-  const preferred=preferredContentMood(state.feedMode==="islamic"?"islamic":"video");
-  return [...items].sort((a,b)=>{
-    const am=preferred&&a.moods?.includes(preferred)?1:0,bm=preferred&&b.moods?.includes(preferred)?1:0;
-    return bm-am||contentLikeCount(b,state.videoLikes)-contentLikeCount(a,state.videoLikes)||String(a.id).localeCompare(String(b.id));
-  });
-}
+
 function islamicMoodControls(){
-  const options=[
-    {id:"preferred",label:state.lang==="bn"?"আমার মুড":"My mood",emoji:"✨"},
-    {id:"all",label:state.lang==="bn"?"সব মুড":"All moods",emoji:"🌐"},
-    ...CORE_MOODS.map(id=>({id,label:moodName(id),emoji:moods[id]?.emoji||"💬"}))
-  ];
-  return `<div class="content-mood-filter" role="group" aria-label="${state.lang==="bn"?"মুড অনুযায়ী ইসলামিক কনটেন্ট":"Islamic content by mood"}">${options.map(item=>`<button class="content-mood-chip ${state.islamicMoodFilter===item.id?"active":""}" data-islamic-mood="${item.id}">${item.emoji} ${escapeHtml(item.label)}</button>`).join("")}</div>`;
+  const st = getIslamicTextMoodState();
+  const filterLabel = st.filterMood ? `${moods[st.filterMood]?.emoji || "⚙️"} ${moodName(st.filterMood)}` : (state.lang==="bn" ? "ফিল্টার ⚙️" : "Filter ⚙️");
+
+  return `<div class="content-mood-filter" role="tablist" aria-label="${state.lang==="bn"?"মুড ফিল্টার":"Mood filter"}">
+    <button class="content-mood-chip ${st.tab==="all"?"active":""}" data-islamic-text-mood-tab="all">${state.lang==="bn"?"সকল (All)":"All"}</button>
+    <button class="content-mood-chip ${st.tab==="my-mood"?"active":""}" data-islamic-text-mood-tab="my-mood">✨ ${state.lang==="bn"?"আমার মুড (My mood)":"My mood"}</button>
+    <button class="content-mood-chip ${st.tab==="filter"?"active":""}" data-islamic-text-mood-tab="filter">${escapeHtml(filterLabel)}</button>
+  </div>`;
+}
+
+function openIslamicTextMoodFilterModal(){
+  const st = getIslamicTextMoodState();
+  const options = CORE_MOODS.map(id => ({ id, label: moodName(id), emoji: moods[id]?.emoji || "💬" }));
+
+  setModal(`${modalHeader(state.lang==="bn"?"মুড বেছে নিন":"Select mood")}<div class="modal-body">
+    <div class="mini-moods">
+      ${options.map(m => `<button class="mini-mood ${st.filterMood===m.id?"active":""}" data-select-islamic-text-filter-mood="${m.id}">
+        <span>${m.emoji}</span><small>${escapeHtml(m.label)}</small>
+      </button>`).join("")}
+    </div>
+  </div>`);
 }
 function videoLargeViewControl(){
   return `<button class="video-large-view-control" type="button" data-video-large-view="true" aria-label="${escapeHtml(t("largeView"))}">${icon("expand")}</button>`;
@@ -2916,6 +2972,24 @@ document.addEventListener("click",e=>{
     }else{
       sec==="islamic"?renderIslamicFeed():renderVideoFeed();
     }
+  if(target.dataset.islamicTextMoodTab){
+    const st = getIslamicTextMoodState();
+    st.tab = target.dataset.islamicTextMoodTab;
+    store.set("islamic-text-mood-state", st);
+    if(st.tab === "filter"){
+      openIslamicTextMoodFilterModal();
+    }else{
+      renderIslamicFeed();
+    }
+    return;
+  }
+  if(target.dataset.selectIslamicTextFilterMood){
+    const st = getIslamicTextMoodState();
+    st.tab = "filter";
+    st.filterMood = target.dataset.selectIslamicTextFilterMood;
+    store.set("islamic-text-mood-state", st);
+    closeModal();
+    renderIslamicFeed();
     return;
   }
   if(target.dataset.nav){e.preventDefault();navigate(target.dataset.nav);return}

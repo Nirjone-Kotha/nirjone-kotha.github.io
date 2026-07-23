@@ -165,9 +165,10 @@ function editionText(value,fallback=""){
   return String(text||fallback).trim();
 }
 
-export async function loadQuranItems(mood="", limit=16){
-  const seeds=moodFirst(quranSeeds,mood).slice(0,limit);
-  return Promise.all(seeds.map(async seed=>{
+export async function loadQuranItems(mood="", limit=50){
+  const seeds=mood?moodFirst(quranSeeds,mood):quranSeeds;
+  const items=seeds.slice(0,limit);
+  return Promise.all(items.map(async seed=>{
     try{
       const [ar,bn,en]=await Promise.all([
         fetchJsonWithTimeout(editionUrl("ara-quranuthmanihaf",seed.surah,seed.ayah)),
@@ -197,8 +198,8 @@ function flattenRemote(value){
   return [];
 }
 
-export async function loadHadithItems(mood="", limit=12){
-  const local=moodFirst(hadithSeeds,mood).slice(0,limit);
+export async function loadHadithItems(mood="", limit=50){
+  const local=(mood?moodFirst(hadithSeeds,mood):hadithSeeds).slice(0,limit);
   try{
     const remote=flattenRemote(await fetchJsonWithTimeout(HADITH_SAMPLE_URL));
     return local.map(seed=>{
@@ -212,8 +213,8 @@ export async function loadHadithItems(mood="", limit=12){
   }catch{return local}
 }
 
-export async function loadDuaItems(mood="", limit=12){
-  const local=moodFirst(duaSeeds,mood).slice(0,limit);
+export async function loadDuaItems(mood="", limit=50){
+  const local=(mood?moodFirst(duaSeeds,mood):duaSeeds).slice(0,limit);
   try{
     const remote=flattenRemote(await fetchJsonWithTimeout(DUA_DATA_URL));
     return local.map(seed=>{
