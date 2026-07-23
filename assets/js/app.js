@@ -1179,6 +1179,31 @@ function updateNav(){
   }
 }
 
+const POST_EMOJIS = [
+  { key: "hug", emoji: "🫂", bn: "জড়িয়ে ধরা", en: "Hug" },
+  { key: "love", emoji: "🤍", bn: "ভালোবাসা", en: "Love" },
+  { key: "hands", emoji: "🫶", bn: "সহমর্মিতা", en: "Empathy" },
+  { key: "pleading", emoji: "🥺", bn: "অনুভূতি বুঝি", en: "Care" },
+  { key: "dua", emoji: "🤲", bn: "দোয়া", en: "Dua" },
+  { key: "pray", emoji: "🙏", bn: "প্রার্থনা", en: "Prayers" },
+  { key: "leaf", emoji: "🌿", bn: "শান্তি", en: "Peace" },
+  { key: "star", emoji: "✨", bn: "আশা", en: "Hope" }
+];
+
+function sortedPostEmojis(postMood) {
+  const priorityMap = {
+    "grief": ["hug", "love", "pleading", "dua", "pray", "hands", "leaf", "star"],
+    "lonely": ["hug", "hands", "love", "pleading", "star", "dua", "pray", "leaf"],
+    "overwhelmed": ["hug", "leaf", "dua", "hands", "star", "love", "pray", "pleading"],
+    "anxious": ["leaf", "hug", "dua", "pray", "hands", "love", "star", "pleading"],
+    "heartbroken": ["love", "hug", "pleading", "hands", "star", "dua", "leaf", "pray"],
+    "hopeful": ["star", "hands", "leaf", "love", "hug", "dua", "pray", "pleading"],
+    "grateful": ["hands", "star", "love", "leaf", "pray", "hug", "dua", "pleading"]
+  };
+  const order = priorityMap[postMood] || ["hug", "love", "hands", "pleading", "dua", "pray", "leaf", "star"];
+  return [...POST_EMOJIS].sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
+}
+
 function renderPostCard(p){
   const name=postAlias(p), saved=state.saved.has(String(p.id));
   const followKey=voiceKey(p),following=state.following.has(followKey)||p.isFollowing;
@@ -1191,6 +1216,10 @@ function renderPostCard(p){
   if(p.need)labels.push(`<span class="need-chip">${escapeHtml(needName(p.need,p.customNeed))}</span>`);
   if(p.topic)labels.push(`<span class="topic-chip">#${escapeHtml(topicName(p.topic,p.customTopic))}</span>`);
   const expiry=p.isUser?` · ${t("expiresIn")} ${formatExpiry(p.expiresAt)}`:"";
+
+  const emojis = sortedPostEmojis(p.mood);
+  const totalReactions = POST_EMOJIS.reduce((sum, e) => sum + (p.reactions?.[e.key] || 0) + (state.reactions[`${p.id}:${e.key}`] ? 1 : 0), 0) + reactionCount(p, "hear");
+
   article.innerHTML=`
     <header class="post-head">
       <div class="post-person"><span class="post-avatar">${m.emoji||"💬"}</span><span class="post-meta">
@@ -1200,10 +1229,17 @@ function renderPostCard(p){
     </header>
     ${labels.length?`<div class="post-labels">${labels.join("")}</div>`:""}
     <p class="post-text">${escapeHtml(userContentText(p))}</p>
-    <div class="post-support"><div class="support-cluster"><span class="support-face">🫶</span><span class="support-face">🌱</span><span class="support-face">🫂</span></div><span class="support-summary">${formatCompact(reactionCount(p,"hear")+reactionCount(p,"with")+reactionCount(p,"strength")+reactionCount(p,"same"))} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"মন্তব্য":"comments"} · #${displayNumber(Math.round(postRankScore(p)))}</span></div>
+    <div class="post-support"><div class="support-cluster"><span class="support-face">🫶</span><span class="support-face">🌱</span><span class="support-face">🫂</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"} · #${displayNumber(Math.round(postRankScore(p)))}</span></div>
+    <div class="post-emoji-reactions" aria-label="Express empathy">
+      ${emojis.map(e => {
+        const key = `${p.id}:${e.key}`;
+        const count = (p.reactions?.[e.key] || 0) + (state.reactions[key] ? 1 : 0);
+        const reacted = Boolean(state.reactions[key]);
+        return `<button class="emoji-react-chip ${reacted ? "reacted" : ""}" data-react="${key}" title="${state.lang==="bn"?e.bn:e.en}"><span>${e.emoji}</span>${count > 0 ? `<i class="count">${displayNumber(count)}</i>` : ""}</button>`;
+      }).join("")}
+    </div>
     <div class="post-actions">
-      <button class="post-action ${state.reactions[`${p.id}:hear`]?"reacted":""}" data-react="${p.id}:hear">${icon("ear")}<span>${state.lang==="bn"?"আমি শুনছি":"I hear you"}</span><i class="count">${displayNumber(reactionCount(p,"hear"))}</i></button>
-      <button class="post-action" data-comments="${p.id}">${icon("message")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(commentsCount)}</i></button>
+      <button class="post-action" data-comments="${p.id}">${icon("message")}<span>${state.lang==="bn"?"সহমর্মিতা দিন":"Give sympathy"}</span><i class="count">${displayNumber(commentsCount)}</i></button>
       <button class="post-action ${saved?"saved":""}" data-save="${p.id}">${icon("bookmark")}<span>${saved?t("saved"):t("savedCount")}</span></button>
       <button class="post-action" data-share="${p.id}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button>
     </div>`;
@@ -1308,7 +1344,7 @@ function renderIslamicTextCard(item){
   <p class="post-text islamic-translation" lang="${translationLang}">${escapeHtml(translation)}</p>
   ${item.audio?`<audio class="quran-audio" controls preload="none" src="${escapeHtml(item.audio)}">${escapeHtml(t("sourceUnavailable"))}</audio>`:`<button class="listen-arabic" data-speak-arabic="${encodeURIComponent(item.arabic||"")}">${icon("volume")} ${t("listen")}</button>`}
   <div class="post-support islamic-rank-summary"><div class="support-cluster"><span class="support-face">❤️</span><span class="support-face">💬</span></div><span class="support-summary">${displayNumber(contentLikeCount(item,state.islamicLikes))} ${state.lang==="bn"?"ভালোবাসা":"likes"} · ${displayNumber(islamicCommentCount(item))} ${state.lang==="bn"?"মন্তব্য":"comments"} · #${displayNumber(islamicRankScore(item))}</span></div>
-  <div class="post-actions islamic-actions"><button class="post-action ${liked?"reacted":""}" data-islamic-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${t("love")}</span><i class="count">${displayNumber(contentLikeCount(item,state.islamicLikes))}</i></button><button class="post-action" data-islamic-comments="${escapeHtml(String(item.id))}">${icon("message")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(islamicCommentCount(item))}</i></button><button class="post-action" data-islamic-share="${escapeHtml(String(item.id))}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button></div>`;
+  <div class="post-actions islamic-actions"><button class="post-action ${liked?"reacted":""}" data-islamic-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${t("love")}</span><i class="count">${displayNumber(contentLikeCount(item,state.islamicLikes))}</i></button><button class="post-action" data-islamic-comments="${escapeHtml(String(item.id))}">${icon("message")}<span>${state.lang==="bn"?"সহমর্মিতা দিন":"Give sympathy"}</span><i class="count">${displayNumber(islamicCommentCount(item))}</i></button><button class="post-action" data-islamic-share="${escapeHtml(String(item.id))}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button></div>`;
   return article;
 }
 async function renderIslamicFeed(){
@@ -1373,7 +1409,7 @@ function renderVideoCard(item){
   <div class="post-support"><div class="support-cluster"><span class="support-face">❤️</span></div><span class="support-summary">${displayNumber(contentLikeCount(item,state.videoLikes))} ${state.lang==="bn"?"লাইক":"likes"}</span></div>
   <div class="post-actions video-actions">
     <button class="post-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${state.lang==="bn"?"লাইক":"Like"}</span><i class="count">${displayNumber(contentLikeCount(item,state.videoLikes))}</i></button>
-    <button class="post-action" data-video-comment="${escapeHtml(String(item.id))}">${icon("comment")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(commentBucket("video",item.id).length)}</i></button>
+    <button class="post-action" data-video-comment="${escapeHtml(String(item.id))}">${icon("comment")}<span>${state.lang==="bn"?"সহমর্মিতা দিন":"Give sympathy"}</span><i class="count">${displayNumber(commentBucket("video",item.id).length)}</i></button>
   </div>`;
   return article;
 }
@@ -1546,14 +1582,50 @@ function openComposer(postId=null){
   if(editing){state.draftMood=editing.mood||"";state.draftNeed=editing.need||"";state.draftTopic=editing.topic||"life";state.customMood=editing.customMood||"";state.customNeed=editing.customNeed||"";state.customTopic=editing.customTopic||"";state.draftText=editing.content||"";}
   const moodButtons=[`<button class="choice-chip ${!state.draftMood?"active":""}" data-draft-mood="__skip__">${t("skip")}</button>`,...Object.entries(moods).map(([k,m])=>`<button class="choice-chip ${state.draftMood===k?"active":""}" data-draft-mood="${k}">${m.emoji} ${escapeHtml(localText(m))}</button>`)].join("");
   const needButtons=[`<button class="choice-chip ${!state.draftNeed?"active":""}" data-draft-need="__skip__">${t("skip")}</button>`,...Object.entries(needMeta).map(([k,n])=>`<button class="choice-chip ${state.draftNeed===k?"active":""}" data-draft-need="${k}">${escapeHtml(localText(n))}</button>`)].join("");
-  setModal(`${modalHeader(editing?t("editPost"):t("postTitle"))}<div class="modal-body">
+
+  const moodPreview = state.draftMood ? (moods[state.draftMood] ? `${moods[state.draftMood].emoji} ${localText(moods[state.draftMood])}` : (state.customMood || (state.lang==="bn"?"অন্যান্য":"Other"))) : (state.lang==="bn"?"বাছাই করতে চাপুন ▼":"Tap to choose ▼");
+  const needPreview = state.draftNeed ? (needMeta[state.draftNeed] ? localText(needMeta[state.draftNeed]) : (state.customNeed || (state.lang==="bn"?"অন্যান্য":"Other"))) : (state.lang==="bn"?"বাছাই করতে চাপুন ▼":"Tap to choose ▼");
+  const topicPreview = state.draftTopic ? `#${topics[state.draftTopic] ? localText(topics[state.draftTopic]) : (state.customTopic || state.draftTopic)}` : (state.lang==="bn"?"বাছাই করতে চাপুন ▼":"Tap to choose ▼");
+
+  setModal(`${modalHeader(editing?t("editPost"):t("postTitle"))}<div class="modal-body compose-modal-body">
     <div class="compose-profile"><span class="profile-orbit">${initials(alias())}</span><div><strong>${escapeHtml(alias())}</strong><small>${icon("lock")} ${state.lang==="bn"?"শুধু আপনার পছন্দের নামটি দেখানো হবে":"Only your chosen display name will be shown"}</small></div></div>
-    <label class="control-label">${t("moodLabel")} <small>${state.lang==="bn"?"(ইচ্ছা করলে বাদ দিতে পারেন)":"(optional)"}</small></label><div class="choice-grid" id="composeMoods">${moodButtons}</div>
-    <input class="custom-choice-input" id="customMoodInput" maxlength="60" value="${escapeHtml(state.customMood)}" placeholder="${escapeHtml(t("customMoodPlaceholder"))}" ${state.draftMood==="other"?"":"hidden"} />
-    <label class="control-label">${t("needLabel")} <small>${state.lang==="bn"?"(ইচ্ছা করলে বাদ দিতে পারেন)":"(optional)"}</small></label><div class="choice-grid" id="composeNeeds">${needButtons}</div>
-    <input class="custom-choice-input" id="customNeedInput" maxlength="80" value="${escapeHtml(state.customNeed)}" placeholder="${escapeHtml(t("customSupportPlaceholder"))}" ${state.draftNeed==="other"?"":"hidden"} />
-    <label class="control-label">${t("topicLabel")}</label><div class="choice-grid" id="composeTopics">${Object.entries(topics).filter(([k])=>k!=="all").map(([k,n])=>`<button class="choice-chip ${state.draftTopic===k?"active":""}" data-draft-topic="${k}">#${escapeHtml(localText(n))}</button>`).join("")}</div>
-    <input class="custom-choice-input" id="customTopicInput" maxlength="60" value="${escapeHtml(state.customTopic)}" placeholder="${escapeHtml(t("customTopicPlaceholder"))}" ${state.draftTopic==="other"?"":"hidden"} />
+
+    <details class="compose-accordion" ${editing || state.draftMood ? "open" : ""}>
+      <summary class="accordion-summary">
+        <span class="accordion-title"><strong>${t("moodLabel")}</strong> <small>${state.lang==="bn"?"(অপশন)":"(option)"}</small></span>
+        <span class="accordion-preview" id="composeMoodPreview">${escapeHtml(moodPreview)}</span>
+        <span class="accordion-icon">${icon("chevron-down")}</span>
+      </summary>
+      <div class="accordion-body">
+        <div class="choice-grid" id="composeMoods">${moodButtons}</div>
+        <input class="custom-choice-input" id="customMoodInput" maxlength="60" value="${escapeHtml(state.customMood)}" placeholder="${escapeHtml(t("customMoodPlaceholder"))}" ${state.draftMood==="other"?"":"hidden"} />
+      </div>
+    </details>
+
+    <details class="compose-accordion" ${editing || state.draftNeed ? "open" : ""}>
+      <summary class="accordion-summary">
+        <span class="accordion-title"><strong>${t("needLabel")}</strong> <small>${state.lang==="bn"?"(অপশন)":"(option)"}</small></span>
+        <span class="accordion-preview" id="composeNeedPreview">${escapeHtml(needPreview)}</span>
+        <span class="accordion-icon">${icon("chevron-down")}</span>
+      </summary>
+      <div class="accordion-body">
+        <div class="choice-grid" id="composeNeeds">${needButtons}</div>
+        <input class="custom-choice-input" id="customNeedInput" maxlength="80" value="${escapeHtml(state.customNeed)}" placeholder="${escapeHtml(t("customSupportPlaceholder"))}" ${state.draftNeed==="other"?"":"hidden"} />
+      </div>
+    </details>
+
+    <details class="compose-accordion" ${editing || state.draftTopic ? "open" : ""}>
+      <summary class="accordion-summary">
+        <span class="accordion-title"><strong>${t("topicLabel")}</strong> <small>${state.lang==="bn"?"(অপশন)":"(option)"}</small></span>
+        <span class="accordion-preview" id="composeTopicPreview">${escapeHtml(topicPreview)}</span>
+        <span class="accordion-icon">${icon("chevron-down")}</span>
+      </summary>
+      <div class="accordion-body">
+        <div class="choice-grid" id="composeTopics">${Object.entries(topics).filter(([k])=>k!=="all").map(([k,n])=>`<button class="choice-chip ${state.draftTopic===k?"active":""}" data-draft-topic="${k}">#${escapeHtml(localText(n))}</button>`).join("")}</div>
+        <input class="custom-choice-input" id="customTopicInput" maxlength="60" value="${escapeHtml(state.customTopic)}" placeholder="${escapeHtml(t("customTopicPlaceholder"))}" ${state.draftTopic==="other"?"":"hidden"} />
+      </div>
+    </details>
+
     <label class="control-label" for="composeText">${t("write")}</label><textarea class="compose-textarea" id="composeText" maxlength="4000" placeholder="${escapeHtml(t("postPlaceholder"))}">${escapeHtml(state.draftText)}</textarea>
     <p class="compose-whisper" id="composeWhisper">${escapeHtml(t("whisper"))}</p><div class="privacy-alert" id="privacyAlert" hidden>${icon("shield")} ${escapeHtml(t("privacy"))}</div>
     <div class="compose-footer"><span class="char-count"><b id="composeCount">${displayNumber(state.draftText.length)}</b>/4000</span><div><button class="secondary-button" data-action="close-modal">${t("cancel")}</button> <button class="primary-button" data-action="submit-post">${icon("send")} ${editing?t("editPost"):t("postNow")}</button></div></div>
@@ -1613,10 +1685,10 @@ function openComments(id,kind="post"){
   const base=kind==="post"?sampleComments.slice(0,Math.min(3,subject.post?.comments||1)).map((c,i)=>({...c,id:`sample-${id}-${i}`,empathy:Math.max(2,(subject.post?.comments||1)*4-i*2)})):[];
   const own=commentBucket(kind,id).map((c,i)=>({...c,id:c.id||`own-${id}-${i}`,userGenerated:true,empathy:c.empathy||0}));
   const comments=[...base,...own].sort((a,b)=>commentRank(b)-commentRank(a));
-  setModal(`${modalHeader(t("comments"))}<div class="modal-body"><div class="detail-post" style="${moodStyle(subject.mood||"other")}"><div class="post-person"><span class="post-avatar">${subject.avatar}</span><span class="post-meta"><strong>${escapeHtml(subject.name)}</strong><small>${escapeHtml(subject.time)}</small></span></div><p class="post-text">${escapeHtml(subject.text)}</p></div>
+  setModal(`${modalHeader(state.lang==="bn"?"সহমর্মিতা প্রকাশ করুন":"Give sympathy")}<div class="modal-body"><div class="detail-post" style="${moodStyle(subject.mood||"other")}"><div class="post-person"><span class="post-avatar">${subject.avatar}</span><span class="post-meta"><strong>${escapeHtml(subject.name)}</strong><small>${escapeHtml(subject.time)}</small></span></div><p class="post-text">${escapeHtml(subject.text)}</p></div>
     ${kind==="post"?`<div class="quick-replies">${supportTemplates.slice(0,4).map((q,i)=>`<button class="quick-reply" data-quick-reply="${i}">${escapeHtml(localText(q))}</button>`).join("")}</div>`:""}
-    <div class="comment-list">${comments.length?comments.map(c=>`<article class="comment-item"><span class="comment-avatar">${initials(commentAlias(c))}</span><div class="comment-bubble"><strong>${escapeHtml(commentAlias(c))}</strong><p>${escapeHtml(commentContentText(c))}</p><button class="comment-empathy ${state.commentReactions[String(c.id)]?"active":""}" data-comment-react="${escapeHtml(String(c.id))}">🫶 ${t("empathy")} · ${displayNumber(commentRank(c))}</button></div></article>`).join(""):`<p class="profile-empty">${state.lang==="bn"?"এখনো কোনো মন্তব্য নেই। প্রথম মন্তব্যটি লিখুন।":"No comments yet. Start the conversation."}</p>`}</div>
-    <div class="comment-compose"><textarea class="comment-textarea" id="commentText" maxlength="400" placeholder="${escapeHtml(t("writeReply"))}"></textarea><button class="primary-button" data-action="submit-comment">${icon("send")}</button></div><div class="gentle-alert">${state.lang==="bn"?"সম্মানজনক ভাষায় লিখুন। লিংক, স্পষ্ট যৌন বা মাদক/আসক্তির বিষয় লেখা যাবে না।":"Be respectful. Links, explicit sexual content, and addiction/substance content are not allowed."}</div></div>`);
+    <div class="comment-list">${comments.length?comments.map(c=>`<article class="comment-item"><span class="comment-avatar">${initials(commentAlias(c))}</span><div class="comment-bubble"><strong>${escapeHtml(commentAlias(c))}</strong><p>${escapeHtml(commentContentText(c))}</p><button class="comment-empathy ${state.commentReactions[String(c.id)]?"active":""}" data-comment-react="${escapeHtml(String(c.id))}">🫶 ${t("empathy")} · ${displayNumber(commentRank(c))}</button></div></article>`).join(""):`<p class="profile-empty">${state.lang==="bn"?"এখনো কোনো বার্তা নেই। আপনার সহমর্মিতা প্রকাশ করুন।":"No messages yet. Be the first to give sympathy."}</p>`}</div>
+    <div class="comment-compose"><textarea class="comment-textarea" id="commentText" maxlength="400" placeholder="${escapeHtml(state.lang==="bn"?"সহমর্মিতাপূর্ণ বার্তা লিখুন...":"Write a sympathetic message...")}"></textarea><button class="primary-button" data-action="submit-comment">${icon("send")}</button></div><div class="gentle-alert">${state.lang==="bn"?"সম্মানজনক ভাষায় লিখুন। লিংক, স্পষ্ট যৌন বা মাদক/আসক্তির বিষয় লেখা যাবে না।":"Be respectful. Links, explicit sexual content, and addiction/substance content are not allowed."}</div></div>`);
 }
 function submitComment(){
   const el=$("#commentText"),text=el.value.trim();if(!text)return;const validation=validateCommunityText(text);
@@ -1796,7 +1868,11 @@ function updateMomentPublishButton(){
   const button=$("#momentPublishButton");if(!button)return;
   const text=String($("#momentTextInput")?.value||"").trim();
   const ready=state.momentMode==="mood"?Boolean(state.momentMoodId):Boolean(text);
+  button.textContent = "Share story";
   button.hidden=!ready;button.disabled=!ready;
+  if(ready){
+    try{ button.scrollIntoView({behavior:"smooth",block:"nearest"}); }catch{}
+  }
   const preview=$("#momentSelectedPreview");
   if(preview){const mood=momentMoods.find(item=>item.id===state.momentMoodId);preview.hidden=!mood;preview.innerHTML=mood?`<span>${mood.emoji}</span><strong>${escapeHtml(localText(mood))}</strong>`:"";}
 }
@@ -1805,7 +1881,7 @@ function renderMomentMoodChoices(){
 }
 function openMomentComposer(){
   state.momentMode="text";state.momentMoodId="";state.momentSearch="";
-  setModal(`${modalHeader(t("momentTitle"))}<div class="modal-body story-composer"><p class="modal-intro">${t("momentCopy")}</p><div class="moment-mode-tabs"><button class="choice-chip active" data-moment-mode="text">${t("momentText")}</button><button class="choice-chip" data-moment-mode="mood">${t("momentMood")}</button></div><section id="momentTextPane"><textarea id="momentTextInput" class="compose-textarea" maxlength="280" placeholder="${escapeHtml(t("momentPlaceholder"))}"></textarea></section><section id="momentMoodPane" hidden><input id="momentMoodSearch" class="custom-choice-input" type="search" placeholder="${escapeHtml(t("findMood"))}"><div id="momentSelectedPreview" class="moment-selected-preview" hidden></div><div id="momentMoodChoices" class="moment-mood-grid"></div></section><button id="momentPublishButton" class="primary-button story-publish-button" style="width:100%;margin-top:16px" data-action="submit-moment" hidden disabled>${t("publishMoment")}</button><small class="moment-disclaimer">${t("storyRank")} · ${state.lang==="bn"?"স্টোরিটি ৪৮ ঘণ্টা পর স্বয়ংক্রিয়ভাবে সরে যাবে। লিংক ও নিষিদ্ধ সংবেদনশীল বিষয় লেখা যাবে না।":"The story disappears automatically after 48 hours. Links and restricted sensitive content are not allowed."}</small></div>`);renderMomentMoodChoices();
+  setModal(`${modalHeader(t("momentTitle"))}<div class="modal-body story-composer"><p class="modal-intro">${t("momentCopy")}</p><div class="moment-mode-tabs"><button class="choice-chip active" data-moment-mode="text">${t("momentText")}</button><button class="choice-chip" data-moment-mode="mood">${t("momentMood")}</button></div><section id="momentTextPane"><textarea id="momentTextInput" class="compose-textarea" maxlength="280" placeholder="${escapeHtml(t("momentPlaceholder"))}"></textarea></section><section id="momentMoodPane" hidden><input id="momentMoodSearch" class="custom-choice-input" type="search" placeholder="${escapeHtml(t("findMood"))}"><div id="momentSelectedPreview" class="moment-selected-preview" hidden></div><div id="momentMoodChoices" class="moment-mood-grid"></div></section><button id="momentPublishButton" class="primary-button story-publish-button" style="width:100%;margin-top:16px" data-action="submit-moment" hidden disabled>Share story</button><small class="moment-disclaimer">${t("storyRank")} · ${state.lang==="bn"?"স্টোরিটি ৪৮ ঘণ্টা পর স্বয়ংক্রিয়ভাবে সরে যাবে। লিংক ও নিষিদ্ধ সংবেদনশীল বিষয় লেখা যাবে না।":"The story disappears automatically after 48 hours. Links and restricted sensitive content are not allowed."}</small></div>`);renderMomentMoodChoices();
 }
 function submitMoment(){
   const text=String($("#momentTextInput")?.value||"").trim(),mood=momentMoods.find(item=>item.id===state.momentMoodId);const content=state.momentMode==="text"?text:"";
@@ -1866,7 +1942,7 @@ function openAppMenu(){
   const links=[
     ["about",t("aboutApp"),"book"],["contact",t("contactUs"),"mail"],["community-guidelines",state.lang==="bn"?"কমিউনিটি নির্দেশিকা":"Community guidelines","shield"],["safety",state.lang==="bn"?"নিরাপত্তা তথ্য":"Safety information","shield"],["privacy",state.lang==="bn"?"গোপনীয়তা":"Privacy","lock"],["resources",state.lang==="bn"?"রিসোর্স":"Resources","sparkles"]
   ];
-  setDrawer(`${drawerHeader(t("appMenuTitle"))}<div class="drawer-body app-info-menu"><button class="menu-action-card" data-action="contact-us">${icon("mail")}<span><strong>${t("contactUs")}</strong><small>${t("contactIntro")}</small></span></button><button class="menu-action-card" data-action="cookie-settings">${icon("sliders")}<span><strong>${t("cookieSettings")}</strong><small>${t("cookieSettingsCopy")}</small></span></button><nav aria-label="${t("publicPages")}">${links.map(([path,label,ico])=>`<a class="menu-action-card" href="${localizedPath(state.lang,path)}">${icon(ico)}<span><strong>${escapeHtml(label)}</strong><small>${t("openPublicPage")}</small></span></a>`).join("")}</nav></div>`);
+  setDrawer(`${drawerHeader(t("appMenuTitle"))}<div class="drawer-body app-info-menu"><button class="menu-action-card" data-nav="calm">${icon("sparkles")}<span><strong>${state.lang==="bn"?"ক্যালম স্পেস (শান্ত রুম)":"Calm space & Mindful tools"}</strong><small>${state.lang==="bn"?"শ্বাস ও রিলাক্সেশন সরঞ্জাম":"Breathing & Relaxation tools"}</small></span></button><button class="menu-action-card" data-action="contact-us">${icon("mail")}<span><strong>${t("contactUs")}</strong><small>${t("contactIntro")}</small></span></button><button class="menu-action-card" data-action="cookie-settings">${icon("sliders")}<span><strong>${t("cookieSettings")}</strong><small>${t("cookieSettingsCopy")}</small></span></button><nav aria-label="${t("publicPages")}">${links.map(([path,label,ico])=>`<a class="menu-action-card" href="${localizedPath(state.lang,path)}">${icon(ico)}<span><strong>${escapeHtml(label)}</strong><small>${t("openPublicPage")}</small></span></a>`).join("")}</nav></div>`);
 }
 function startResetTimer(){
   clearInterval(state.resetTimer);state.resetSeconds=60;

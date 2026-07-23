@@ -1227,3 +1227,103 @@ body.force-mobile-layout .direct-safety-hero{width:100%;padding:24px 16px 8px}
   .identity-account-icon{width:42px;height:42px}
   .identity-account-card .secondary-button{grid-column:1/-1;width:100%}
 }
+
+/* V6.3.1 — Post composer accordions, emoji reactions, and calm space enhancements */
+.compose-accordion{
+  border:1px solid var(--line);
+  border-radius:16px;
+  margin-bottom:11px;
+  overflow:hidden;
+  background:var(--surface);
+  transition:border-color .18s var(--ease), box-shadow .18s var(--ease);
+}
+.compose-accordion[open]{
+  border-color:color-mix(in srgb,var(--brand),transparent 55%);
+  box-shadow:0 6px 20px rgba(0,0,0,0.04);
+}
+.accordion-summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 15px;
+  cursor:pointer;
+  user-select:none;
+  font-weight:700;
+  font-size:13px;
+  color:var(--text);
+  gap:8px;
+}
+.accordion-summary::-webkit-details-marker,
+.accordion-summary::marker{display:none}
+.accordion-title{display:flex;align-items:center;gap:6px}
+.accordion-title small{font-weight:500;color:var(--muted);font-size:11px}
+.accordion-preview{
+  font-size:11.5px;
+  font-weight:700;
+  color:var(--brand);
+  background:var(--brand-soft);
+  padding:4px 10px;
+  border-radius:999px;
+  margin-left:auto;
+  max-width:160px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.accordion-icon{
+  width:20px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  transition:transform .2s var(--ease);
+}
+.compose-accordion[open] .accordion-icon{
+  transform:rotate(180deg);
+  color:var(--brand);
+}
+.accordion-body{
+  padding:14px;
+  border-top:1px solid var(--line);
+  background:var(--surface-soft);
+}
+
+.post-emoji-reactions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  overflow-x:auto;
+  padding:8px 0 4px;
+  scrollbar-width:none;
+}
+.post-emoji-reactions::-webkit-scrollbar{display:none}
+.emoji-react-chip{
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:14px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  transition:transform .15s var(--ease), background-color .15s var(--ease), border-color .15s var(--ease);
+}
+.emoji-react-chip:hover{
+  transform:scale(1.1);
+  border-color:var(--brand);
+}
+.emoji-react-chip.reacted{
+  background:var(--brand-soft);
+  border-color:var(--brand);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--brand),transparent 82%);
+  transform:scale(1.08);
+}
+.emoji-react-chip .count{
+  font-size:11px;
+  font-weight:700;
+  color:var(--brand);
+  font-style:normal;
+}
+
