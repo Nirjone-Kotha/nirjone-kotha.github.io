@@ -1166,12 +1166,10 @@ function updateNav(){
   $$(".nav-item,[data-nav].mobile-nav button").forEach(el=>el.classList.toggle("active",el.dataset.nav===state.view));
   $$(".feed-tab").forEach(el=>el.classList.toggle("active",el.dataset.feed===state.feedMode));
   $("#welcomeStrip").hidden=state.view==="saved";
-  const preferred=effectivePreferredMood();const hasMoodPriority=state.feedMode==="for-you"&&state.moodFilter==="all"&&Boolean(preferred);
   const specialtyFeed=["islamic","video"].includes(state.feedMode);
-  $("#activeFilterBar").hidden=specialtyFeed || (state.moodFilter==="all"&&state.topicFilter==="all"&&!state.query&&!hasMoodPriority);
+  $("#activeFilterBar").hidden=specialtyFeed || (state.moodFilter==="all"&&state.topicFilter==="all"&&!state.query);
   if(!$("#activeFilterBar").hidden){
     const parts=[];
-    if(hasMoodPriority)parts.push(`${t("moodPriority")}: ${moodName(preferred)}`);
     if(state.moodFilter!=="all")parts.push(moodName(state.moodFilter));
     if(state.topicFilter!=="all")parts.push(topicName(state.topicFilter));
     if(state.query)parts.push(`“${state.query}”`);
@@ -1490,16 +1488,14 @@ function durationLabel(seconds){
 }
 function renderVideoCard(item){
   const liked=Boolean(state.videoLikes[String(item.id)]),portrait=item.aspect==="portrait"||item.contentType==="short";
+  const commentCount=commentBucket("video",item.id).length;
+  const likeCount=contentLikeCount(item,state.videoLikes);
   const article=document.createElement("article");
   article.className=`post-card video-card social-content-card ${portrait?"video-short":"video-landscape"}`;
   article.dataset.videoId=String(item.id);article.dataset.youtubeId=item.youtubeId;article.dataset.videoCap=String(item.playbackCapSeconds||900);
-  article.innerHTML=`<header class="post-head"><div class="post-person"><span class="post-avatar">${item.section==="islamic"?"☪":"▶"}</span><span class="post-meta"><strong>${escapeHtml(state.lang==="bn"?(item.titleBn||item.title):item.title)}</strong><small>${escapeHtml(item.channelTitle||"YouTube")} · ${durationLabel(item.durationSeconds)} · ${item.contentType==="short"?(state.lang==="bn"?"শর্টস":"Shorts"):(state.lang==="bn"?"ভিডিও":"Video")}</small></span></div><button class="video-card-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("largeView"))}">${icon("expand")}</button></header>
-  <div class="youtube-stage ${portrait?"portrait":"landscape"}" data-video-stage="${escapeHtml(String(item.id))}"><div class="youtube-player-host"><div data-youtube-player-host></div></div><img loading="lazy" decoding="async" width="480" height="270" src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)} thumbnail"><button class="video-play-button" data-video-play="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t("playVideo"))}">${icon("play")||"▶"}<span>${t("playVideo")}</span></button><button class="video-sound-button" type="button" data-video-sound="${escapeHtml(String(item.id))}" data-sound-on-label="${escapeHtml(t("soundOn"))}" data-sound-off-label="${escapeHtml(t("soundOff"))}" aria-label="${escapeHtml(t("soundOff"))}"><span class="video-sound-icon" aria-hidden="true">🔊</span><span class="video-sound-label">${t("soundOff")}</span></button><span class="video-ready-label">${state.lang==="bn"?"পরবর্তী ভিডিও প্রস্তুত":"Ready"}</span></div>
-  <div class="post-support"><div class="support-cluster"><span class="support-face">❤️</span></div><span class="support-summary">${displayNumber(contentLikeCount(item,state.videoLikes))} ${state.lang==="bn"?"লাইক":"likes"}</span></div>
-  <div class="post-actions video-actions">
-    <button class="post-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}">${icon("heart")}<span>${state.lang==="bn"?"লাইক":"Like"}</span><i class="count">${displayNumber(contentLikeCount(item,state.videoLikes))}</i></button>
-    <button class="post-action" data-video-comment="${escapeHtml(String(item.id))}">${icon("comment")}<span>${state.lang==="bn"?"সহমর্মিতা দিন":"Give sympathy"}</span><i class="count">${displayNumber(commentBucket("video",item.id).length)}</i></button>
-  </div>`;
+  const titleText=escapeHtml(state.lang==="bn"?(item.titleBn||item.title):item.title);
+  const metaText=`${escapeHtml(item.channelTitle||"YouTube")} · ${durationLabel(item.durationSeconds)} · ${item.contentType==="short"?(state.lang==="bn"?"শর্টস":"Shorts"):(state.lang==="bn"?"ভিডিও":"Video")}`;
+  article.innerHTML=`<div class="youtube-stage ${portrait?"portrait":"landscape"}" data-video-stage="${escapeHtml(String(item.id))}"><div class="youtube-player-host"><div data-youtube-player-host></div></div><img loading="lazy" decoding="async" width="480" height="270" src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)} thumbnail"><button class="video-play-button" data-video-play="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t(\"playVideo\"))}">${icon("play")||"▶"}<span>${t("playVideo")}</span></button><button class="video-sound-button" type="button" data-video-sound="${escapeHtml(String(item.id))}" data-sound-on-label="${escapeHtml(t(\"soundOn\"))}" data-sound-off-label="${escapeHtml(t(\"soundOff\"))}" aria-label="${escapeHtml(t(\"soundOff\""))}"><span class="video-sound-icon" aria-hidden="true">🔊</span><span class="video-sound-label">${t("soundOff")}</span></button><span class="video-ready-label">${state.lang==="bn"?"প্রস্তুত":"Ready"}</span><div class="video-overlay-info"><div class="video-overlay-meta">${metaText}</div><div class="video-overlay-title">${titleText}</div></div></div><div class="video-compact-bar"><button class="video-compact-action ${liked?"reacted":""}" data-video-like="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"লাইক":"Like"}">${icon("heart")}<span>${displayNumber(likeCount)}</span></button><button class="video-compact-action" data-video-comment="${escapeHtml(String(item.id))}" title="${state.lang==="bn"?"সহমর্মিতা":"Sympathy"}">${icon("comment")}<span>${commentCount>0?displayNumber(commentCount):""}</span></button><span class="video-compact-spacer"></span><button class="video-compact-expand" type="button" data-video-large-card="${escapeHtml(String(item.id))}" aria-label="${escapeHtml(t(\"largeView\"))}">${icon("expand")}</button></div>`;
   return article;
 }
 function renderVideoFeed(){
@@ -1753,7 +1749,7 @@ function commentBucket(kind,id){
 function resolveCommentSubject(id,kind="post"){
   if(kind==="video"){
     const allVideos=[...generalVideoCatalog,...islamicVideoCatalog];
-    const item=allVideos.find(x=>String(x.id)===String(id));if(!item)return null;
+    const item=allVideos.find(x=>String(x.id)===String(id));if(!item)return {id:String(id),avatar:"🎨",name:"Video",time:"YouTube",text:"Video",mood:"other"};
     return {id:String(id),avatar:"🎬",name:item.titleBn||item.title,time:item.channelTitle||"YouTube",text:item.titleBn||item.title,mood:"other"};
   }
   if(kind==="islamic"){

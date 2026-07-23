@@ -218,12 +218,16 @@ export function createYouTubeFeedController({
           rel: 0,
           modestbranding: 1,
           enablejsapi: 1,
-          origin: location.origin
+          origin: location.origin,
+          vq: "medium"
         },
         events: {
           onReady: event => {
             markLoading(card, false);
             card.dataset.playerReady = "true";
+            // Prefer 480p for faster loading
+            try { event.target.setPlaybackQualityRange?.("small","medium"); } catch {}
+            try { event.target.setPlaybackQuality?.("medium"); } catch {}
             applySharedVolume(event.target);
             updateSoundButton(card, !sharedSoundEnabled);
             if (autoplay) startPlayer(card, event.target, { muted, userInitiated });
