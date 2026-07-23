@@ -1372,11 +1372,14 @@ function videoMoodControls(section="general"){
 
 function openVideoMoodFilterModal(section="general"){
   const st = getVideoMoodState(section);
-  const options = CORE_MOODS.map(id => ({ id, label: moodName(id), emoji: moods[id]?.emoji || "💬" }));
+  const options = [
+    { id: "all", label: state.lang === "bn" ? "সকল মুড (All)" : "All moods", emoji: "🌈" },
+    ...CORE_MOODS.map(id => ({ id, label: moodName(id), emoji: moods[id]?.emoji || "💬" }))
+  ];
 
   setModal(`${modalHeader(state.lang==="bn"?"মুড বেছে নিন":"Select video mood")}<div class="modal-body">
-    <div class="mini-moods">
-      ${options.map(m => `<button class="mini-mood ${st.filterMood===m.id?"active":""}" data-select-video-filter-mood="${m.id}" data-video-section="${section}">
+    <div class="video-mood-grid">
+      ${options.map(m => `<button class="video-mood-select-card ${(st.filterMood===m.id || (!st.filterMood && m.id==="all")) ?"active":""}" data-select-video-filter-mood="${m.id}" data-video-section="${section}">
         <span>${m.emoji}</span><small>${escapeHtml(m.label)}</small>
       </button>`).join("")}
     </div>
@@ -1459,20 +1462,16 @@ function videoItemsForMood(catalog, section="general"){
     const todayCheckin = (state.checkins || []).find(c => c.date === todayStr);
     const targetMood = todayCheckin?.mood || state.preferredMood || effectivePreferredMood();
     if (targetMood) {
-      const matching = items.filter(item => item.moods?.includes(targetMood));
-      const fallback = items.filter(item => !item.moods?.length);
-      const rest = items.filter(item => item.moods?.length && !item.moods?.includes(targetMood));
+      const matching = items.filter(item => item.moods?.includes(targetMood) || item.mood === targetMood);
+      const fallback = items.filter(item => !item.moods?.length && !item.mood);
+      const rest = items.filter(item => (item.moods?.length || item.mood) && !item.moods?.includes(targetMood) && item.mood !== targetMood);
       items = [...matching, ...fallback, ...rest];
     }
-  } else if (st.tab === "filter" && st.filterMood) {
-    const primary = items.filter(item => item.moods?.includes(st.filterMood));
-    const dashboardMood = effectivePreferredMood();
-    const secondary = items.filter(item => dashboardMood && item.moods?.includes(dashboardMood) && !item.moods?.includes(st.filterMood));
-    const undefinedMoods = items.filter(item => !item.moods?.length);
-    const remaining = items.filter(item => !primary.includes(item) && !secondary.includes(item) && !undefinedMoods.includes(item));
-    items = [...primary, ...secondary, ...undefinedMoods, ...remaining];
+  } else if (st.tab === "filter" && st.filterMood && st.filterMood !== "all") {
+    const matching = items.filter(item => item.moods?.includes(st.filterMood) || item.mood === st.filterMood);
+    const fallback = items.filter(item => !item.moods?.length && !item.mood);
+    items = matching.length ? [...matching, ...fallback] : items;
   } else {
-    // Tab === "all"
     items = [...items];
   }
 
@@ -2916,6 +2915,22 @@ document.addEventListener("click",e=>{
     }else{
       sec==="islamic"?renderIslamicFeed():renderVideoFeed();
     }
+    return;
+  }
+  if(target.dataset.selectVideoFilterMood !== undefined){
+    const sec=target.dataset.videoSection==="islamic"?"islamic":"general";
+    state.videoMoodState=state.videoMoodState||{general:{tab:"all",filterMood:""},islamic:{tab:"all",filterMood:""}};
+    const mood=target.dataset.selectVideoFilterMood;
+    if(mood==="all"){
+      state.videoMoodState[sec].tab="all";
+      state.videoMoodState[sec].filterMood="";
+    }else{
+      state.videoMoodState[sec].tab="filter";
+      state.videoMoodState[sec].filterMood=mood;
+    }
+    store.set("video-mood-state",state.videoMoodState);
+    closeModal();
+    sec==="islamic"?renderIslamicFeed():renderVideoFeed();
     return;
   }
   if(target.dataset.nav){e.preventDefault();navigate(target.dataset.nav);return}

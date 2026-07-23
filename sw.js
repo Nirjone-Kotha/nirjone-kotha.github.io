@@ -1,13 +1,13 @@
-const VERSION = "6.7.6";
+const VERSION = "6.7.7";
 const SHELL_CACHE = `moner-kotha-shell-${VERSION}`;
 const RUNTIME_CACHE = `moner-kotha-runtime-${VERSION}`;
 const APP_SHELL = [
   "./", "./index.html", "./offline.html", "./manifest.webmanifest",
-  "./assets/css/styles.css?v=6.7.6", "./assets/js/app.js?v=6.7.6", "./assets/js/data.js?v=6.7.6",
-  "./assets/js/storage.js?v=6.7.6", "./assets/js/ads.js?v=6.7.6", "./assets/js/platform.js?v=6.7.6", "./assets/js/pwa.js?v=6.7.6", "./assets/js/safety.js?v=6.7.6",
-  "./assets/js/config.js?v=6.7.6", "./assets/js/consent.js?v=6.7.6", "./assets/js/analytics.js?v=6.7.6", "./assets/js/public.js?v=6.7.6", "./assets/js/islamic.js?v=6.7.6", "./assets/js/video_catalog.js?v=6.7.6", "./assets/js/youtube_player.js?v=6.7.6",
-  "./assets/js/firebase-core.js?v=6.7.6", "./assets/js/user-identity.js?v=6.7.6", "./admin/public/runtime-client.js?v=6.7.6",
-  "./assets/css/admin_runtime.css?v=6.7.6", "./assets/css/public.css?v=6.7.6", "./config/site.json", "./config/firebase-config.js", "./config/firebase-defaults.js",
+  "./assets/css/styles.css?v=6.7.7", "./assets/js/app.js?v=6.7.7", "./assets/js/data.js?v=6.7.7",
+  "./assets/js/storage.js?v=6.7.7", "./assets/js/ads.js?v=6.7.7", "./assets/js/platform.js?v=6.7.7", "./assets/js/pwa.js?v=6.7.7", "./assets/js/safety.js?v=6.7.7",
+  "./assets/js/config.js?v=6.7.7", "./assets/js/consent.js?v=6.7.7", "./assets/js/analytics.js?v=6.7.7", "./assets/js/public.js?v=6.7.7", "./assets/js/islamic.js?v=6.7.7", "./assets/js/video_catalog.js?v=6.7.7", "./assets/js/youtube_player.js?v=6.7.7",
+  "./assets/js/firebase-core.js?v=6.7.7", "./assets/js/user-identity.js?v=6.7.7", "./admin/public/runtime-client.js?v=6.7.7",
+  "./assets/css/admin_runtime.css?v=6.7.7", "./assets/css/public.css?v=6.7.7", "./config/site.json", "./config/firebase-config.js", "./config/firebase-defaults.js",
   "./assets/icons/favicon.png", "./assets/brand/logo-mark.png", "./assets/brand/share-cover.png", "./assets/icons/icon-192.png", "./assets/icons/icon-512.png",
   "./assets/icons/icon-maskable-512.png", "./assets/icons/apple-touch-icon.png"
 ];
