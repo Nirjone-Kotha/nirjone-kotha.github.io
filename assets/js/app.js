@@ -928,6 +928,7 @@ function showToast(message){
   clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>el.classList.remove("show"),2600);
 }
 function prepareModalSurface(html,{directPage=false}={}){
+  try{history.pushState({mkModal:true},"",location.href)}catch{}
   setAdSafeMode(true, "modal");
   lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const layer=$("#modalLayer"),card=$("#modalCard");
@@ -1329,6 +1330,7 @@ function setVideoLargeView(enabled, focusId=""){
   }
   const feedColumn=$("#mainContent");
   if(active){
+    try{history.pushState({mkVideoLarge:true},"",location.href)}catch{}
     state.videoLargeScrollTop=feedColumn?.scrollTop||window.scrollY||0;
     state.videoLargeView=true;
     document.body.classList.add("video-large-view");
@@ -1605,7 +1607,23 @@ function speakArabic(encoded){
 }
 function toggleIslamicLike(id){state.islamicLikes[String(id)]=!state.islamicLikes[String(id)];saveState();renderIslamicFeed();}
 function toggleIslamicLanguage(id){state.islamicTranslations[String(id)]=(state.islamicTranslations[String(id)]||"bn")==="bn"?"en":"bn";saveState();renderIslamicFeed();}
-function toggleVideoLike(id){state.videoLikes[String(id)]=!state.videoLikes[String(id)];saveState();state.feedMode==="islamic"?renderIslamicFeed():renderVideoFeed();}
+function toggleVideoLike(id){
+  const sid = String(id);
+  state.videoLikes[sid] = !state.videoLikes[sid];
+  saveState();
+  const liked = Boolean(state.videoLikes[sid]);
+  const btnList = document.querySelectorAll(`[data-video-like="${CSS.escape(sid)}"]`);
+  const managedGen = typeof mergeManagedVideos === "function" ? mergeManagedVideos([], "general") : [];
+  const managedIsl = typeof mergeManagedVideos === "function" ? mergeManagedVideos([], "islamic") : [];
+  const allv = [...managedGen, ...managedIsl, ...generalVideoCatalog, ...islamicVideoCatalog];
+  const item = allv.find(x => String(x.id) === sid) || { id: sid, likes: 0 };
+  const count = contentLikeCount(item, state.videoLikes);
+  btnList.forEach(btn => {
+    btn.classList.toggle("reacted", liked);
+    const span = btn.querySelector("span");
+    if (span) span.textContent = displayNumber(count);
+  });
+}
 
 function renderFeed(){
   if(state.feedMode==="islamic"){renderIslamicFeed();return}
@@ -1791,9 +1809,12 @@ function commentBucket(kind,id){
 }
 function resolveCommentSubject(id,kind="post"){
   if(kind==="video"){
-    const allVideos=[...generalVideoCatalog,...islamicVideoCatalog];
-    const item=allVideos.find(x=>String(x.id)===String(id));if(!item)return {id:String(id),avatar:"🎨",name:"Video",time:"YouTube",text:"Video",mood:"other"};
-    return {id:String(id),avatar:"🎬",name:item.titleBn||item.title,time:item.channelTitle||"YouTube",text:item.titleBn||item.title,mood:"other"};
+    const managedGen = typeof mergeManagedVideos === "function" ? mergeManagedVideos([], "general") : [];
+    const managedIsl = typeof mergeManagedVideos === "function" ? mergeManagedVideos([], "islamic") : [];
+    const allVideos = [...managedGen, ...managedIsl, ...generalVideoCatalog, ...islamicVideoCatalog];
+    const item = allVideos.find(x => String(x.id) === String(id));
+    if (!item) return { id: String(id), avatar: "🎬", name: state.lang === "bn" ? "ভিডিও" : "Video", time: "YouTube", text: state.lang === "bn" ? "সহমর্মিতামূলক ভিডিও" : "Sympathetic video", mood: "other" };
+    return { id: String(id), avatar: "🎬", name: item.titleBn || item.title, time: item.channelTitle || "YouTube", text: item.titleBn || item.title, mood: "other" };
   }
   if(kind==="islamic"){
     const item=state.islamicItemIndex.get(String(id));if(!item)return null;
@@ -2739,6 +2760,7 @@ function saveCheckin(close=false){
   state.checkins.unshift({mood:state.selectedCheckin,customMood,at:Date.now()});state.checkins=state.checkins.slice(0,14);saveState();renderMiniMoods();renderFeed();updateNav();showToast(t("checkedIn"));if(close)closeModal();
 }
 function navigate(view){
+  try{history.pushState({mkView:view},"",location.href)}catch{}
   if(view==="circles"){directPageReturnView=state.view;openCircles();return}
   if(view==="calm"){directPageReturnView=state.view;openCalm();return}
   if(view==="feelings"||view==="checkin"){directPageReturnView=state.view;openFeelingsPage();return}
@@ -2765,6 +2787,32 @@ function navigate(view){
   if(state.feedMode==="islamic"||state.feedMode==="video")state.feedMode="for-you";
   renderFeed();updateNav();scrollTo({top:0,behavior:state.motion?"smooth":"auto"});
 }
+
+window.addEventListener("popstate",()=>{
+  if(state.videoLargeView){
+    setVideoLargeView(false);
+    return;
+  }
+  const modalLayer=$("#modalLayer");
+  if(modalLayer&&!modalLayer.hidden){
+    closeModal();
+    return;
+  }
+  const drawerLayer=$("#drawerLayer");
+  if(drawerLayer&&!drawerLayer.hidden){
+    closeDrawer();
+    return;
+  }
+  if(state.view!=="home"){
+    state.view="home";
+    state.feedMode="for-you";
+    state.shown=10;
+    renderFeed();
+    updateNav();
+    scrollTo({top:0,behavior:state.motion?"smooth":"auto"});
+    return;
+  }
+});
 function toggleTheme(){
   state.theme=state.theme==="light"?"dark":"light";store.set("theme",state.theme);localizePage();
 }
