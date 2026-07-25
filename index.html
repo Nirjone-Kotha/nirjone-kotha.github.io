@@ -31,7 +31,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./assets/icons/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="./assets/css/styles.css?v=7.0.0" />
+  <link rel="stylesheet" href="./assets/css/styles.css?v=7.1.0" />
 </head>
 <body>
   <noscript><div class="noscript-banner">JavaScript is required for the social app. Public information is available in <a href="/bn/">বাংলা</a> and <a href="/en/">English</a>.</div></noscript>
@@ -122,17 +122,7 @@
       </aside>
 
       <main class="feed-column" id="mainContent">
-        <section class="welcome-strip surface-card" id="welcomeStrip">
-          <div>
-            <span class="eyebrow"><i></i><span data-t="safeSocial">A calm social space</span></span>
-            <h1 id="welcomeTitle">How are you feeling today?</h1>
-            <p data-t="welcomeCopy">Share what is on your mind, listen to others, or simply stay for a while.</p>
-          </div>
-          <button class="soft-button mood-select-button" data-action="checkin">
-            <span class="mood-select-icon" data-icon="heart"></span>
-            <span class="mood-select-copy"><strong data-t="moodCheckin">Choose your mood</strong><small data-t="moodButtonHint">See matching posts first</small></span>
-          </button>
-        </section>
+
 
         <section class="stories-row" aria-label="48-hour stories">
           <button class="story-card add-story-card" data-action="compose-moment">
@@ -155,20 +145,15 @@
               <strong data-t="composerQuestion">What's on your mind?</strong>
             </div>
           </div>
-          <div class="fb-composer-actions">
-            <button class="fb-composer-action" data-action="compose"><span class="fb-action-icon">📷</span><span data-t="photo">Photo</span></button>
-            <button class="fb-composer-action" data-feed="video"><span class="fb-action-icon">🎥</span><span data-t="video">Video</span></button>
-            <button class="fb-composer-action" data-action="checkin"><span class="fb-action-icon">😊</span><span data-t="feeling">Feeling</span></button>
-          </div>
         </section>
 
         <section class="feed-toolbar">
           <div class="feed-tabs" role="tablist">
             <button class="feed-tab active" data-feed="for-you"><span data-icon="sparkles"></span><span data-t="forYou">For you</span></button>
-            <button class="feed-tab" data-feed="latest"><span data-icon="clock"></span><span data-t="latest">Newest</span></button>
-            <button class="feed-tab" data-feed="following"><span data-icon="users"></span><span data-t="following">Following</span></button>
             <button class="feed-tab" data-feed="islamic"><span data-icon="moon"></span><span data-t="islamic">Islamic</span></button>
             <button class="feed-tab" data-feed="video"><span data-icon="tv"></span><span data-t="video">Video</span></button>
+            <button class="feed-tab" data-feed="latest"><span data-icon="clock"></span><span data-t="latest">Newest</span></button>
+            <button class="feed-tab" data-feed="following"><span data-icon="users"></span><span data-t="following">Following</span></button>
             <button class="feed-tab" data-feed="ranking"><span data-icon="trophy"></span><span data-t="ranking">Top ranked</span></button>
           </div>
           <button class="filter-button" data-action="filter"><span data-icon="sliders"></span><span data-t="filter">Choose what to see</span></button>
@@ -194,15 +179,16 @@
       </main>
 
       <aside class="right-rail">
-        <section class="checkin-card surface-card">
-          <div class="section-heading">
-            <div><small data-t="oneMinute">Takes one minute</small><h2 data-t="todayCheckin">How do you feel now?</h2></div>
-            <span class="soft-orbit" data-icon="heart"></span>
+        <section class="welcome-strip surface-card right-welcome-card" id="welcomeStrip">
+          <div>
+            <span class="eyebrow"><i></i><span data-t="safeSocial">A calm social space</span></span>
+            <h2 id="welcomeTitle" data-t="welcomeTitle">How are you feeling today?</h2>
+            <p data-t="welcomeCopy">Share what is on your mind, listen to others, or simply stay for a while.</p>
           </div>
-          <p data-t="checkinPrompt">You do not need to fix anything—just notice what you are feeling.</p>
-          <div class="mini-moods" id="miniMoods"></div>
-          <button class="full-soft-button" data-action="save-checkin" disabled><span data-t="saveFeeling">Save this feeling</span></button>
-          <div class="checkin-history" id="checkinHistory"></div>
+          <button class="soft-button mood-select-button" data-action="checkin">
+            <span class="mood-select-icon" data-icon="heart"></span>
+            <span class="mood-select-copy"><strong data-t="moodCheckin">Choose your mood</strong><small data-t="moodButtonHint">See matching posts first</small></span>
+          </button>
         </section>
 
         <section class="right-card surface-card">
@@ -287,6 +273,6 @@
       }, true);
     })();
   </script>
-  <script type="module" src="./assets/js/app.js?v=7.0.0" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
+  <script type="module" src="./assets/js/app.js?v=7.1.0" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
 </body>
 </html>

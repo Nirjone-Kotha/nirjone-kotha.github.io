@@ -1119,6 +1119,7 @@ function storyOwnerName(item){
 function renderCircleStories(){
   const wrap=$("#circleStories");wrap.innerHTML="";
   const preferred=effectivePreferredMood();
+  state.viewedMoments = state.viewedMoments || new Set();
   const list=allMoments().sort((a,b)=>{
     const aOwn=a.userGenerated?1:0,bOwn=b.userGenerated?1:0;
     const ag=momentMood(a)?.group===preferred?1:0,bg=momentMood(b)?.group===preferred?1:0;
@@ -1126,7 +1127,9 @@ function renderCircleStories(){
   }).slice(0,9);
   list.forEach(item=>{
     const mood=momentMood(item),b=document.createElement("button");
-    b.className="story-card moment-card";b.dataset.moment=String(item.id);
+    const isViewed=state.viewedMoments.has(String(item.id));
+    b.className=`story-card moment-card ${isViewed?"viewed":"unviewed"}`;
+    b.dataset.moment=String(item.id);
     b.setAttribute("aria-label",`${storyOwnerName(item)}: ${momentText(item)||localText(mood)}`);
     const previewText = escapeHtml(momentText(item) || localText(mood));
     const moodEmoji = mood?.emoji || item.emoji || "💬";
@@ -1134,6 +1137,7 @@ function renderCircleStories(){
     b.style.background = `linear-gradient(145deg, ${bgColors[0]}, ${bgColors[1] || bgColors[0]})`;
     b.innerHTML=`
       <span class="story-score-badge">${displayNumber(momentScore(item))}</span>
+      <div class="story-gradient-overlay"></div>
       <div class="story-card-content">
         <span class="story-emoji">${moodEmoji}</span>
         <p class="story-text-snippet">${previewText}</p>
@@ -1197,20 +1201,30 @@ function updateNav(){
   const storiesRow = $(".stories-row"); if(storiesRow) storiesRow.hidden = hideHomeFeatures;
   const composerCompact = $(".composer-compact"); if(composerCompact) composerCompact.hidden = hideHomeFeatures;
   const activeFilterBar = $("#activeFilterBar");
-  if(activeFilterBar) activeFilterBar.hidden = hideHomeFeatures || (state.moodFilter==="all"&&state.topicFilter==="all"&&!state.query);
-  if(activeFilterBar && !activeFilterBar.hidden){
-    const parts=[];
-    if(state.moodFilter!=="all")parts.push(moodName(state.moodFilter));
-    if(state.topicFilter!=="all")parts.push(topicName(state.topicFilter));
-    if(state.query)parts.push(`“${state.query}”`);
-    activeFilterBar.textContent=parts.join(" · ");
+  if(activeFilterBar){
+    if(isSaved){
+      activeFilterBar.hidden = false;
+      activeFilterBar.style.display = "flex";
+      activeFilterBar.style.alignItems = "center";
+      activeFilterBar.style.justifyContent = "space-between";
+      activeFilterBar.innerHTML = `<span>🔖 ${state.lang==="bn"?"সংরক্ষিত পোস্টসমূহ":"Saved posts"} (${displayNumber(state.saved.size)})</span><button class="quiet-link" data-nav="home" style="cursor:pointer;background:none;border:none;color:var(--brand);font-weight:700">${state.lang==="bn"?"সব পোস্ট দেখুন ✕":"View all posts ✕"}</button>`;
+    } else {
+      activeFilterBar.hidden = hideHomeFeatures || (state.moodFilter==="all"&&state.topicFilter==="all"&&!state.query);
+      if(!activeFilterBar.hidden){
+        const parts=[];
+        if(state.moodFilter!=="all")parts.push(moodName(state.moodFilter));
+        if(state.topicFilter!=="all")parts.push(topicName(state.topicFilter));
+        if(state.query)parts.push(`“${state.query}”`);
+        activeFilterBar.textContent=parts.join(" · ");
+      }
+    }
   }
 }
 
 const POST_EMOJIS = [
-  { key: "hug", emoji: "🫂", bn: "জড়িয়ে ধরা", en: "Hug" },
+  { key: "hug", emoji: "🤗", bn: "জড়িয়ে ধরা", en: "Hug" },
   { key: "love", emoji: "🤍", bn: "ভালোবাসা", en: "Love" },
-  { key: "hands", emoji: "🫶", bn: "সহমর্মিতা", en: "Empathy" },
+  { key: "hands", emoji: "❤️", bn: "সহমর্মিতা", en: "Empathy" },
   { key: "pleading", emoji: "🥺", bn: "অনুভূতি বুঝি", en: "Care" },
   { key: "dua", emoji: "🤲", bn: "দোয়া", en: "Dua" },
   { key: "pray", emoji: "🙏", bn: "প্রার্থনা", en: "Prayers" },
@@ -1317,7 +1331,7 @@ function renderPostCard(p){
     </header>
     ${labels.length && !isMobileLayout?`<div class="post-labels">${labels.join("")}</div>`:""}
     <p class="post-text">${formatPostTextHTML(p)}</p>
-    <div class="post-support"><div class="support-cluster"><span class="support-face">🫂</span><span class="support-face">🤍</span><span class="support-face">🫶</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"}</span></div>
+    <div class="post-support"><div class="support-cluster"><span class="support-face">❤️</span><span class="support-face">🤍</span><span class="support-face">🤗</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"}</span></div>
 
     ${isMobileLayout ? `
     <div class="fb-reaction-summary">
@@ -1445,11 +1459,11 @@ function getVideoMoodState(section="general"){
 
 function videoMoodControls(section="general"){
   const st = getVideoMoodState(section);
-  const filterLabel = st.filterMood ? `${moods[st.filterMood]?.emoji || "⚙️"} ${moodName(st.filterMood)}` : (state.lang==="bn" ? "ফিল্টার ⚙️" : "Filter ⚙️");
+  const filterLabel = state.lang==="bn" ? "ফিল্টার ⚙️" : "Filter ⚙️";
 
   return `<div class="video-mood-controls" role="tablist" aria-label="${state.lang==="bn"?"ভিডিও মুড ফিল্টার":"Video mood filter"}">
-    <button class="video-mood-chip ${st.tab==="all"?"active":""}" data-video-mood-tab="all" data-video-section="${section}">${state.lang==="bn"?"সকল (All)":"All"}</button>
-    <button class="video-mood-chip ${st.tab==="my-mood"?"active":""}" data-video-mood-tab="my-mood" data-video-section="${section}">✨ ${state.lang==="bn"?"আমার মুড (My mood)":"My mood"}</button>
+    <button class="video-mood-chip ${st.tab==="all"?"active":""}" data-video-mood-tab="all" data-video-section="${section}">${state.lang==="bn"?"All (সব)":"All"}</button>
+    <button class="video-mood-chip ${st.tab==="my-mood"?"active":""}" data-video-mood-tab="my-mood" data-video-section="${section}">✨ ${state.lang==="bn"?"আমার মুড":"My mood"}</button>
     <button class="video-mood-chip ${st.tab==="filter"?"active":""}" data-video-mood-tab="filter" data-video-section="${section}">${escapeHtml(filterLabel)}</button>
   </div>`;
 }
@@ -1728,16 +1742,7 @@ function renderFeed(){
     return;
   }
 
-  if(state.view==="saved" && visible.length){
-    const savedBanner=document.createElement("div");
-    savedBanner.className="active-filter-bar";
-    savedBanner.style.display="flex";
-    savedBanner.style.alignItems="center";
-    savedBanner.style.justifyContent="space-between";
-    savedBanner.style.marginBottom="12px";
-    savedBanner.innerHTML=`<span>🔖 ${state.lang==="bn"?"সংরক্ষিত পোস্টসমূহ":"Saved posts"} (${displayNumber(state.saved.size)})</span><button class="quiet-link" data-nav="home" style="cursor:pointer;background:none;border:none;color:var(--brand);font-weight:700">${state.lang==="bn"?"সব পোস্ট দেখুন ✕":"View all posts ✕"}</button>`;
-    wrap.appendChild(savedBanner);
-  }
+
 
   const descriptors=[];
   visible.forEach((post,index)=>{
@@ -2020,147 +2025,154 @@ function openProfile(){
         </div>
       </section>
 
-      <!-- Account Security / Password Profile Banner -->
-      <div class="profile-security-banner">
-        ${identityStatusMarkup()}
+      <!-- Desktop 2-Column Dashboard Grid -->
+      <div class="profile-desktop-grid">
+        <div class="profile-left-col">
+          <!-- Account Security / Password Profile Banner -->
+          <div class="profile-security-banner">
+            ${identityStatusMarkup()}
+          </div>
+
+          <!-- Quick Stats Row -->
+          <div class="profile-stats-grid">
+            <button class="profile-stat-card" data-action="profile-posts">
+              <span class="stat-icon">📝</span>
+              <div class="stat-meta">
+                <strong>${displayNumber(state.userPosts.length)}</strong>
+                <small>${t("posts")}</small>
+              </div>
+              <span class="stat-badge">${state.lang==="bn"?"ম্যানেজ করুন ➔":"Manage ➔"}</span>
+            </button>
+
+            <div class="profile-stat-card">
+              <span class="stat-icon">❤️</span>
+              <div class="stat-meta">
+                <strong>${displayNumber(supportCount)}</strong>
+                <small>${t("supportSent")}</small>
+              </div>
+            </div>
+
+            <button class="profile-stat-card" data-action="profile-saved">
+              <span class="stat-icon">🔖</span>
+              <div class="stat-meta">
+                <strong>${displayNumber(state.saved.size)}</strong>
+                <small>${t("savedCount")}</small>
+              </div>
+              <span class="stat-badge">${state.lang==="bn"?"দেখুন ➔":"View ➔"}</span>
+            </button>
+          </div>
+
+          <!-- Display Name / Custom Nickname Editor Card -->
+          <section class="profile-card-box">
+            <div class="profile-card-title">
+              <span>✏️</span>
+              <h3>${t("displayNameLabel")}</h3>
+            </div>
+            <p class="profile-card-desc">${t("displayNameHint")}</p>
+            <div class="profile-name-row">
+              <input id="displayNameInput" type="text" maxlength="32" autocomplete="nickname" value="${escapeHtml(state.displayName)}" placeholder="${escapeHtml(t("displayNamePlaceholder"))}" />
+              <button class="primary-button" data-action="save-display-name">${t("saveDisplayName")}</button>
+            </div>
+          </section>
+
+          <!-- App Download & Share Section -->
+          <section class="profile-download-card">
+            <div class="download-card-header">
+              <span class="download-card-icon">${icon("download")}</span>
+              <div>
+                <strong>${state.lang==="bn"?"অফিসিয়াল অ্যাপ ইনস্টল ও ডাউনলোড":"Install & Download App"}</strong>
+                <small>${state.lang==="bn"?"অ্যান্ড্রয়েড, আইফোন বা কম্পিউটারে সরাসরি অ্যাপ ডাউনলোড করুন":"Download directly on Android, iPhone, or Desktop"}</small>
+              </div>
+            </div>
+            <div class="download-link-box">
+              <code>${escapeHtml(installationUrl())}</code>
+              <button class="secondary-button" style="padding:4px 10px;font-size:11px;border-radius:8px;display:inline-flex;align-items:center;gap:4px" data-action="copy-install-link" title="${state.lang==="bn"?"লিংক কপি করুন":"Copy app link"}">
+                ${icon("copy")} <span>${state.lang==="bn"?"কপি":"Copy"}</span>
+              </button>
+            </div>
+            <div class="download-card-actions">
+              <button class="primary-button" style="padding:9px 12px;font-size:11.5px" data-action="install">
+                ${icon("download")} <span>${state.lang==="bn"?"সরাসরি ইনস্টল করুন":"Install App"}</span>
+              </button>
+              <button class="secondary-button" style="padding:9px 12px;font-size:11.5px" data-action="share-app-link">
+                ${icon("share")} <span>${state.lang==="bn"?"লিংক শেয়ার করুন":"Share Link"}</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <div class="profile-right-col">
+          <!-- App Settings & Actions Grid -->
+          <section class="profile-settings-group">
+            <h3 class="group-heading">${state.lang==="bn"?"অ্যাপের পছন্দ ও সেটিংস (Settings)":"Preferences & Settings"}</h3>
+
+            <div class="settings-action-list">
+              <button class="setting-item-btn" data-action="language">
+                <span class="setting-item-icon">🌐</span>
+                <div class="setting-item-text">
+                  <strong>${state.lang==="bn"?"ভাষা রূপান্তর (Language)":"Switch Language"}</strong>
+                  <small>${state.lang==="en"?"Use app in English":"অ্যাপ বাংলায় ব্যবহার করুন"}</small>
+                </div>
+                <span class="setting-item-pill">${state.lang==="bn"?"🇧🇩 বাংলা":"🌐 English"}</span>
+              </button>
+
+              <button class="setting-item-btn" data-action="enable-notifications">
+                <span class="setting-item-icon">🔔</span>
+                <div class="setting-item-text">
+                  <strong>${t("enableNotifications")}</strong>
+                  <small>${t("notificationPermissionCopy")}</small>
+                </div>
+                <span class="setting-item-arrow">➔</span>
+              </button>
+
+              <button class="setting-item-btn" data-action="toggle-motion">
+                <span class="setting-item-icon">✨</span>
+                <div class="setting-item-text">
+                  <strong>${state.lang==="bn"?"অ্যানিমেশন নিয়ন্ত্রণ (Motion)":"Animation Controls"}</strong>
+                  <small>${state.motion?(state.lang==="bn"?"মসৃণ অ্যানিমেশন চালু আছে":"Smooth animations active"):(state.lang==="bn"?"অ্যানিমেশন কমানো আছে":"Reduced motion active")}</small>
+                </div>
+                <span class="setting-item-arrow">➔</span>
+              </button>
+
+              <button class="setting-item-btn" data-action="share-site">
+                <span class="setting-item-icon">📢</span>
+                <div class="setting-item-text">
+                  <strong>${t("shareSite")}</strong>
+                  <small>${t("profileShareHint")}</small>
+                </div>
+                <span class="setting-item-arrow">➔</span>
+              </button>
+
+              <button class="setting-item-btn" data-action="contact-us">
+                <span class="setting-item-icon">✉️</span>
+                <div class="setting-item-text">
+                  <strong>${t("contactUs")}</strong>
+                  <small>${state.lang==="bn"?"সরাসরি আমাদের সাথে কথা বলুন":"Get in touch with support"}</small>
+                </div>
+                <span class="setting-item-arrow">➔</span>
+              </button>
+
+              <button class="setting-item-btn" data-action="cookie-settings">
+                <span class="setting-item-icon">🍪</span>
+                <div class="setting-item-text">
+                  <strong>${t("cookieSettings")}</strong>
+                  <small>${t("cookieSettingsCopy")}</small>
+                </div>
+                <span class="setting-item-arrow">➔</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Data Options & Reset Footer -->
+          <section class="profile-footer-zone">
+            <div class="data-actions-row">
+              <button class="secondary-button" data-action="export-data">${icon("download")} ${t("exportData")}</button>
+              <button class="danger-button" data-action="reset-data">${t("resetData")}</button>
+            </div>
+            <p class="profile-copyright-note">${t("demoPrivacy")} · ${escapeHtml(platformName())}</p>
+          </section>
+        </div>
       </div>
-
-      <!-- Quick Stats Row -->
-      <div class="profile-stats-grid">
-        <button class="profile-stat-card" data-action="profile-posts">
-          <span class="stat-icon">📝</span>
-          <div class="stat-meta">
-            <strong>${displayNumber(state.userPosts.length)}</strong>
-            <small>${t("posts")}</small>
-          </div>
-          <span class="stat-badge">${state.lang==="bn"?"ম্যানেজ করুন ➔":"Manage ➔"}</span>
-        </button>
-
-        <div class="profile-stat-card">
-          <span class="stat-icon">🫶</span>
-          <div class="stat-meta">
-            <strong>${displayNumber(supportCount)}</strong>
-            <small>${t("supportSent")}</small>
-          </div>
-        </div>
-
-        <button class="profile-stat-card" data-action="profile-saved">
-          <span class="stat-icon">🔖</span>
-          <div class="stat-meta">
-            <strong>${displayNumber(state.saved.size)}</strong>
-            <small>${t("savedCount")}</small>
-          </div>
-          <span class="stat-badge">${state.lang==="bn"?"দেখুন ➔":"View ➔"}</span>
-        </button>
-      </div>
-
-      <!-- Display Name / Custom Nickname Editor Card -->
-      <section class="profile-card-box">
-        <div class="profile-card-title">
-          <span>✏️</span>
-          <h3>${t("displayNameLabel")}</h3>
-        </div>
-        <p class="profile-card-desc">${t("displayNameHint")}</p>
-        <div class="profile-name-row">
-          <input id="displayNameInput" type="text" maxlength="32" autocomplete="nickname" value="${escapeHtml(state.displayName)}" placeholder="${escapeHtml(t("displayNamePlaceholder"))}" />
-          <button class="primary-button" data-action="save-display-name">${t("saveDisplayName")}</button>
-        </div>
-      </section>
-
-      <!-- App Download & Share Section -->
-      <section class="profile-download-card">
-        <div class="download-card-header">
-          <span class="download-card-icon">${icon("download")}</span>
-          <div>
-            <strong>${state.lang==="bn"?"অফিসিয়াল অ্যাপ ইনস্টল ও ডাউনলোড":"Install & Download App"}</strong>
-            <small>${state.lang==="bn"?"অ্যান্ড্রয়েড, আইফোন বা কম্পিউটারে সরাসরি অ্যাপ ডাউনলোড করুন":"Download directly on Android, iPhone, or Desktop"}</small>
-          </div>
-        </div>
-        <div class="download-link-box">
-          <code>${escapeHtml(installationUrl())}</code>
-          <button class="secondary-button" style="padding:4px 10px;font-size:11px;border-radius:8px;display:inline-flex;align-items:center;gap:4px" data-action="copy-install-link" title="${state.lang==="bn"?"লিংক কপি করুন":"Copy app link"}">
-            ${icon("copy")} <span>${state.lang==="bn"?"কপি":"Copy"}</span>
-          </button>
-        </div>
-        <div class="download-card-actions">
-          <button class="primary-button" style="padding:9px 12px;font-size:11.5px" data-action="install">
-            ${icon("download")} <span>${state.lang==="bn"?"সরাসরি ইনস্টল করুন":"Install App"}</span>
-          </button>
-          <button class="secondary-button" style="padding:9px 12px;font-size:11.5px" data-action="share-app-link">
-            ${icon("share")} <span>${state.lang==="bn"?"লিংক শেয়ার করুন":"Share Link"}</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- App Settings & Actions Grid -->
-      <section class="profile-settings-group">
-        <h3 class="group-heading">${state.lang==="bn"?"অ্যাপের পছন্দ ও সেটিংস (Settings)":"Preferences & Settings"}</h3>
-
-        <div class="settings-action-list">
-          <button class="setting-item-btn" data-action="language">
-            <span class="setting-item-icon">🌐</span>
-            <div class="setting-item-text">
-              <strong>${state.lang==="bn"?"ভাষা রূপান্তর (Language)":"Switch Language"}</strong>
-              <small>${state.lang==="en"?"Use app in English":"অ্যাপ বাংলায় ব্যবহার করুন"}</small>
-            </div>
-            <span class="setting-item-pill">${state.lang==="bn"?"🇧🇩 বাংলা":"🌐 English"}</span>
-          </button>
-
-          <button class="setting-item-btn" data-action="enable-notifications">
-            <span class="setting-item-icon">🔔</span>
-            <div class="setting-item-text">
-              <strong>${t("enableNotifications")}</strong>
-              <small>${t("notificationPermissionCopy")}</small>
-            </div>
-            <span class="setting-item-arrow">➔</span>
-          </button>
-
-          <button class="setting-item-btn" data-action="toggle-motion">
-            <span class="setting-item-icon">✨</span>
-            <div class="setting-item-text">
-              <strong>${state.lang==="bn"?"অ্যানিমেশন নিয়ন্ত্রণ (Motion)":"Animation Controls"}</strong>
-              <small>${state.motion?(state.lang==="bn"?"মসৃণ অ্যানিমেশন চালু আছে":"Smooth animations active"):(state.lang==="bn"?"অ্যানিমেশন কমানো আছে":"Reduced motion active")}</small>
-            </div>
-            <span class="setting-item-arrow">➔</span>
-          </button>
-
-          <button class="setting-item-btn" data-action="share-site">
-            <span class="setting-item-icon">📢</span>
-            <div class="setting-item-text">
-              <strong>${t("shareSite")}</strong>
-              <small>${t("profileShareHint")}</small>
-            </div>
-            <span class="setting-item-arrow">➔</span>
-          </button>
-
-          <button class="setting-item-btn" data-action="contact-us">
-            <span class="setting-item-icon">✉️</span>
-            <div class="setting-item-text">
-              <strong>${t("contactUs")}</strong>
-              <small>${state.lang==="bn"?"সরাসরি আমাদের সাথে কথা বলুন":"Get in touch with support"}</small>
-            </div>
-            <span class="setting-item-arrow">➔</span>
-          </button>
-
-          <button class="setting-item-btn" data-action="cookie-settings">
-            <span class="setting-item-icon">🍪</span>
-            <div class="setting-item-text">
-              <strong>${t("cookieSettings")}</strong>
-              <small>${t("cookieSettingsCopy")}</small>
-            </div>
-            <span class="setting-item-arrow">➔</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- Data Options & Reset Footer -->
-      <section class="profile-footer-zone">
-        <div class="data-actions-row">
-          <button class="secondary-button" data-action="export-data">${icon("download")} ${t("exportData")}</button>
-          <button class="danger-button" data-action="reset-data">${t("resetData")}</button>
-        </div>
-        <p class="profile-copyright-note">${t("demoPrivacy")} · ${escapeHtml(platformName())}</p>
-      </section>
 
     </div>
   `);
@@ -2467,6 +2479,9 @@ function momentReactionSummary(item){
   return `<div class="story-reaction-summary"><div>${icons}</div><span>${displayNumber(total)} ${state.lang==="bn"?"প্রতিক্রিয়া":"reactions"} · ${displayNumber(momentCommentsCount(item))} ${state.lang==="bn"?"মন্তব্য":"comments"} · #${displayNumber(momentScore(item))}</span></div>`;
 }
 function openMoment(id){
+  state.viewedMoments = state.viewedMoments || new Set();
+  state.viewedMoments.add(String(id));
+  renderCircleStories();
   const item=allMoments().find(moment=>String(moment.id)===String(id));if(!item)return;const mood=momentMood(item),text=momentText(item),selected=momentReactionState(item.id);
   setModal(`${modalHeader(t("moments"))}<div class="modal-body moment-view facebook-story-card"><header class="story-card-head"><span class="post-avatar">${mood?.emoji||item.emoji||"💬"}</span><div><strong>${escapeHtml(storyOwnerName(item))}</strong><small>${momentTimeLeft(item)}</small></div></header><div class="moment-big-emoji">${mood?.emoji||item.emoji||"💬"}</div>${text?`<p>${escapeHtml(text)}</p>`:`<h3>${escapeHtml(localText(mood))}</h3>`}${momentReactionSummary(item)}<div class="story-action-bar">${MOMENT_REACTIONS.map(reaction=>`<button class="story-reaction-button ${selected[reaction.id]?"active":""}" data-moment-react="${item.id}" data-moment-reaction-type="${reaction.id}"><span>${reaction.emoji}</span><small>${escapeHtml(state.lang==="bn"?reaction.bn:reaction.en)}</small></button>`).join("")}<button class="story-reaction-button" data-moment-comments="${item.id}">${icon("message")}<small>${state.lang==="bn"?"মন্তব্য":"Comment"}</small></button></div></div>`);
 }
@@ -3394,6 +3409,7 @@ else if(requestedView==="compose")setTimeout(openComposer,650);
 else if(["saved","explore"].includes(requestedView))state.view=requestedView;
 else if(requestedView==="calm")setTimeout(openCalm,650);
 
+try{if(screen.orientation&&screen.orientation.lock){screen.orientation.lock("portrait-primary").catch(()=>{})}}catch(e){}
 renderIcons();
 localizePage();
 completeAppStartup();

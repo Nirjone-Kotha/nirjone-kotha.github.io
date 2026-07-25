@@ -30,26 +30,26 @@
   --ease:cubic-bezier(.2,.8,.2,1);
   --font:"Hind Siliguri","Noto Sans Bengali","Segoe UI",system-ui,-apple-system,sans-serif;
 }
-html[data-theme="dark"]{
-  --page:#0e1118;
-  --surface:#151a23;
-  --surface-soft:#1b212d;
-  --surface-strong:#202940;
-  --text:#eef2fb;
-  --muted:#a2aabc;
-  --faint:#737c91;
-  --line:#252c38;
-  --line-strong:#343d4e;
-  --brand:#73c1b3;
-  --brand-strong:#9cdbcf;
-  --brand-soft:#18332f;
-  --mint:#65d4b4;
-  --mint-soft:#16352f;
-  --danger:#ff6e82;
-  --danger-soft:#3a1e27;
-  --shadow-sm:0 8px 22px rgba(0,0,0,.15);
-  --shadow:0 20px 55px rgba(0,0,0,.24);
-  --shadow-float:0 32px 90px rgba(0,0,0,.45);
+html[data-theme="dark"] {
+  --page: #0b0e14;
+  --surface: #151921;
+  --surface-soft: #1e2430;
+  --surface-strong: #283040;
+  --text: #f3f6fc;
+  --muted: #b5becd;
+  --faint: #7d879c;
+  --line: #2d3545;
+  --line-strong: #3e485c;
+  --brand: #20e3b2;
+  --brand-strong: #40e0d0;
+  --brand-soft: rgba(32, 227, 178, 0.16);
+  --mint: #30d158;
+  --mint-soft: rgba(48, 209, 88, 0.16);
+  --danger: #ff453a;
+  --danger-soft: rgba(255, 69, 58, 0.16);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 20px 50px rgba(0, 0, 0, 0.65);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -387,158 +387,193 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
 .stories-row::-webkit-scrollbar { display: none; }
 .circle-stories { display: flex; gap: 9px; }
 
-/* Facebook Vertical Story Card Styling */
-.story-card {
-  width: 108px;
-  height: 165px;
-  flex: 0 0 108px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  padding: 0;
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
+/* ─────────────────────────────────────────────────────────────
+   SQUIRCLE STORY CARDS (iOS Superellipse Style 118x118px)
+   ───────────────────────────────────────────────────────────── */
+.stories-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  overflow-x: auto !important;
+  padding: 6px 4px 14px !important;
+  scrollbar-width: none !important;
 }
-.story-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
-.story-card:active {
-  transform: scale(0.97);
+.stories-row::-webkit-scrollbar { display: none !important; }
+
+.circle-stories {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
 }
 
-/* 1. Add Story Card */
+/* Squircle Base Frame & Superellipse Curves */
+.story-card {
+  position: relative !important;
+  width: 118px !important;
+  height: 118px !important;
+  flex: 0 0 118px !important;
+  border-radius: 28px !important;
+  corner-shape: squircle !important;
+  clip-path: inset(0 round 28px) !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  background: var(--surface) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  text-align: center !important;
+  border: 0 !important;
+}
+
+.story-card:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 1. Add Story Item */
 .add-story-card {
-  background: var(--surface);
+  background: linear-gradient(135deg, var(--brand-strong, #104e49), var(--brand, #147970)) !important;
+  border: 2px solid color-mix(in srgb, var(--brand), transparent 50%) !important;
 }
 .add-story-cover {
-  height: 116px;
-  width: 100%;
-  background: linear-gradient(145deg, var(--brand-strong, #104e49), var(--brand, #147970));
-  display: grid;
-  place-items: center;
-  color: #ffffff;
-  position: relative;
+  width: 100% !important;
+  height: 100% !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #ffffff !important;
+  position: relative !important;
+  padding-bottom: 22px !important;
 }
 .add-story-cover .icon-svg {
-  width: 24px;
-  height: 24px;
-  opacity: 0.9;
+  width: 30px !important;
+  height: 30px !important;
+  color: #ffffff !important;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25)) !important;
 }
 .add-story-plus {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #1877F2;
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 900;
-  display: grid;
-  place-items: center;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 3px solid var(--surface);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  z-index: 3;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: #1877F2 !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  display: grid !important;
+  place-items: center !important;
+  position: absolute !important;
+  bottom: 8px !important;
+  right: 8px !important;
+  border: 2.5px solid var(--surface) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+  z-index: 5 !important;
 }
 .add-story-label {
-  height: 48px;
-  background: var(--surface);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 8px;
-  font-size: 11.5px;
-  font-weight: 750;
-  color: var(--text);
-  text-align: center;
-  line-height: 1.2;
+  position: absolute !important;
+  bottom: 8px !important;
+  left: 10px !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+  z-index: 4 !important;
 }
 
-/* 2. User Moment Story Card */
-.moment-card {
-  padding: 8px;
+/* 2. Unviewed vs Viewed States */
+.story-card.moment-card.unviewed {
+  box-shadow: 0 0 0 3.5px transparent, 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+  background-origin: border-box !important;
+  border: 3.5px solid transparent !important;
+  background-image: linear-gradient(var(--surface), var(--surface)), linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #40e0d0 100%) !important;
+  background-clip: padding-box, border-box !important;
 }
-.moment-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.78) 100%);
-  pointer-events: none;
-  z-index: 1;
+
+.story-card.moment-card.viewed {
+  border: 1.5px solid color-mix(in srgb, var(--line), transparent 30%) !important;
+  opacity: 0.88 !important;
 }
+
+/* 3. Gradient Overlay for text readability */
+.story-gradient-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.25) 55%, transparent 100%) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* 4. Story Reaction / Score Pill Badge (Top Right) */
 .story-score-badge {
-  position: relative;
-  z-index: 2;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: #1877F2;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 800;
-  display: grid;
-  place-items: center;
-  border: 2px solid #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  align-self: flex-start;
+  position: absolute !important;
+  top: 7px !important;
+  right: 7px !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-radius: 999px !important;
+  padding: 2px 7px !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  z-index: 5 !important;
+  letter-spacing: 0.02em !important;
 }
+
+/* 5. Center Emoji & Bottom Text Snippet */
 .story-card-content {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 4px;
-  padding: 4px 2px;
+  position: relative !important;
+  z-index: 3 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 8px 24px !important;
 }
 .story-emoji {
-  font-size: 22px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  font-size: 26px !important;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35)) !important;
+  margin-top: 2px !important;
 }
 .story-text-snippet {
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.25;
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.85);
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin: 0;
+  margin: 4px 0 0 !important;
+  font-size: 10.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6) !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
+
+/* 6. Author / Owner Name Label at Bottom */
 .story-author-name {
-  position: relative;
-  z-index: 2;
-  font-size: 11px;
-  font-weight: 750;
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  text-align: left;
+  position: absolute !important;
+  bottom: 7px !important;
+  left: 8px !important;
+  right: 8px !important;
+  z-index: 4 !important;
+  font-size: 10px !important;
+  font-weight: 750 !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: center !important;
 }
 .composer-compact {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: var(--shadow-sm);
-  padding: 12px 16px 8px;
+  padding: 10px 14px;
   margin-bottom: 14px;
   display: flex;
   flex-direction: column;
@@ -643,9 +678,34 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
 .feed-tab{border:0;background:transparent;padding:8px 13px;border-radius:9px;color:var(--muted);font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:7px}
 .feed-tab .icon-svg{width:16px;height:16px;flex-shrink:0}
 .feed-tab.active{background:var(--brand-soft);color:var(--brand)}
-.filter-button{
-  border:1px solid var(--line);background:var(--surface);height:38px;padding:0 12px;border-radius:12px;
-  display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;font-weight:800;box-shadow:var(--shadow-sm)
+.filter-button {
+  border: 1px solid color-mix(in srgb, var(--brand), transparent 65%) !important;
+  background: color-mix(in srgb, var(--brand-soft), var(--surface) 60%) !important;
+  height: 36px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  color: var(--brand) !important;
+  font-size: 12.5px !important;
+  font-weight: 750 !important;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--brand), transparent 85%) !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s ease !important;
+}
+.filter-button:hover, .filter-button:active {
+  background: var(--brand) !important;
+  color: #ffffff !important;
+  border-color: var(--brand) !important;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--brand), transparent 65%) !important;
+}
+.filter-button .icon-svg {
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
 }
 .active-filter-bar{margin:-3px 0 12px;padding:10px 12px;border:1px dashed var(--line-strong);border-radius:12px;background:var(--surface-soft);font-size:12px;color:var(--muted)}
 .feed-list{display:flex;flex-direction:column;gap:14px}
@@ -3200,43 +3260,8 @@ body.video-large-view .video-card-meta-bar * {
     border-radius: 0 !important;
     border: 0 !important;
     box-shadow: none !important;
-    padding: 10px 14px 6px !important;
+    padding: 10px 14px !important;
     margin-bottom: 8px !important;
-  }
-
-  /* Facebook Composer Quick Actions Row */
-  body.force-mobile-layout .fb-composer-actions,
-  body.installed-phone-app.force-mobile-layout .fb-composer-actions {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    border-top: 1px solid var(--line) !important;
-    margin-top: 10px !important;
-    padding-top: 2px !important;
-  }
-
-  body.force-mobile-layout .fb-composer-action,
-  body.installed-phone-app.force-mobile-layout .fb-composer-action {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    height: 38px !important;
-    border: 0 !important;
-    background: transparent !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    color: var(--muted) !important;
-    cursor: pointer !important;
-  }
-
-  body.force-mobile-layout .fb-composer-action:not(:last-child),
-  body.installed-phone-app.force-mobile-layout .fb-composer-action:not(:last-child) {
-    border-right: 1px solid var(--line) !important;
-  }
-
-  body.force-mobile-layout .fb-composer-action .fb-action-icon,
-  body.installed-phone-app.force-mobile-layout .fb-composer-action .fb-action-icon {
-    font-size: 16px !important;
   }
 
   /* ── Feed Tabs: Facebook underline style ── */
@@ -3297,12 +3322,16 @@ body.video-large-view .video-card-meta-bar * {
 
   body.force-mobile-layout .filter-button,
   body.installed-phone-app.force-mobile-layout .filter-button {
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: var(--muted) !important;
-    padding: 0 10px !important;
-    min-width: auto !important;
+    border: 1px solid color-mix(in srgb, var(--brand), transparent 60%) !important;
+    background: var(--brand-soft) !important;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--brand), transparent 85%) !important;
+    color: var(--brand) !important;
+    padding: 0 12px !important;
+    height: 36px !important;
+    border-radius: 999px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   body.force-mobile-layout .filter-button span:last-child,
@@ -3406,6 +3435,60 @@ body.video-large-view .video-card-meta-bar * {
    (Applies strictly to Desktop Mode - min-width: 761px)
    ───────────────────────────────────────────────────────────── */
 @media (min-width: 761px) {
+  /* Right Rail "How are you feeling today?" Replacement Card */
+  .right-rail .welcome-strip.right-welcome-card {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding: 20px !important;
+    border-radius: 20px !important;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--brand-soft), var(--surface) 40%), var(--surface)) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 18px !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+  }
+
+  .right-rail .welcome-strip.right-welcome-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .right-rail .welcome-strip h2 {
+    font-size: 19px !important;
+    font-weight: 850 !important;
+    margin: 6px 0 4px !important;
+    line-height: 1.25 !important;
+    color: var(--text) !important;
+  }
+
+  .right-rail .welcome-strip p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    color: var(--muted) !important;
+    margin: 0 !important;
+  }
+
+  .right-rail .welcome-strip .mood-select-button {
+    width: 100% !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    background: var(--surface) !important;
+    border: 1px solid color-mix(in srgb, var(--brand), transparent 70%) !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 14px !important;
+    gap: 10px !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .right-rail .welcome-strip .mood-select-button:hover {
+    border-color: var(--brand) !important;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--brand), transparent 80%) !important;
+  }
+
   /* 1. Remove Filter Posts button from top right toolbar on Desktop */
   .feed-toolbar .filter-button,
   .filter-button[data-action="filter"] {
@@ -3548,4 +3631,147 @@ body.video-large-view .video-card-meta-bar * {
   .right-rail .surface-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ULTRA-PREMIUM HIGH-CONTRAST DARK MODE (Facebook Dark Polish)
+   ───────────────────────────────────────────────────────────── */
+html[data-theme="dark"] .feed-toolbar {
+  background: #151921 !important;
+  border-color: #2d3545 !important;
+}
+
+html[data-theme="dark"] .feed-tab {
+  color: #c4cddf !important;
+  font-weight: 650 !important;
+}
+
+html[data-theme="dark"] .feed-tab .icon-svg {
+  color: #20e3b2 !important;
+  opacity: 0.95 !important;
+}
+
+html[data-theme="dark"] .feed-tab.active {
+  color: #20e3b2 !important;
+  font-weight: 750 !important;
+  border-bottom-color: #20e3b2 !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .filter-button {
+  background: rgba(32, 227, 178, 0.15) !important;
+  border: 1px solid rgba(32, 227, 178, 0.4) !important;
+  color: #20e3b2 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-theme="dark"] .filter-button .icon-svg {
+  color: #20e3b2 !important;
+}
+
+html[data-theme="dark"] .add-story-card {
+  background: #151921 !important;
+  border-color: #2d3545 !important;
+}
+
+html[data-theme="dark"] .add-story-cover {
+  background: linear-gradient(145deg, #0e3b37, #14615a) !important;
+}
+
+html[data-theme="dark"] .add-story-plus {
+  background: #1877F2 !important;
+  border-color: #151921 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .add-story-label {
+  background: #151921 !important;
+  color: #f3f6fc !important;
+}
+
+html[data-theme="dark"] .story-card {
+  background: #151921 !important;
+  border-color: #2d3545 !important;
+}
+
+html[data-theme="dark"] .moment-card {
+  background: linear-gradient(160deg, #1e2838 0%, #151921 100%) !important;
+}
+
+html[data-theme="dark"] .composer-compact {
+  background: #151921 !important;
+  border-color: #2d3545 !important;
+}
+
+html[data-theme="dark"] .composer-write-btn {
+  background: rgba(32, 227, 178, 0.15) !important;
+  border-color: rgba(32, 227, 178, 0.35) !important;
+  color: #20e3b2 !important;
+}
+
+html[data-theme="dark"] .composer-placeholder strong {
+  background: #1e2430 !important;
+  border-color: #2d3545 !important;
+  color: #b5becd !important;
+}
+
+html[data-theme="dark"] .post-action {
+  background: #1e2430 !important;
+  border: 1px solid #2d3545 !important;
+  color: #f3f6fc !important;
+}
+
+html[data-theme="dark"] .post-action .icon-svg {
+  color: #20e3b2 !important;
+}
+
+html[data-theme="dark"] .post-action:hover,
+html[data-theme="dark"] .post-action:active {
+  background: rgba(32, 227, 178, 0.18) !important;
+  border-color: rgba(32, 227, 178, 0.45) !important;
+  color: #20e3b2 !important;
+}
+
+html[data-theme="dark"] .post-card {
+  background: #151921 !important;
+  border-color: #2d3545 !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+html[data-theme="dark"] .post-text {
+  color: #f3f6fc !important;
+}
+
+html[data-theme="dark"] .post-author-name {
+  color: #f3f6fc !important;
+}
+
+html[data-theme="dark"] .post-meta-sub {
+  color: #b5becd !important;
+}
+
+html[data-theme="dark"] .mobile-nav {
+  background: rgba(21, 25, 33, 0.92) !important;
+  border-color: #2d3545 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+}
+
+html[data-theme="dark"] .mobile-nav button {
+  color: #b5becd !important;
+}
+
+html[data-theme="dark"] .mobile-nav button.active {
+  color: #20e3b2 !important;
+}
+
+html[data-theme="dark"] .topbar {
+  background: rgba(21, 25, 33, 0.92) !important;
+  border-color: #2d3545 !important;
+}
+
+html[data-theme="dark"] .icon-button,
+html[data-theme="dark"] .safety-top {
+  background: #1e2430 !important;
+  border-color: #2d3545 !important;
+  color: #f3f6fc !important;
 }
