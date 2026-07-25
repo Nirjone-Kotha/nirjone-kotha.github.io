@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+# Development build: enable production crawling only after setting config/site.json.

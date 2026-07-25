@@ -1,0 +1,37 @@
+{
+  "status": "editorial-template-not-published",
+  "slug": "replace-with-readable-slug",
+  "locales": {
+    "bn": {
+      "title": "শিরোনাম লিখুন",
+      "summary": "পাঠক কী জানতে পারবেন তা সংক্ষেপে লিখুন।",
+      "sections": [],
+      "disclaimer": "এই লেখা শিক্ষামূলক; এটি চিকিৎসা পরামর্শ নয়।"
+    },
+    "en": {
+      "title": "Add article title",
+      "summary": "Briefly explain what the reader will learn.",
+      "sections": [],
+      "disclaimer": "This article is educational and is not medical advice."
+    }
+  },
+  "editorial": {
+    "author": "Moner Kotha Editorial Team",
+    "reviewerName": "",
+    "reviewerCredentials": "",
+    "publishedDate": "",
+    "lastReviewedDate": "",
+    "sources": []
+  },
+  "safety": {
+    "professionalHelpGuidanceReviewed": false,
+    "crisisResourcesVerified": false,
+    "medicalClaimsReviewed": false
+  },
+  "seo": {
+    "indexable": false,
+    "canonicalPath": "",
+    "description": "",
+    "ogImage": "/assets/brand/share-cover.png"
+  }
+}

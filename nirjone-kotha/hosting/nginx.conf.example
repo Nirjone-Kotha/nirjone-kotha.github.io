@@ -1,0 +1,36 @@
+# Replace example.com and document root before production deployment.
+server {
+  listen 443 ssl http2;
+  server_name example.com;
+  root /var/www/moner-kotha;
+  index index.html;
+
+  # Configure ssl_certificate / ssl_certificate_key through your host.
+
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+  add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()" always;
+  add_header X-Frame-Options "DENY" always;
+  add_header Cross-Origin-Opener-Policy "same-origin" always;
+  add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://i.ytimg.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.googleusercontent.com; connect-src 'self' https://cdn.jsdelivr.net https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; font-src 'self'; media-src 'self' https://everyayah.com blob:; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-src https://www.youtube.com https://www.youtube-nocookie.com https://googleads.g.doubleclick.net; upgrade-insecure-requests" always;
+
+  error_page 404 /404.html;
+  location = /404.html { internal; }
+
+  # Real files and generated directories only. Unknown URLs return a real 404.
+  location / { try_files $uri $uri/ =404; }
+
+  location = /sw.js { add_header Cache-Control "no-cache, must-revalidate"; }
+  location = /manifest.webmanifest { default_type application/manifest+json; add_header Cache-Control "no-cache, must-revalidate"; }
+  location = /config/site.json { add_header Cache-Control "no-cache, must-revalidate"; }
+  location ~* \.(?:css|js|png|svg|webp)$ { expires 7d; add_header Cache-Control "public"; try_files $uri =404; }
+
+  gzip on;
+  gzip_types text/html text/css application/javascript application/json application/manifest+json application/xml text/xml image/svg+xml;
+}
+
+server {
+  listen 80;
+  server_name example.com www.example.com;
+  return 308 https://example.com$request_uri;
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Admin Login · Moner Kotha</title>
+  <link rel="stylesheet" href="assets/admin.css?v=6.1.0">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <div class="auth-brand"><img src="../assets/brand/logo-mark.png" alt=""><div><strong>Moner Kotha</strong><span>Firebase Control Center</span></div></div>
+    <h1>Admin Login</h1>
+    <p class="lead">Firebase Authentication দিয়ে project control center-এ প্রবেশ করুন।</p>
+    <div class="alert error" id="loginError" hidden></div>
+    <div class="alert" id="firebaseSetupNotice" hidden>
+      <b>Firebase config প্রয়োজন</b><br>
+      <span><code>config/firebase-config.js</code>-এ Web App config paste করুন।</span>
+    </div>
+    <form id="adminLoginForm" class="auth-form">
+      <label>Admin email<input type="email" name="email" autocomplete="username" required></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+      <button class="primary full" id="loginButton" type="submit">Sign in securely</button>
+    </form>
+    <p class="auth-note">শুধু Firebase Realtime Database-এর <code>adminUsers/{uid}</code>-এ enabled administrator প্রবেশ করতে পারবে।</p>
+    <a class="back-link" href="../">← Website-এ ফিরে যান</a>
+  </main>
+  <script type="module" src="assets/admin-login.js?v=6.1.0"></script>
+</body>
+</html>

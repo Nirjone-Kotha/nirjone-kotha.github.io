@@ -1,0 +1,1571 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "home": {
+      "path": "",
+      "type": "WebPage",
+      "en": {
+        "title": "Moner Kotha — A Safe Place to Share Feelings Anonymously",
+        "description": "Share feelings anonymously, listen without judgement, join supportive groups and use calming tools in Bangla or English.",
+        "intro": "Moner Kotha is a calm social space for people who need somewhere to speak honestly, feel heard, or simply pause for a moment.",
+        "sections": [
+          {
+            "heading": "A private-feeling space without public identity pressure",
+            "body": "Use a chosen display name instead of exposing a photo, phone number or address. The current test version keeps activity on the device; the production version will use a protected account and moderation system."
+          },
+          {
+            "heading": "Share, listen, or ask for support",
+            "body": "Write what is on your mind, choose whether you want replies, and respond with empathy. The platform is designed to reduce pressure rather than reward popularity."
+          },
+          {
+            "heading": "Tools for a calmer moment",
+            "body": "Use slow breathing, grounding, sensory reset and short reflection exercises. These tools support a pause; they do not replace medical or emergency care."
+          },
+          {
+            "heading": "Designed for Bangla and English users",
+            "body": "The interface can be changed between Bangla and English while posts and comments remain exactly in the language their authors used."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is Moner Kotha a therapy service?",
+            "answer": "No. It is a peer-support and self-expression platform, not a diagnosis, therapy, or emergency service."
+          },
+          {
+            "question": "Can I use a nickname?",
+            "answer": "Yes. A chosen display name is encouraged, and personal contact details should not be posted."
+          },
+          {
+            "question": "Can I install it as an app?",
+            "answer": "Yes. The same website can be installed as a PWA on supported phones and computers."
+          }
+        ]
+      },
+      "bn": {
+        "title": "মনের কথা — গোপনে অনুভূতি শেয়ার ও সহায়তা পাওয়ার নিরাপদ জায়গা",
+        "description": "পরিচয় গোপন রেখে অনুভূতি শেয়ার করুন, বিচারহীনভাবে অন্যের কথা শুনুন, গ্রুপে যুক্ত হন এবং মন শান্ত করার সহজ উপায় ব্যবহার করুন।",
+        "intro": "মনের কথা এমন একটি শান্ত সামাজিক জায়গা, যেখানে মানুষ নিজের অনুভূতি খোলামেলা বলতে, কারও কথা শুনতে অথবা কয়েক মিনিট থেমে স্বস্তি নিতে পারেন।",
+        "sections": [
+          {
+            "heading": "পরিচয় প্রকাশের চাপ ছাড়া কথা বলার জায়গা",
+            "body": "ছবি, ফোন নম্বর বা ঠিকানা প্রকাশ না করে নিজের পছন্দের নাম ব্যবহার করা যায়। বর্তমান পরীক্ষামূলক সংস্করণে তথ্য ডিভাইসেই থাকে; চূড়ান্ত সংস্করণে সুরক্ষিত অ্যাকাউন্ট ও মডারেশন থাকবে।"
+          },
+          {
+            "heading": "বলুন, শুনুন অথবা সহায়তা চান",
+            "body": "মনের কথা লিখুন, উত্তর চান কি না তা বেছে নিন এবং সহমর্মিতার সঙ্গে অন্যকে সাড়া দিন। জনপ্রিয়তার প্রতিযোগিতা নয়—চাপ কমানোই মূল লক্ষ্য।"
+          },
+          {
+            "heading": "কয়েক মিনিট স্বস্তির সহজ উপায়",
+            "body": "ধীর শ্বাস, গ্রাউন্ডিং, ইন্দ্রিয়ভিত্তিক রিসেট ও ছোট প্রতিফলন অনুশীলন ব্যবহার করুন। এগুলো বিরতি নিতে সহায়তা করে; চিকিৎসা বা জরুরি সেবার বিকল্প নয়।"
+          },
+          {
+            "heading": "বাংলা ও ইংরেজি—দুই ভাষার জন্য",
+            "body": "ইন্টারফেস বাংলা বা ইংরেজি করা যায়, তবে পোস্ট ও মন্তব্য লেখক যে ভাষায় লিখেছেন ঠিক সেই ভাষাতেই থাকে।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "মনের কথা কি থেরাপি সেবা?",
+            "answer": "না। এটি সহমর্মিতাভিত্তিক সামাজিক সহায়তা ও অনুভূতি প্রকাশের প্ল্যাটফর্ম; রোগ নির্ণয়, থেরাপি বা জরুরি সেবা নয়।"
+          },
+          {
+            "question": "আমি কি ডাকনাম ব্যবহার করতে পারি?",
+            "answer": "হ্যাঁ। পছন্দের নাম ব্যবহার করা উৎসাহিত করা হয় এবং ব্যক্তিগত যোগাযোগের তথ্য পোস্ট করা উচিত নয়।"
+          },
+          {
+            "question": "অ্যাপ হিসেবে ইনস্টল করা যাবে?",
+            "answer": "হ্যাঁ। সমর্থিত ফোন ও কম্পিউটারে একই ওয়েবসাইট PWA হিসেবে ইনস্টল করা যায়."
+          }
+        ]
+      },
+      "related": [
+        "feature-anonymous-sharing",
+        "feature-mood-check-in",
+        "feature-support-circles",
+        "feature-calm-room",
+        "about",
+        "safety"
+      ]
+    },
+    "about": {
+      "path": "about",
+      "type": "AboutPage",
+      "en": {
+        "title": "About Moner Kotha — Why This Community Exists",
+        "description": "Learn why Moner Kotha was created and how its anonymous, bilingual and safety-aware community model works.",
+        "intro": "Many people carry difficult thoughts without finding a comfortable place to speak. Moner Kotha is being built to make that first honest sentence easier.",
+        "sections": [
+          {
+            "heading": "Our purpose",
+            "body": "Create a respectful place where people can express emotional experiences, receive humane responses and find simple tools for a calmer moment."
+          },
+          {
+            "heading": "What the platform is not",
+            "body": "It is not a dating service, a replacement for professional care, or a place to exchange private contact information."
+          },
+          {
+            "heading": "Safety by design",
+            "body": "Risk-aware prompts, reporting, moderation planning, privacy boundaries and ad-free sensitive areas are part of the product architecture."
+          },
+          {
+            "heading": "A product that will keep improving",
+            "body": "The local version is a functional prototype. A central database, verified authentication, moderation workflow and audited privacy controls are planned before public scale."
+          },
+          {
+            "heading": "Video content notice",
+            "body": "Videos shown on Moner Kotha are not hosted on our servers and are not presented as content owned by Moner Kotha. They play directly from YouTube through the official embedded player and remain attributable to their respective creators, channels and rights holders. Concerns can be reported through the Contact page for review."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Who is this for?",
+            "answer": "Anyone who wants a calm, non-judgmental place to express feelings or support others respectfully."
+          },
+          {
+            "question": "Who runs the platform?",
+            "answer": "The owner and editorial information will be published before production launch; no fake professional identity is used."
+          }
+        ]
+      },
+      "bn": {
+        "title": "মনের কথা সম্পর্কে — এই কমিউনিটি কেন",
+        "description": "মনের কথা কেন তৈরি হয়েছে এবং এর পরিচয়-সুরক্ষিত, দ্বিভাষিক ও নিরাপত্তাসচেতন কমিউনিটি কীভাবে কাজ করে জানুন।",
+        "intro": "অনেক মানুষ কষ্টের কথা বহন করেন, কিন্তু স্বাচ্ছন্দ্যে বলার জায়গা পান না। প্রথম সত্য বাক্যটি বলা সহজ করতেই মনের কথা তৈরি হচ্ছে।",
+        "sections": [
+          {
+            "heading": "আমাদের উদ্দেশ্য",
+            "body": "মানুষ যেন নিজের আবেগ ও অভিজ্ঞতা সম্মানের সঙ্গে বলতে পারেন, মানবিক সাড়া পান এবং কয়েক মিনিট স্বস্তির সহজ উপায় খুঁজে পান।"
+          },
+          {
+            "heading": "এটি যা নয়",
+            "body": "এটি ডেটিং সেবা নয়, পেশাদার চিকিৎসার বিকল্প নয় এবং ব্যক্তিগত যোগাযোগের তথ্য বিনিময়ের জায়গাও নয়।"
+          },
+          {
+            "heading": "ডিজাইন থেকেই নিরাপত্তা",
+            "body": "ঝুঁকিসচেতন নির্দেশনা, রিপোর্ট, পরিকল্পিত মডারেশন, গোপনীয়তার সীমা এবং সংবেদনশীল স্থানে বিজ্ঞাপন না রাখার নীতি স্থাপত্যের অংশ।"
+          },
+          {
+            "heading": "ধাপে ধাপে উন্নয়ন",
+            "body": "লোকাল সংস্করণটি কার্যকর প্রোটোটাইপ। জনসাধারণের ব্যবহারের আগে কেন্দ্রীয় ডেটাবেস, যাচাইকৃত লগইন, মডারেশন ও অডিট করা গোপনীয়তা নিয়ন্ত্রণ যুক্ত হবে।"
+          },
+          {
+            "heading": "ভিডিও সম্পর্কিত ঘোষণা",
+            "body": "Moner Kotha-তে দেখানো ভিডিওগুলো আমাদের সার্ভারে রাখা বা আমাদের মালিকানাধীন হিসেবে উপস্থাপন করা হয় না। এগুলো সংশ্লিষ্ট creator ও channel-এর YouTube content এবং YouTube-এর official embedded player দিয়ে সরাসরি চলে। Copyright ও ownership সংশ্লিষ্ট rights holder-এর। কোনো আপত্তি থাকলে Contact page-এর মাধ্যমে জানাতে পারেন।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "এটি কার জন্য?",
+            "answer": "যে কেউ নিজের অনুভূতি বলতে বা সম্মানের সঙ্গে অন্যকে সহায়তা করতে শান্ত ও বিচারহীন জায়গা চান।"
+          },
+          {
+            "question": "প্ল্যাটফর্মটি কারা পরিচালনা করেন?",
+            "answer": "চূড়ান্ত চালুর আগে মালিক ও সম্পাদকীয় তথ্য প্রকাশ করা হবে; কোনো ভুয়া পেশাজীবী পরিচয় ব্যবহার করা হয়নি।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy",
+        "contact"
+      ]
+    },
+    "contact": {
+      "path": "contact",
+      "type": "ContactPage",
+      "en": {
+        "title": "Contact Moner Kotha — Platform Support",
+        "description": "Contact the Moner Kotha platform team through Facebook, email or WhatsApp when official details are available.",
+        "intro": "This page is for platform and customer support. It is not an emergency hotline or a crisis response channel.",
+        "sections": [
+          {
+            "heading": "What you can contact us about",
+            "body": "Technical problems, account or privacy questions, reports about community behaviour, partnership enquiries and accessibility feedback."
+          },
+          {
+            "heading": "Do not send urgent crisis messages here",
+            "body": "If someone is in immediate danger, contact local emergency services and a trusted person nearby instead of waiting for a platform reply."
+          },
+          {
+            "heading": "Contact details will activate from one configuration",
+            "body": "Facebook, email and WhatsApp remain safely disabled until the owner adds verified values to the central site configuration."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Why does a contact option say Coming soon?",
+            "answer": "The owner has not added a verified contact value yet. Empty or broken links are never shown."
+          },
+          {
+            "question": "Is this a counselling hotline?",
+            "answer": "No. These contacts are only for platform support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "যোগাযোগ — মনের কথা প্ল্যাটফর্ম সহায়তা",
+        "description": "অফিশিয়াল তথ্য যুক্ত হওয়ার পর Facebook, email অথবা WhatsApp-এর মাধ্যমে মনের কথা টিমের সঙ্গে যোগাযোগ করুন।",
+        "intro": "এই পেজটি প্ল্যাটফর্ম ও ব্যবহারকারী সহায়তার জন্য। এটি জরুরি হটলাইন বা সংকট মোকাবিলার সেবা নয়।",
+        "sections": [
+          {
+            "heading": "যে বিষয়ে যোগাযোগ করতে পারেন",
+            "body": "প্রযুক্তিগত সমস্যা, অ্যাকাউন্ট বা গোপনীয়তা প্রশ্ন, কমিউনিটি আচরণ সম্পর্কে রিপোর্ট, অংশীদারিত্ব এবং accessibility feedback।"
+          },
+          {
+            "heading": "জরুরি সংকটের বার্তা এখানে পাঠাবেন না",
+            "body": "তাৎক্ষণিক বিপদে প্ল্যাটফর্মের উত্তরের অপেক্ষা না করে স্থানীয় জরুরি সেবা ও কাছের বিশ্বস্ত ব্যক্তির সহায়তা নিন।"
+          },
+          {
+            "heading": "একটি কনফিগারেশন থেকেই যোগাযোগ চালু হবে",
+            "body": "মালিক কেন্দ্রীয় কনফিগারেশনে যাচাইকৃত তথ্য না দেওয়া পর্যন্ত Facebook, email ও WhatsApp নিরাপদভাবে নিষ্ক্রিয় থাকবে।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "কোনো অপশনে “শিগগির যোগ হবে” কেন?",
+            "answer": "মালিক এখনো যাচাইকৃত যোগাযোগের তথ্য দেননি। খালি বা ভাঙা লিংক দেখানো হয় না।"
+          },
+          {
+            "question": "এটি কি কাউন্সেলিং হটলাইন?",
+            "answer": "না। এগুলো কেবল প্ল্যাটফর্ম সহায়তার যোগাযোগ মাধ্যম।"
+          }
+        ]
+      },
+      "related": [
+        "about",
+        "safety",
+        "privacy",
+        "data-deletion"
+      ]
+    },
+    "privacy": {
+      "path": "privacy",
+      "type": "WebPage",
+      "en": {
+        "title": "Privacy Notice — Moner Kotha",
+        "description": "Learn how optional password profiles use Firebase, how guest data stays on the device, and which information is excluded from advertising.",
+        "intro": "Moner Kotha offers an optional password-only profile without collecting a real email address or phone number. Guests can continue with device-only storage.",
+        "sections": [
+          {
+            "heading": "Password-only Firebase profile",
+            "body": "If you choose a password profile, the app creates a pseudonymous Firebase Authentication account and stores your app data under your private Firebase UID. You do not enter a real email address or phone number."
+          },
+          {
+            "heading": "Guest mode and local storage",
+            "body": "If you skip the password option, posts, comments, preferences and check-ins remain in the current browser. Clearing site data or changing devices means that guest profile cannot be restored."
+          },
+          {
+            "heading": "Password responsibility",
+            "body": "The password is the profile ID and access key. There is no recovery channel. Anyone who knows and uses the same password can access the same profile, so use a strong unique passphrase that is not reused elsewhere."
+          },
+          {
+            "heading": "Emotional information is not an advertising signal",
+            "body": "Mood, need, post text, comments, searches, saved content and safety interactions must not be used for ad targeting or remarketing."
+          },
+          {
+            "heading": "Your controls",
+            "body": "You can export app data, reset device data, and—when signed in—clear the synced app data associated with the password profile from Profile and settings."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Do I need to provide a phone number or real email?",
+            "answer": "No. The visitor profile asks only for a password and uses a pseudonymous Firebase identity."
+          },
+          {
+            "question": "Can a forgotten password be recovered?",
+            "answer": "No. There is no phone or email recovery channel, so the password must be remembered."
+          },
+          {
+            "question": "Are mood choices used for ads?",
+            "answer": "No. The advertising boundary explicitly forbids that use."
+          }
+        ]
+      },
+      "bn": {
+        "title": "গোপনীয়তা নোটিশ — মনের কথা",
+        "description": "ঐচ্ছিক password profile কীভাবে Firebase ব্যবহার করে, Guest data কীভাবে device-এ থাকে এবং কোন তথ্য বিজ্ঞাপনে ব্যবহার হয় না—জানুন।",
+        "intro": "মনের কথায় বাস্তব email বা phone number না দিয়েই ঐচ্ছিক password-only profile ব্যবহার করা যায়। চাইলে Guest হিসেবে device-only storage-এ চালিয়ে যাওয়া যায়।",
+        "sections": [
+          {
+            "heading": "Password-only Firebase profile",
+            "body": "Password profile নিলে app একটি pseudonymous Firebase Authentication account তৈরি করে এবং আপনার app data private Firebase UID-এর অধীনে রাখে। বাস্তব email address বা phone number দিতে হয় না।"
+          },
+          {
+            "heading": "Guest mode ও local storage",
+            "body": "Password option Skip করলে post, comment, preference ও check-in বর্তমান browser-এ থাকে। Site data মুছে গেলে বা device বদলালে Guest profile ফিরিয়ে আনা যাবে না।"
+          },
+          {
+            "heading": "Password-এর দায়িত্ব",
+            "body": "Password-টিই profile ID ও access key। Recovery channel নেই। একই password জানে এবং ব্যবহার করে এমন কেউ একই profile খুলতে পারে, তাই শক্তিশালী ও unique passphrase ব্যবহার করুন এবং অন্য কোথাও reuse করবেন না।"
+          },
+          {
+            "heading": "আবেগসংক্রান্ত তথ্য বিজ্ঞাপনের সংকেত নয়",
+            "body": "মুড, প্রয়োজন, post text, comment, search, saved content ও safety interaction বিজ্ঞাপন targeting বা remarketing-এ ব্যবহার করা যাবে না।"
+          },
+          {
+            "heading": "আপনার নিয়ন্ত্রণ",
+            "body": "Profile and settings থেকে app data export বা reset করা যায়। Password profile-এ signed in থাকলে reset-এর সময় সংশ্লিষ্ট synced app data-ও clear হয়।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Phone number বা বাস্তব email দিতে হবে?",
+            "answer": "না। Visitor profile শুধু password নেয় এবং pseudonymous Firebase identity ব্যবহার করে।"
+          },
+          {
+            "question": "Password ভুলে গেলে recovery হবে?",
+            "answer": "না। Phone বা email recovery channel নেই, তাই password মনে রাখতে হবে।"
+          },
+          {
+            "question": "মুড কি বিজ্ঞাপনে ব্যবহার হয়?",
+            "answer": "না। বিজ্ঞাপন স্থাপত্যে এটি স্পষ্টভাবে নিষিদ্ধ।"
+          }
+        ]
+      },
+      "related": [
+        "cookie-policy",
+        "data-deletion",
+        "safety",
+        "contact"
+      ]
+    },
+    "terms": {
+      "path": "terms",
+      "type": "WebPage",
+      "en": {
+        "title": "Terms of Use — Moner Kotha",
+        "description": "Review the editable pre-launch terms for respectful use, prohibited behaviour, moderation and service limitations.",
+        "intro": "These terms are a product draft and require owner and legal review before public launch.",
+        "sections": [
+          {
+            "heading": "Use the platform respectfully",
+            "body": "Do not harass, exploit, threaten, impersonate professionals or pressure others to share private details."
+          },
+          {
+            "heading": "Safety restrictions",
+            "body": "Do not encourage self-harm, publish method details, or use the platform to coordinate dangerous activity."
+          },
+          {
+            "heading": "No medical relationship",
+            "body": "Community responses and calming tools are informational peer-support features, not professional diagnosis or treatment."
+          },
+          {
+            "heading": "Moderation and availability",
+            "body": "Content may be limited or removed for safety or policy reasons. Service availability is not guaranteed during prototype testing."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Can my content be removed?",
+            "answer": "Yes, when it creates safety, privacy, legal or community-policy concerns."
+          },
+          {
+            "question": "Are these final legal terms?",
+            "answer": "No. They are clearly marked as a pre-launch draft."
+          }
+        ]
+      },
+      "bn": {
+        "title": "ব্যবহারের শর্ত — মনের কথা",
+        "description": "সম্মানজনক ব্যবহার, নিষিদ্ধ আচরণ, মডারেশন ও সেবার সীমা সম্পর্কিত চালুর আগের সম্পাদনাযোগ্য শর্ত দেখুন।",
+        "intro": "এগুলো পণ্যের খসড়া শর্ত; জনসাধারণের জন্য চালুর আগে মালিক ও আইনগত পর্যালোচনা প্রয়োজন।",
+        "sections": [
+          {
+            "heading": "সম্মানের সঙ্গে ব্যবহার করুন",
+            "body": "হয়রানি, শোষণ, হুমকি, পেশাজীবী সেজে থাকা অথবা ব্যক্তিগত তথ্য দিতে চাপ দেওয়া যাবে না।"
+          },
+          {
+            "heading": "নিরাপত্তা সীমা",
+            "body": "আত্মক্ষতির উৎসাহ, পদ্ধতির বিস্তারিত বা বিপজ্জনক কাজ সমন্বয়ের জন্য প্ল্যাটফর্ম ব্যবহার করা যাবে না।"
+          },
+          {
+            "heading": "চিকিৎসাসংক্রান্ত সম্পর্ক নয়",
+            "body": "কমিউনিটির সাড়া ও শান্ত হওয়ার টুল তথ্যভিত্তিক peer support; পেশাদার রোগ নির্ণয় বা চিকিৎসা নয়।"
+          },
+          {
+            "heading": "মডারেশন ও প্রাপ্যতা",
+            "body": "নিরাপত্তা বা নীতির কারণে কনটেন্ট সীমিত বা সরানো হতে পারে। প্রোটোটাইপ পর্যায়ে নিরবচ্ছিন্ন সেবা নিশ্চিত নয়।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "আমার কনটেন্ট সরানো হতে পারে?",
+            "answer": "হ্যাঁ—নিরাপত্তা, গোপনীয়তা, আইন বা কমিউনিটি নীতির সমস্যা হলে।"
+          },
+          {
+            "question": "এগুলো কি চূড়ান্ত আইনগত শর্ত?",
+            "answer": "না। এগুলো চালুর আগের খসড়া হিসেবে স্পষ্টভাবে চিহ্নিত।"
+          }
+        ]
+      },
+      "related": [
+        "community-guidelines",
+        "privacy",
+        "safety",
+        "contact"
+      ]
+    },
+    "community-guidelines": {
+      "path": "community-guidelines",
+      "type": "WebPage",
+      "en": {
+        "title": "Community Guidelines — Listen Without Judgement",
+        "description": "Learn how to post and respond safely, protect privacy, report harm and maintain a compassionate support community.",
+        "intro": "A supportive community is created through everyday choices: how we listen, what we do not ask for, and when we report something unsafe.",
+        "sections": [
+          {
+            "heading": "Listen before solving",
+            "body": "Acknowledge feelings first. Do not force advice, compare pain or tell someone they should simply be positive."
+          },
+          {
+            "heading": "Protect identity and boundaries",
+            "body": "Do not request phone numbers, addresses, photos, private meetings or social-media handles."
+          },
+          {
+            "heading": "Keep dangerous details out",
+            "body": "Never publish instructions, methods, challenges or content that glorifies self-harm or violence."
+          },
+          {
+            "heading": "Report instead of escalating",
+            "body": "Use the report tool for harassment, exploitation, dangerous details or privacy violations. Do not start a public argument."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Can I give advice?",
+            "answer": "Only when it is invited, and it should remain gentle, practical and non-medical."
+          },
+          {
+            "question": "Can users exchange contact details?",
+            "answer": "No. The platform is designed to keep support inside moderated public features."
+          }
+        ]
+      },
+      "bn": {
+        "title": "কমিউনিটি নির্দেশিকা — বিচার নয়, আগে শুনুন",
+        "description": "নিরাপদভাবে পোস্ট ও সাড়া দেওয়া, গোপনীয়তা রক্ষা, ক্ষতিকর আচরণ রিপোর্ট এবং সহমর্মী কমিউনিটি বজায় রাখার নিয়ম জানুন।",
+        "intro": "সহায়ক কমিউনিটি তৈরি হয় প্রতিদিনের ছোট সিদ্ধান্তে—কীভাবে শুনি, কী চাই না এবং কখন অনিরাপদ কিছু রিপোর্ট করি।",
+        "sections": [
+          {
+            "heading": "সমাধানের আগে শুনুন",
+            "body": "প্রথমে অনুভূতিকে স্বীকার করুন। জোর করে পরামর্শ, কষ্টের তুলনা অথবা “শুধু ইতিবাচক হন” বলবেন না।"
+          },
+          {
+            "heading": "পরিচয় ও সীমা রক্ষা করুন",
+            "body": "ফোন নম্বর, ঠিকানা, ছবি, ব্যক্তিগত সাক্ষাৎ অথবা সামাজিক মাধ্যমের আইডি চাইবেন না।"
+          },
+          {
+            "heading": "বিপজ্জনক বিস্তারিত নয়",
+            "body": "আত্মক্ষতি বা সহিংসতার পদ্ধতি, নির্দেশনা, চ্যালেঞ্জ অথবা মহিমান্বিত করা কনটেন্ট প্রকাশ করবেন না।"
+          },
+          {
+            "heading": "বিতর্ক না বাড়িয়ে রিপোর্ট করুন",
+            "body": "হয়রানি, শোষণ, বিপজ্জনক বিস্তারিত বা গোপনীয়তা লঙ্ঘনে রিপোর্ট ব্যবহার করুন; প্রকাশ্য তর্ক শুরু করবেন না।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "পরামর্শ দেওয়া যাবে?",
+            "answer": "চাওয়া হলে কোমল, ব্যবহারিক ও চিকিৎসাবহির্ভূত পরামর্শ দেওয়া যায়।"
+          },
+          {
+            "question": "যোগাযোগের তথ্য বিনিময় করা যাবে?",
+            "answer": "না। সহায়তা মডারেটেড public feature-এর মধ্যেই রাখার জন্য প্ল্যাটফর্ম তৈরি।"
+          }
+        ]
+      },
+      "related": [
+        "feature-supportive-community",
+        "privacy",
+        "safety",
+        "terms"
+      ]
+    },
+    "safety": {
+      "path": "safety",
+      "type": "WebPage",
+      "en": {
+        "title": "Safety Information — Moner Kotha",
+        "description": "Understand the platform safety boundaries, urgent-risk guidance and the difference between peer support and emergency help.",
+        "intro": "Moner Kotha can help someone feel heard, but it cannot provide emergency response or replace qualified professional care.",
+        "sections": [
+          {
+            "heading": "If there is immediate danger",
+            "body": "Contact the emergency service for the user’s location, move near a trusted person and seek urgent medical care for any injury or poisoning."
+          },
+          {
+            "heading": "How the app responds to high-risk language",
+            "body": "The prototype shows a safety-first screen and removes advertising from high-risk views. Production requires trained moderation and verified local resources."
+          },
+          {
+            "heading": "What peers should do",
+            "body": "Stay calm, listen, avoid method discussion, encourage nearby human help and report concerning content."
+          },
+          {
+            "heading": "Protecting supporters too",
+            "body": "People offering support should take breaks, avoid taking sole responsibility for another person and use moderator escalation when available."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Does the app call emergency services automatically?",
+            "answer": "No. Users must contact emergency or trusted-person support directly."
+          },
+          {
+            "question": "Will high-risk posts show ads?",
+            "answer": "The architecture suppresses ads in high-risk and safety contexts."
+          }
+        ]
+      },
+      "bn": {
+        "title": "নিরাপত্তা তথ্য — মনের কথা",
+        "description": "প্ল্যাটফর্মের নিরাপত্তা সীমা, তাৎক্ষণিক ঝুঁকিতে করণীয় এবং peer support ও জরুরি সহায়তার পার্থক্য জানুন।",
+        "intro": "মনের কথা কাউকে শোনা হয়েছে এমন অনুভূতি দিতে পারে, তবে জরুরি সাড়া বা যোগ্য পেশাদার সহায়তার বিকল্প নয়।",
+        "sections": [
+          {
+            "heading": "তাৎক্ষণিক বিপদে",
+            "body": "ব্যবহারকারীর অবস্থানের জরুরি সেবায় যোগাযোগ করুন, বিশ্বস্ত কারও কাছে যান এবং আঘাত বা বিষক্রিয়ায় দ্রুত চিকিৎসা নিন।"
+          },
+          {
+            "heading": "উচ্চ ঝুঁকির ভাষায় অ্যাপের প্রতিক্রিয়া",
+            "body": "প্রোটোটাইপ নিরাপত্তাকে অগ্রাধিকার দিয়ে একটি screen দেখায় এবং উচ্চ ঝুঁকির view থেকে বিজ্ঞাপন সরায়। চূড়ান্ত সংস্করণে প্রশিক্ষিত moderation ও যাচাইকৃত স্থানীয় resource প্রয়োজন।"
+          },
+          {
+            "heading": "সহায়তাকারী কী করবেন",
+            "body": "শান্ত থাকুন, শুনুন, পদ্ধতির আলোচনা এড়িয়ে চলুন, কাছের মানুষের সহায়তা উৎসাহিত করুন এবং উদ্বেগজনক কনটেন্ট রিপোর্ট করুন।"
+          },
+          {
+            "heading": "সহায়তাকারীর সুরক্ষাও জরুরি",
+            "body": "বিরতি নিন, অন্যের নিরাপত্তার একমাত্র দায়িত্ব নিজের ওপর নেবেন না এবং moderator escalation ব্যবহার করুন।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "অ্যাপ কি নিজে জরুরি সেবায় ফোন করে?",
+            "answer": "না। ব্যবহারকারীকে সরাসরি জরুরি সেবা বা বিশ্বস্ত ব্যক্তির সঙ্গে যোগাযোগ করতে হবে।"
+          },
+          {
+            "question": "উচ্চ ঝুঁকির পোস্টে বিজ্ঞাপন থাকবে?",
+            "answer": "স্থাপত্য উচ্চ ঝুঁকি ও নিরাপত্তা context-এ বিজ্ঞাপন বন্ধ রাখে।"
+          }
+        ]
+      },
+      "related": [
+        "community-guidelines",
+        "privacy",
+        "contact",
+        "feature-privacy-and-safety"
+      ]
+    },
+    "cookie-policy": {
+      "path": "cookie-policy",
+      "type": "WebPage",
+      "en": {
+        "title": "Cookie and Local Storage Policy — Moner Kotha",
+        "description": "Learn how the current PWA uses local storage and how future consent-controlled analytics or advertising would be handled.",
+        "intro": "Essential local storage keeps interface preferences and Guest activity on the device. An optional password profile also uses Firebase Authentication and Realtime Database for profile restoration.",
+        "sections": [
+          {
+            "heading": "Essential local storage",
+            "body": "Language, theme, consent choices and current app state are stored locally. Guest posts and comments remain only in that browser."
+          },
+          {
+            "heading": "Optional password profile storage",
+            "body": "Choosing a password profile uses Firebase Authentication and Realtime Database to restore app data. No real email address or phone number is entered by the visitor."
+          },
+          {
+            "heading": "Optional analytics",
+            "body": "No analytics provider is configured. If one is added, it must wait for consent and must not receive emotional text, mood, search or safety details."
+          },
+          {
+            "heading": "Optional advertising",
+            "body": "Advertising is off. Future non-personalized ads require consent handling and will remain absent from sensitive parts of the platform."
+          },
+          {
+            "heading": "Change your choice",
+            "body": "The app includes a cookie settings control so optional categories can be revisited later."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Are optional cookies active now?",
+            "answer": "No. Analytics and advertising consent are off by default."
+          },
+          {
+            "question": "Can I clear local data?",
+            "answer": "Yes, from Profile and settings."
+          }
+        ]
+      },
+      "bn": {
+        "title": "কুকি ও লোকাল স্টোরেজ নীতি — মনের কথা",
+        "description": "বর্তমান PWA কীভাবে local storage ব্যবহার করে এবং ভবিষ্যতের analytics বা বিজ্ঞাপন সম্মতি দিয়ে কীভাবে নিয়ন্ত্রিত হবে জানুন।",
+        "intro": "প্রয়োজনীয় local storage interface preference ও Guest activity device-এ রাখে। ঐচ্ছিক password profile restore করতে Firebase Authentication ও Realtime Database ব্যবহার হয়।",
+        "sections": [
+          {
+            "heading": "প্রয়োজনীয় local storage",
+            "body": "ভাষা, theme, consent choice ও বর্তমান app state localভাবে থাকে। Guest post ও comment শুধু সেই browser-এ থাকে।"
+          },
+          {
+            "heading": "ঐচ্ছিক password profile storage",
+            "body": "Password profile নিলে app data restore করার জন্য Firebase Authentication ও Realtime Database ব্যবহার হয়। Visitor বাস্তব email address বা phone number দেয় না।"
+          },
+          {
+            "heading": "ঐচ্ছিক analytics",
+            "body": "কোনো analytics provider কনফিগার করা নেই। ভবিষ্যতে যোগ হলে সম্মতির অপেক্ষা করবে এবং আবেগের লেখা, মুড, সার্চ বা safety detail নেবে না।"
+          },
+          {
+            "heading": "ঐচ্ছিক বিজ্ঞাপন",
+            "body": "বিজ্ঞাপন বন্ধ। ভবিষ্যতের non-personalized ad-এ consent প্রয়োজন এবং সংবেদনশীল অংশে বিজ্ঞাপন থাকবে না।"
+          },
+          {
+            "heading": "পছন্দ পরিবর্তন",
+            "body": "অ্যাপে cookie settings রয়েছে, যাতে পরে ঐচ্ছিক category আবার পরিবর্তন করা যায়।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "ঐচ্ছিক cookie কি এখন চালু?",
+            "answer": "না। analytics ও advertising consent defaultভাবে বন্ধ।"
+          },
+          {
+            "question": "লোকাল ডেটা মুছতে পারি?",
+            "answer": "হ্যাঁ, Profile and settings থেকে।"
+          }
+        ]
+      },
+      "related": [
+        "privacy",
+        "data-deletion",
+        "contact"
+      ]
+    },
+    "data-deletion": {
+      "path": "data-deletion",
+      "type": "WebPage",
+      "en": {
+        "title": "Data Deletion — Moner Kotha",
+        "description": "Learn how to clear guest device data or reset the synced app data attached to a password-only profile.",
+        "intro": "Profile and settings can export or reset app data. Reset clears local data and, while signed in, the synced app data for that password profile.",
+        "sections": [
+          {
+            "heading": "Reset a guest profile",
+            "body": "Open Profile and settings, choose Reset local data, and confirm. You can also clear site data from browser settings. Guest data cannot be restored after it is cleared."
+          },
+          {
+            "heading": "Reset a password profile",
+            "body": "While signed in, the same reset control first removes the synced appData under your Firebase UID and then clears this device. The pseudonymous Authentication account itself remains available for future use with the same password."
+          },
+          {
+            "heading": "Installed copies may have separate storage",
+            "body": "A separately installed PWA can have its own local storage. Clear each installation if it was used in Guest mode."
+          },
+          {
+            "heading": "Contact support",
+            "body": "Once verified support details are configured, the contact page will provide a channel for privacy questions."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Does uninstalling always clear data?",
+            "answer": "Not necessarily. Use the in-app reset and browser site-data controls."
+          },
+          {
+            "question": "Can cleared guest data be restored?",
+            "answer": "No. Guest mode has no cloud backup."
+          },
+          {
+            "question": "Does reset delete the password identity itself?",
+            "answer": "No. It clears synced app data; the pseudonymous Firebase Authentication identity remains."
+          }
+        ]
+      },
+      "bn": {
+        "title": "ডেটা মুছে ফেলা — মনের কথা",
+        "description": "Guest device data অথবা password-only profile-এর synced app data কীভাবে clear করবেন জানুন।",
+        "intro": "Profile and settings থেকে app data export বা reset করা যায়। Reset করলে local data এবং signed in থাকলে password profile-এর synced app data clear হয়।",
+        "sections": [
+          {
+            "heading": "Guest profile reset করুন",
+            "body": "Profile and settings খুলে Reset local data নির্বাচন করে নিশ্চিত করুন। Browser settings থেকেও site data clear করা যায়। Guest data clear হলে ফিরিয়ে আনা যাবে না।"
+          },
+          {
+            "heading": "Password profile reset করুন",
+            "body": "Signed in অবস্থায় একই reset control প্রথমে Firebase UID-এর অধীনে synced appData সরায়, তারপর এই device-এর data clear করে। একই password দিয়ে ভবিষ্যতে ব্যবহারের জন্য pseudonymous Authentication identity থেকে যায়।"
+          },
+          {
+            "heading": "Installed copy-এর আলাদা storage হতে পারে",
+            "body": "আলাদাভাবে install করা PWA-এর নিজস্ব local storage থাকতে পারে। Guest mode ব্যবহার করলে প্রতিটি installation-এর data আলাদাভাবে clear করুন।"
+          },
+          {
+            "heading": "সাপোর্টে যোগাযোগ",
+            "body": "যাচাইকৃত support detail config-এ যোগ হওয়ার পর contact page privacy question-এর মাধ্যম দেবে।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Uninstall করলেই কি সব data মুছে যায়?",
+            "answer": "সবসময় নয়। In-app reset ও browser site-data control ব্যবহার করুন।"
+          },
+          {
+            "question": "Clear করা Guest data কি ফিরবে?",
+            "answer": "না। Guest mode-এ cloud backup নেই।"
+          },
+          {
+            "question": "Reset করলে password identity-ও delete হবে?",
+            "answer": "না। Synced app data clear হয়; pseudonymous Firebase Authentication identity থেকে যায়।"
+          }
+        ]
+      },
+      "related": [
+        "privacy",
+        "cookie-policy",
+        "contact"
+      ]
+    },
+    "resources": {
+      "path": "resources",
+      "type": "WebPage",
+      "en": {
+        "title": "Emotional Wellbeing Resources — Moner Kotha",
+        "description": "Browse the planned resource areas for stress, loneliness, relationships, study pressure, sleep habits, listening and online safety.",
+        "intro": "This launch page provides a transparent resource structure. It does not publish fabricated clinical advice or pretend unfinished articles are professionally reviewed.",
+        "sections": [
+          {
+            "heading": "Planned educational categories",
+            "body": "Stress management, loneliness, anxiety education, relationship communication, workplace and study pressure, sleep habits, journaling, active listening, professional-help guidance and online safety."
+          },
+          {
+            "heading": "Editorial requirements",
+            "body": "Health-related articles must name the editorial team, show publish and review dates, provide references and clearly state that they are educational rather than medical advice."
+          },
+          {
+            "heading": "Professional review must be real",
+            "body": "No fake doctor, qualification or reviewer will be used. Pages requiring clinical review remain drafts until a qualified reviewer is engaged."
+          },
+          {
+            "heading": "Start with platform features now",
+            "body": "While editorial resources are developed, users can access the calm space, mood check-in, privacy guidance and community rules."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Are these medical articles?",
+            "answer": "No. This is a resource directory and editorial plan until reviewed articles are published."
+          },
+          {
+            "question": "Can community posts be treated as sources?",
+            "answer": "No. User experiences are not medical evidence."
+          }
+        ]
+      },
+      "bn": {
+        "title": "মানসিক স্বস্তির রিসোর্স — মনের কথা",
+        "description": "স্ট্রেস, একাকীত্ব, সম্পর্ক, পড়াশোনার চাপ, ঘুমের অভ্যাস, শোনা ও অনলাইন নিরাপত্তার পরিকল্পিত রিসোর্স বিভাগ দেখুন।",
+        "intro": "এই launch page স্বচ্ছ resource structure দেখায়। ভুয়া চিকিৎসা পরামর্শ বা অসম্পূর্ণ article-কে পেশাদারভাবে review করা হয়েছে এমন দাবি করে না।",
+        "sections": [
+          {
+            "heading": "পরিকল্পিত শিক্ষামূলক বিভাগ",
+            "body": "স্ট্রেস ব্যবস্থাপনা, একাকীত্ব, anxiety education, relationship communication, কাজ ও পড়াশোনার চাপ, ঘুম, journaling, active listening, professional help guidance এবং online safety।"
+          },
+          {
+            "heading": "সম্পাদকীয় শর্ত",
+            "body": "স্বাস্থ্যসম্পর্কিত article-এ editorial team, publish/review date, reference এবং “চিকিৎসা পরামর্শ নয়” scope স্পষ্ট থাকবে।"
+          },
+          {
+            "heading": "পেশাদার review সত্য হতে হবে",
+            "body": "ভুয়া ডাক্তার, qualification বা reviewer ব্যবহার করা হবে না। Clinical review প্রয়োজন হলে যোগ্য reviewer না পাওয়া পর্যন্ত page draft থাকবে।"
+          },
+          {
+            "heading": "এখনই ব্যবহারযোগ্য feature",
+            "body": "Resource article তৈরি চলাকালে calm space, mood check-in, privacy guidance ও community rules ব্যবহার করা যায়।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "এগুলো কি চিকিৎসাবিষয়ক article?",
+            "answer": "না। Reviewed article প্রকাশ না হওয়া পর্যন্ত এটি resource directory ও editorial plan।"
+          },
+          {
+            "question": "কমিউনিটি পোস্ট কি source হিসেবে ব্যবহার হবে?",
+            "answer": "না। ব্যক্তিগত অভিজ্ঞতা চিকিৎসাবৈজ্ঞানিক প্রমাণ নয়।"
+          }
+        ]
+      },
+      "related": [
+        "feature-calm-room",
+        "topic-stress",
+        "topic-loneliness",
+        "topic-relationship",
+        "safety"
+      ]
+    },
+    "feature-anonymous-sharing": {
+      "path": "features/anonymous-sharing",
+      "type": "WebPage",
+      "en": {
+        "title": "Anonymous Sharing — Moner Kotha",
+        "description": "Share feelings through a chosen display name without publishing a photo, phone number or address.",
+        "intro": "Share feelings through a chosen display name without publishing a photo, phone number or address.",
+        "sections": [
+          {
+            "heading": "Why anonymity can lower the first barrier",
+            "body": "A chosen name can make it easier to begin writing while still allowing community continuity."
+          },
+          {
+            "heading": "How to use it",
+            "body": "Choose a display name, select a mood and support preference, write in your own language and review the privacy reminder before publishing."
+          },
+          {
+            "heading": "What anonymity does not mean",
+            "body": "It is not permission to harass, manipulate or evade moderation. Production accounts remain accountable to safety systems."
+          },
+          {
+            "heading": "Privacy boundary",
+            "body": "Personal contact details are blocked in the composer and should never be requested in replies."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this feature available in the local prototype?",
+            "answer": "Yes, the core interaction is available locally; shared multi-user data requires the production backend."
+          },
+          {
+            "question": "Does it replace professional support?",
+            "answer": "No. It is a product feature for expression and peer support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "গোপনে মনের কথা শেয়ার — মনের কথা",
+        "description": "ছবি, ফোন নম্বর বা ঠিকানা প্রকাশ না করে পছন্দের নাম দিয়ে অনুভূতি শেয়ার করুন।",
+        "intro": "ছবি, ফোন নম্বর বা ঠিকানা প্রকাশ না করে পছন্দের নাম দিয়ে অনুভূতি শেয়ার করুন।",
+        "sections": [
+          {
+            "heading": "প্রথম বাধা কমাতে পরিচয়-সুরক্ষা",
+            "body": "পছন্দের নাম দিয়ে শুরু করলে কথা বলা সহজ হয়, আবার কমিউনিটিতে ধারাবাহিক পরিচয়ও থাকে।"
+          },
+          {
+            "heading": "কীভাবে ব্যবহার করবেন",
+            "body": "পছন্দের নাম, মুড ও প্রয়োজন বেছে নিজের ভাষায় লিখুন এবং প্রকাশের আগে privacy reminder দেখুন।"
+          },
+          {
+            "heading": "গোপন পরিচয়ের অর্থ দায়মুক্তি নয়",
+            "body": "হয়রানি, প্রভাবিত করা বা moderation এড়ানোর অনুমতি নয়; production account নিরাপত্তা ব্যবস্থার কাছে accountable থাকবে।"
+          },
+          {
+            "heading": "গোপনীয়তার সীমা",
+            "body": "Composer ব্যক্তিগত যোগাযোগের তথ্য আটকে দেয় এবং reply-এ এমন তথ্য চাওয়া যাবে না।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Local prototype-এ featureটি আছে?",
+            "answer": "হ্যাঁ, মূল interaction লোকালভাবে আছে; বহু ব্যবহারকারীর shared data-এর জন্য production backend দরকার।"
+          },
+          {
+            "question": "এটি কি professional support-এর বিকল্প?",
+            "answer": "না। এটি অনুভূতি প্রকাশ ও peer support-এর product feature।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy"
+      ]
+    },
+    "feature-mood-check-in": {
+      "path": "features/mood-check-in",
+      "type": "WebPage",
+      "en": {
+        "title": "Mood Check-in — Moner Kotha",
+        "description": "Choose the feeling closest to you and see relevant community posts first without turning mood into an advertising profile.",
+        "intro": "Choose the feeling closest to you and see relevant community posts first without turning mood into an advertising profile.",
+        "sections": [
+          {
+            "heading": "A quick way to notice your state",
+            "body": "The check-in asks for one simple selection rather than a long assessment."
+          },
+          {
+            "heading": "How feed ordering works",
+            "body": "Matching mood posts are placed first, followed by other posts in their existing order."
+          },
+          {
+            "heading": "Not a diagnosis",
+            "body": "A mood label is a navigation and reflection aid, not a clinical assessment."
+          },
+          {
+            "heading": "Privacy boundary",
+            "body": "Mood and check-in history are excluded from advertising and sensitive analytics."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this feature available in the local prototype?",
+            "answer": "Yes, the core interaction is available locally; shared multi-user data requires the production backend."
+          },
+          {
+            "question": "Does it replace professional support?",
+            "answer": "No. It is a product feature for expression and peer support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "মুড চেক-ইন — মনের কথা",
+        "description": "আপনার কাছাকাছি অনুভূতি বেছে সংশ্লিষ্ট পোস্ট আগে দেখুন—মুডকে বিজ্ঞাপনের profile বানানো হবে না।",
+        "intro": "আপনার কাছাকাছি অনুভূতি বেছে সংশ্লিষ্ট পোস্ট আগে দেখুন—মুডকে বিজ্ঞাপনের profile বানানো হবে না।",
+        "sections": [
+          {
+            "heading": "নিজের অবস্থা খেয়াল করার সহজ উপায়",
+            "body": "দীর্ঘ assessment নয়—একটি সহজ selection দিয়ে শুরু করা যায়।"
+          },
+          {
+            "heading": "Feed কীভাবে সাজে",
+            "body": "একই mood-এর post আগে আসে, তারপর অন্য post আগের ক্রমে থাকে।"
+          },
+          {
+            "heading": "রোগ নির্ণয় নয়",
+            "body": "Mood label navigation ও reflection-এর সহায়তা; clinical assessment নয়।"
+          },
+          {
+            "heading": "গোপনীয়তার সীমা",
+            "body": "Mood ও check-in history বিজ্ঞাপন ও sensitive analytics থেকে বাদ।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Local prototype-এ featureটি আছে?",
+            "answer": "হ্যাঁ, মূল interaction লোকালভাবে আছে; বহু ব্যবহারকারীর shared data-এর জন্য production backend দরকার।"
+          },
+          {
+            "question": "এটি কি professional support-এর বিকল্প?",
+            "answer": "না। এটি অনুভূতি প্রকাশ ও peer support-এর product feature।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy"
+      ]
+    },
+    "feature-support-circles": {
+      "path": "features/support-circles",
+      "type": "WebPage",
+      "en": {
+        "title": "Support Groups — Moner Kotha",
+        "description": "Join topic-focused groups for shared situations such as work stress, study pressure, relationships or late-night loneliness.",
+        "intro": "Join topic-focused groups for shared situations such as work stress, study pressure, relationships or late-night loneliness.",
+        "sections": [
+          {
+            "heading": "Why groups help",
+            "body": "A focused space makes it easier to find posts from people facing a similar situation."
+          },
+          {
+            "heading": "Joining is lightweight",
+            "body": "The local prototype stores group membership on the device; production membership will sync through an account."
+          },
+          {
+            "heading": "Group boundaries",
+            "body": "Groups are public support spaces, not private chatrooms or contact-exchange channels."
+          },
+          {
+            "heading": "Moderation needs",
+            "body": "Each group requires reporting, policy enforcement and moderator visibility before public scale."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this feature available in the local prototype?",
+            "answer": "Yes, the core interaction is available locally; shared multi-user data requires the production backend."
+          },
+          {
+            "question": "Does it replace professional support?",
+            "answer": "No. It is a product feature for expression and peer support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "গ্রুপ — মনের কথা",
+        "description": "কাজের চাপ, পড়াশোনা, সম্পর্ক অথবা রাতের একাকীত্বের মতো অভিজ্ঞতার গ্রুপে যুক্ত হন।",
+        "intro": "কাজের চাপ, পড়াশোনা, সম্পর্ক অথবা রাতের একাকীত্বের মতো অভিজ্ঞতার গ্রুপে যুক্ত হন।",
+        "sections": [
+          {
+            "heading": "গ্রুপ কেন সহায়ক",
+            "body": "একই ধরনের পরিস্থিতির মানুষের post খুঁজে পাওয়া সহজ হয়।"
+          },
+          {
+            "heading": "সহজে যোগ দেওয়া",
+            "body": "Local prototype group membership ডিভাইসে রাখে; production-এ account-এর মাধ্যমে sync হবে।"
+          },
+          {
+            "heading": "গ্রুপের সীমা",
+            "body": "এগুলো public support space; private chatroom বা contact exchange channel নয়।"
+          },
+          {
+            "heading": "মডারেশন প্রয়োজন",
+            "body": "Public scale-এর আগে প্রতিটি group-এ reporting, policy enforcement ও moderator visibility দরকার।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Local prototype-এ featureটি আছে?",
+            "answer": "হ্যাঁ, মূল interaction লোকালভাবে আছে; বহু ব্যবহারকারীর shared data-এর জন্য production backend দরকার।"
+          },
+          {
+            "question": "এটি কি professional support-এর বিকল্প?",
+            "answer": "না। এটি অনুভূতি প্রকাশ ও peer support-এর product feature।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy"
+      ]
+    },
+    "feature-calm-room": {
+      "path": "features/calm-room",
+      "type": "WebPage",
+      "en": {
+        "title": "Calm Space — Moner Kotha",
+        "description": "Use short breathing, grounding, sensory reset, body awareness and reflection tools for a quieter moment.",
+        "intro": "Use short breathing, grounding, sensory reset, body awareness and reflection tools for a quieter moment.",
+        "sections": [
+          {
+            "heading": "Choose a low-pressure exercise",
+            "body": "Start with breathing, a 60-second reset, grounding or a self-kindness prompt."
+          },
+          {
+            "heading": "Designed for short pauses",
+            "body": "Tools use clear steps, optional sound and reduced-motion support."
+          },
+          {
+            "heading": "Keep expectations realistic",
+            "body": "A brief exercise may help create space, but it cannot solve every cause of distress."
+          },
+          {
+            "heading": "Know when to seek more help",
+            "body": "Persistent or severe symptoms, injury or immediate danger require qualified or emergency support."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this feature available in the local prototype?",
+            "answer": "Yes, the core interaction is available locally; shared multi-user data requires the production backend."
+          },
+          {
+            "question": "Does it replace professional support?",
+            "answer": "No. It is a product feature for expression and peer support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "মন শান্ত করুন — মনের কথা",
+        "description": "শ্বাস, grounding, sensory reset, body awareness ও reflection-এর ছোট tool দিয়ে কয়েক মিনিট শান্ত হন।",
+        "intro": "শ্বাস, grounding, sensory reset, body awareness ও reflection-এর ছোট tool দিয়ে কয়েক মিনিট শান্ত হন।",
+        "sections": [
+          {
+            "heading": "চাপহীন একটি অনুশীলন বেছে নিন",
+            "body": "শ্বাস, ৬০ সেকেন্ডের reset, grounding অথবা self-kindness prompt দিয়ে শুরু করুন।"
+          },
+          {
+            "heading": "ছোট বিরতির জন্য তৈরি",
+            "body": "Clear step, optional sound ও reduced-motion support রয়েছে।"
+          },
+          {
+            "heading": "বাস্তবসম্মত প্রত্যাশা রাখুন",
+            "body": "সংক্ষিপ্ত exercise কিছুটা space দিতে পারে, কিন্তু কষ্টের সব কারণ সমাধান করে না।"
+          },
+          {
+            "heading": "কখন বাড়তি সহায়তা নেবেন",
+            "body": "দীর্ঘস্থায়ী বা গুরুতর সমস্যা, আঘাত অথবা তাৎক্ষণিক বিপদে qualified বা emergency support প্রয়োজন।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Local prototype-এ featureটি আছে?",
+            "answer": "হ্যাঁ, মূল interaction লোকালভাবে আছে; বহু ব্যবহারকারীর shared data-এর জন্য production backend দরকার।"
+          },
+          {
+            "question": "এটি কি professional support-এর বিকল্প?",
+            "answer": "না। এটি অনুভূতি প্রকাশ ও peer support-এর product feature।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy"
+      ]
+    },
+    "feature-supportive-community": {
+      "path": "features/supportive-community",
+      "type": "WebPage",
+      "en": {
+        "title": "Supportive Community — Moner Kotha",
+        "description": "Respond with listening, validation and gentle support instead of judgement, pressure or popularity competition.",
+        "intro": "Respond with listening, validation and gentle support instead of judgement, pressure or popularity competition.",
+        "sections": [
+          {
+            "heading": "Support reactions with meaning",
+            "body": "Reactions communicate “I hear you” or “you matter” rather than ranking pain."
+          },
+          {
+            "heading": "Guided comments",
+            "body": "Reply prompts help people avoid dismissive or overly directive language."
+          },
+          {
+            "heading": "No follower-status pressure",
+            "body": "The experience is designed around useful connection, not influencer metrics."
+          },
+          {
+            "heading": "Reporting protects the space",
+            "body": "People can report harassment, unsafe details or requests for private contact."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this feature available in the local prototype?",
+            "answer": "Yes, the core interaction is available locally; shared multi-user data requires the production backend."
+          },
+          {
+            "question": "Does it replace professional support?",
+            "answer": "No. It is a product feature for expression and peer support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "সহমর্মী কমিউনিটি — মনের কথা",
+        "description": "বিচার, চাপ বা জনপ্রিয়তার প্রতিযোগিতার বদলে শোনা, স্বীকৃতি ও কোমল সহায়তা দিন।",
+        "intro": "বিচার, চাপ বা জনপ্রিয়তার প্রতিযোগিতার বদলে শোনা, স্বীকৃতি ও কোমল সহায়তা দিন।",
+        "sections": [
+          {
+            "heading": "অর্থবহ support reaction",
+            "body": "Reaction দিয়ে “আমি শুনছি” বা “আপনি গুরুত্বপূর্ণ” বোঝানো হয়; কষ্টের ranking নয়।"
+          },
+          {
+            "heading": "Guided comment",
+            "body": "Reply prompt মানুষকে dismissive বা অতিরিক্ত নির্দেশমূলক ভাষা এড়াতে সাহায্য করে।"
+          },
+          {
+            "heading": "Follower status-এর চাপ নেই",
+            "body": "Influencer metric নয়, উপকারী connection-এর জন্য experience তৈরি।"
+          },
+          {
+            "heading": "Report জায়গাটি রক্ষা করে",
+            "body": "হয়রানি, unsafe detail বা private contact request report করা যায়।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Local prototype-এ featureটি আছে?",
+            "answer": "হ্যাঁ, মূল interaction লোকালভাবে আছে; বহু ব্যবহারকারীর shared data-এর জন্য production backend দরকার।"
+          },
+          {
+            "question": "এটি কি professional support-এর বিকল্প?",
+            "answer": "না। এটি অনুভূতি প্রকাশ ও peer support-এর product feature।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy"
+      ]
+    },
+    "feature-privacy-and-safety": {
+      "path": "features/privacy-and-safety",
+      "type": "WebPage",
+      "en": {
+        "title": "Privacy and Safety — Moner Kotha",
+        "description": "Understand how personal information, high-risk content, advertising and local data are handled in the current architecture.",
+        "intro": "Understand how personal information, high-risk content, advertising and local data are handled in the current architecture.",
+        "sections": [
+          {
+            "heading": "Personal information checks",
+            "body": "Composer and profile validation detect common phone, email, URL and account-handle patterns."
+          },
+          {
+            "heading": "Safety-first high-risk mode",
+            "body": "High-risk language opens safety guidance and suppresses advertising."
+          },
+          {
+            "heading": "Sensitive areas stay ad-free",
+            "body": "Composer, comments, profile, calm tools, safety screens and private communication are protected contexts."
+          },
+          {
+            "heading": "Production needs human governance",
+            "body": "Automated patterns are not enough; trained moderation, appeals and incident response are required."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this feature available in the local prototype?",
+            "answer": "Yes, the core interaction is available locally; shared multi-user data requires the production backend."
+          },
+          {
+            "question": "Does it replace professional support?",
+            "answer": "No. It is a product feature for expression and peer support."
+          }
+        ]
+      },
+      "bn": {
+        "title": "গোপনীয়তা ও নিরাপত্তা — মনের কথা",
+        "description": "ব্যক্তিগত তথ্য, উচ্চ ঝুঁকির কনটেন্ট, বিজ্ঞাপন ও লোকাল ডেটা বর্তমান স্থাপত্যে কীভাবে নিয়ন্ত্রিত হয় জানুন।",
+        "intro": "ব্যক্তিগত তথ্য, উচ্চ ঝুঁকির কনটেন্ট, বিজ্ঞাপন ও লোকাল ডেটা বর্তমান স্থাপত্যে কীভাবে নিয়ন্ত্রিত হয় জানুন।",
+        "sections": [
+          {
+            "heading": "ব্যক্তিগত তথ্য পরীক্ষা",
+            "body": "Composer ও profile validation সাধারণ phone, email, URL ও account-handle pattern শনাক্ত করে।"
+          },
+          {
+            "heading": "Safety-first high-risk mode",
+            "body": "উচ্চ ঝুঁকির ভাষায় safety guidance খোলে এবং বিজ্ঞাপন বন্ধ হয়।"
+          },
+          {
+            "heading": "সংবেদনশীল অংশ ad-free",
+            "body": "Composer, comment, profile, calm tool, safety screen ও private communication protected context।"
+          },
+          {
+            "heading": "Production-এ মানবিক governance দরকার",
+            "body": "শুধু automated pattern যথেষ্ট নয়; trained moderation, appeal ও incident response প্রয়োজন।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Local prototype-এ featureটি আছে?",
+            "answer": "হ্যাঁ, মূল interaction লোকালভাবে আছে; বহু ব্যবহারকারীর shared data-এর জন্য production backend দরকার।"
+          },
+          {
+            "question": "এটি কি professional support-এর বিকল্প?",
+            "answer": "না। এটি অনুভূতি প্রকাশ ও peer support-এর product feature।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "community-guidelines",
+        "safety",
+        "privacy"
+      ]
+    },
+    "topic-anxiety": {
+      "path": "topics/anxiety",
+      "type": "WebPage",
+      "en": {
+        "title": "Talking About Anxiety Without Judgement",
+        "description": "A non-diagnostic community page for expressing anxious feelings, finding relatable posts and using short grounding tools.",
+        "intro": "A non-diagnostic community page for expressing anxious feelings, finding relatable posts and using short grounding tools.",
+        "sections": [
+          {
+            "heading": "Name the experience in your own words",
+            "body": "You do not need a perfect label. Describe what is happening, what feels difficult, and what kind of response would help."
+          },
+          {
+            "heading": "Choose support rather than certainty",
+            "body": "Peers can listen and share gentle personal strategies, but should not diagnose or promise an outcome."
+          },
+          {
+            "heading": "Use a short reset",
+            "body": "Slow breathing or grounding may help create a pause while you decide what support to seek next."
+          },
+          {
+            "heading": "Seek qualified help when needed",
+            "body": "Severe, persistent or disabling symptoms should be discussed with a qualified professional."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this page medical advice?",
+            "answer": "No. It is educational community guidance and does not diagnose or treat a condition."
+          },
+          {
+            "question": "Can I share another person’s identity?",
+            "answer": "No. Remove identifying and contact information before posting."
+          }
+        ]
+      },
+      "bn": {
+        "title": "উদ্বেগ নিয়ে বিচারহীনভাবে কথা বলা",
+        "description": "রোগ নির্ণয় নয়—উদ্বেগের অনুভূতি বলা, সম্পর্কিত post খোঁজা ও ছোট grounding tool ব্যবহারের community page।",
+        "intro": "রোগ নির্ণয় নয়—উদ্বেগের অনুভূতি বলা, সম্পর্কিত post খোঁজা ও ছোট grounding tool ব্যবহারের community page।",
+        "sections": [
+          {
+            "heading": "নিজের ভাষায় অভিজ্ঞতা বলুন",
+            "body": "নিখুঁত label দরকার নেই। কী হচ্ছে, কী কঠিন এবং কী ধরনের সাড়া চান তা বলুন।"
+          },
+          {
+            "heading": "নিশ্চিত সিদ্ধান্ত নয়, সহায়তা বেছে নিন",
+            "body": "Peer শুনতে ও কোমল personal strategy বলতে পারেন, diagnosis বা ফলের নিশ্চয়তা দেওয়া উচিত নয়।"
+          },
+          {
+            "heading": "ছোট reset ব্যবহার করুন",
+            "body": "Slow breathing বা grounding পরের support ঠিক করার আগে একটি pause দিতে পারে।"
+          },
+          {
+            "heading": "প্রয়োজনে qualified help নিন",
+            "body": "গুরুতর, দীর্ঘস্থায়ী বা দৈনন্দিন জীবন ব্যাহত হলে qualified professional-এর সঙ্গে কথা বলুন।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "এই page কি medical advice?",
+            "answer": "না। এটি educational community guidance; রোগ নির্ণয় বা চিকিৎসা নয়।"
+          },
+          {
+            "question": "অন্য ব্যক্তির পরিচয় দেওয়া যাবে?",
+            "answer": "না। Post করার আগে identifying ও contact information সরান।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "resources",
+        "feature-anonymous-sharing",
+        "feature-supportive-community",
+        "safety"
+      ]
+    },
+    "topic-loneliness": {
+      "path": "topics/loneliness",
+      "type": "WebPage",
+      "en": {
+        "title": "A Place to Talk About Loneliness",
+        "description": "Share loneliness without needing to reveal your identity and read experiences that may help you feel less alone.",
+        "intro": "Share loneliness without needing to reveal your identity and read experiences that may help you feel less alone.",
+        "sections": [
+          {
+            "heading": "Loneliness can exist around people",
+            "body": "Someone may feel unseen even when they are not physically alone. The platform makes room for that complexity."
+          },
+          {
+            "heading": "Ask for the response you need",
+            "body": "Choose listening only, supportive replies or practical suggestions so others know how to respond."
+          },
+          {
+            "heading": "Small connection without private contact",
+            "body": "Community support stays inside the platform instead of pushing users into private exchanges."
+          },
+          {
+            "heading": "Daily life still matters",
+            "body": "Rest, routine, safe social contact and professional support may all be relevant depending on the situation."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this page medical advice?",
+            "answer": "No. It is educational community guidance and does not diagnose or treat a condition."
+          },
+          {
+            "question": "Can I share another person’s identity?",
+            "answer": "No. Remove identifying and contact information before posting."
+          }
+        ]
+      },
+      "bn": {
+        "title": "একাকীত্ব নিয়ে কথা বলার জায়গা",
+        "description": "পরিচয় প্রকাশ না করে একাকীত্বের কথা বলুন এবং অন্যের অভিজ্ঞতা পড়ে নিজেকে কম একা অনুভব করুন।",
+        "intro": "পরিচয় প্রকাশ না করে একাকীত্বের কথা বলুন এবং অন্যের অভিজ্ঞতা পড়ে নিজেকে কম একা অনুভব করুন।",
+        "sections": [
+          {
+            "heading": "মানুষের মাঝেও একাকীত্ব থাকতে পারে",
+            "body": "শারীরিকভাবে একা না হলেও কেউ নিজেকে অদৃশ্য মনে করতে পারেন। এই জটিলতার জন্য platform জায়গা রাখে।"
+          },
+          {
+            "heading": "যে সাড়া চান তা বলুন",
+            "body": "শুধু শুনুন, supportive reply অথবা practical suggestion বেছে দিন যাতে অন্যরা বুঝতে পারে।"
+          },
+          {
+            "heading": "Private contact ছাড়া ছোট connection",
+            "body": "ব্যবহারকারীকে private exchange-এ ঠেলে না দিয়ে support platform-এর ভেতরে থাকে।"
+          },
+          {
+            "heading": "দৈনন্দিন জীবনও গুরুত্বপূর্ণ",
+            "body": "পরিস্থিতি অনুযায়ী বিশ্রাম, routine, নিরাপদ social contact ও professional support প্রাসঙ্গিক হতে পারে।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "এই page কি medical advice?",
+            "answer": "না। এটি educational community guidance; রোগ নির্ণয় বা চিকিৎসা নয়।"
+          },
+          {
+            "question": "অন্য ব্যক্তির পরিচয় দেওয়া যাবে?",
+            "answer": "না। Post করার আগে identifying ও contact information সরান।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "resources",
+        "feature-anonymous-sharing",
+        "feature-supportive-community",
+        "safety"
+      ]
+    },
+    "topic-stress": {
+      "path": "topics/stress",
+      "type": "WebPage",
+      "en": {
+        "title": "Sharing Stress and Overwhelm",
+        "description": "Describe work, study, family or everyday pressure and find supportive posts and short calming exercises.",
+        "intro": "Describe work, study, family or everyday pressure and find supportive posts and short calming exercises.",
+        "sections": [
+          {
+            "heading": "Separate the pressure into parts",
+            "body": "Writing one concern at a time can make an overwhelming situation easier to describe."
+          },
+          {
+            "heading": "Tell people whether you want ideas",
+            "body": "Sometimes listening is more useful than advice. The post composer lets you state that preference."
+          },
+          {
+            "heading": "Take a body pause",
+            "body": "A short breathing or sensory reset can reduce immediate stimulation before returning to the problem."
+          },
+          {
+            "heading": "Escalate beyond the app when necessary",
+            "body": "Unsafe work, abuse, health symptoms or crisis situations need appropriate real-world help."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this page medical advice?",
+            "answer": "No. It is educational community guidance and does not diagnose or treat a condition."
+          },
+          {
+            "question": "Can I share another person’s identity?",
+            "answer": "No. Remove identifying and contact information before posting."
+          }
+        ]
+      },
+      "bn": {
+        "title": "মানসিক চাপ ও অতিরিক্ত ভার শেয়ার করা",
+        "description": "কাজ, পড়াশোনা, পরিবার বা দৈনন্দিন চাপ লিখুন এবং সহায়ক post ও ছোট calming exercise খুঁজুন।",
+        "intro": "কাজ, পড়াশোনা, পরিবার বা দৈনন্দিন চাপ লিখুন এবং সহায়ক post ও ছোট calming exercise খুঁজুন।",
+        "sections": [
+          {
+            "heading": "চাপকে ছোট অংশে ভাগ করুন",
+            "body": "একবারে একটি concern লিখলে overwhelming situation বোঝানো সহজ হতে পারে।"
+          },
+          {
+            "heading": "Idea চান কি না জানান",
+            "body": "কখনো advice-এর চেয়ে listening দরকার। Composer-এ preference জানানো যায়।"
+          },
+          {
+            "heading": "শরীরকে ছোট বিরতি দিন",
+            "body": "Breathing বা sensory reset problem-এ ফেরার আগে immediate stimulation কমাতে পারে।"
+          },
+          {
+            "heading": "প্রয়োজনে app-এর বাইরের সহায়তা নিন",
+            "body": "Unsafe work, abuse, health symptom বা crisis-এ উপযুক্ত real-world help দরকার।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "এই page কি medical advice?",
+            "answer": "না। এটি educational community guidance; রোগ নির্ণয় বা চিকিৎসা নয়।"
+          },
+          {
+            "question": "অন্য ব্যক্তির পরিচয় দেওয়া যাবে?",
+            "answer": "না। Post করার আগে identifying ও contact information সরান।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "resources",
+        "feature-anonymous-sharing",
+        "feature-supportive-community",
+        "safety"
+      ]
+    },
+    "topic-relationship": {
+      "path": "topics/relationship",
+      "type": "WebPage",
+      "en": {
+        "title": "Relationship and Married-Life Conversations",
+        "description": "Share relationship concerns without exposing private identities and receive non-judgmental listening rather than blame.",
+        "intro": "Share relationship concerns without exposing private identities and receive non-judgmental listening rather than blame.",
+        "sections": [
+          {
+            "heading": "Describe your experience without identifying others",
+            "body": "Avoid names, workplaces, addresses, photos and contact details of a partner or family member."
+          },
+          {
+            "heading": "Support is not a verdict",
+            "body": "Peers should not pressure someone to stay, leave or confront another person without understanding safety and context."
+          },
+          {
+            "heading": "Recognize safety concerns",
+            "body": "Threats, coercion, stalking or violence require trusted real-world and professional support, not only an online discussion."
+          },
+          {
+            "heading": "Communication ideas should remain gentle",
+            "body": "Use “I feel” statements, listening and timing as general educational ideas—not a guarantee for every relationship."
+          }
+        ],
+        "faqs": [
+          {
+            "question": "Is this page medical advice?",
+            "answer": "No. It is educational community guidance and does not diagnose or treat a condition."
+          },
+          {
+            "question": "Can I share another person’s identity?",
+            "answer": "No. Remove identifying and contact information before posting."
+          }
+        ]
+      },
+      "bn": {
+        "title": "রিলেশন ও দাম্পত্য জীবন নিয়ে কথা",
+        "description": "ব্যক্তিগত পরিচয় প্রকাশ না করে রিলেশন ও দাম্পত্য জীবনের উদ্বেগ বলুন এবং দোষারোপ নয়, বিচারহীনভাবে শোনা পান।",
+        "intro": "ব্যক্তিগত পরিচয় প্রকাশ না করে রিলেশন ও দাম্পত্য জীবনের উদ্বেগ বলুন এবং দোষারোপ নয়, বিচারহীনভাবে শোনা পান।",
+        "sections": [
+          {
+            "heading": "অন্যের পরিচয় প্রকাশ না করে অভিজ্ঞতা বলুন",
+            "body": "সঙ্গী বা পরিবারের নাম, কর্মস্থল, ঠিকানা, ছবি ও contact detail এড়িয়ে চলুন।"
+          },
+          {
+            "heading": "Support কোনো verdict নয়",
+            "body": "Safety ও context না বুঝে কাউকে থাকা, চলে যাওয়া বা মুখোমুখি হতে চাপ দেওয়া উচিত নয়।"
+          },
+          {
+            "heading": "নিরাপত্তার সংকেত চিনুন",
+            "body": "হুমকি, coercion, stalking বা violence-এ শুধু online discussion নয়—বিশ্বস্ত real-world ও professional support দরকার।"
+          },
+          {
+            "heading": "Communication idea কোমল রাখুন",
+            "body": "“আমি অনুভব করছি” ধরনের ভাষা, listening ও timing সাধারণ educational idea; সব relationship-এর নিশ্চয়তা নয়।"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "এই page কি medical advice?",
+            "answer": "না। এটি educational community guidance; রোগ নির্ণয় বা চিকিৎসা নয়।"
+          },
+          {
+            "question": "অন্য ব্যক্তির পরিচয় দেওয়া যাবে?",
+            "answer": "না। Post করার আগে identifying ও contact information সরান।"
+          }
+        ]
+      },
+      "related": [
+        "home",
+        "resources",
+        "feature-anonymous-sharing",
+        "feature-supportive-community",
+        "safety"
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "runtime": {
+      ".read": true,
+      ".write": "auth != null && root.child('adminUsers').child(auth.uid).child('enabled').val() === true"
+    },
+    "adminUsers": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+    "adminAudit": {
+      ".read": "auth != null && root.child('adminUsers').child(auth.uid).child('enabled').val() === true",
+      ".write": "auth != null && root.child('adminUsers').child(auth.uid).child('enabled').val() === true"
+    },
+    "adStats": {
+      ".read": "auth != null && root.child('adminUsers').child(auth.uid).child('enabled').val() === true",
+      "$campaignId": {
+        "$event": {
+          ".write": "$event === 'impressions' || $event === 'clicks'",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() === 1) || (data.isNumber() && newData.val() === data.val() + 1))"
+        }
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        "meta": {
+          "usesPersonalContact": { ".validate": "newData.val() === false" }
+        }
+      }
+    }
+  }
+}

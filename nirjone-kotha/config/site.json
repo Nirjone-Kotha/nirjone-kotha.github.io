@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 3,
+  "environment": "development",
+  "siteName": "Moner Kotha: Anonymous Social Site",
+  "baseUrl": "",
+  "defaultLocale": "en",
+  "supportedLocales": [
+    "bn",
+    "en"
+  ],
+  "defaultOgImage": "/assets/brand/share-cover.png",
+  "twitterHandle": "",
+  "contact": {
+    "facebookPageUrl": "",
+    "supportEmail": "",
+    "whatsappNumber": "",
+    "whatsappPrefilledMessage": "Hello, I need help regarding the Moner Kotha website."
+  },
+  "analytics": {
+    "provider": "none",
+    "measurementId": "",
+    "googleSiteVerification": "",
+    "bingSiteVerification": ""
+  },
+  "editorial": {
+    "organizationName": "Moner Kotha Editorial Team",
+    "reviewerName": "",
+    "reviewerCredentials": ""
+  },
+  "notifications": {
+    "pushPublicKey": "",
+    "subscriptionEndpoint": "",
+    "enabled": false
+  },
+  "contentApis": {
+    "quran": {
+      "base": "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions",
+      "arabicEdition": "ara-quranuthmanihaf",
+      "bengaliEdition": "ben-muhiuddinkhan",
+      "englishEdition": "eng-sahihinternational",
+      "audio": "https://everyayah.com/data/Alafasy_128kbps/"
+    },
+    "hadith": {
+      "dataset": "https://cdn.jsdelivr.net/gh/AhmedBaset/hadith-json@v1.2.0/"
+    },
+    "dua": {
+      "dataset": "https://cdn.jsdelivr.net/gh/Seen-Arabic/Morning-And-Evening-Adhkar-DB@main/ar.json",
+      "license": "MIT",
+      "fallback": "local-reviewed-Bengali-seeds"
+    }
+  },
+  "youtube": {
+    "apiKey": "",
+    "metadataEndpoint": "",
+    "adminVideoEndpoint": "",
+    "shortMaxSeconds": 90,
+    "videoMaxSeconds": 900,
+    "privacyEnhancedEmbed": true,
+    "videoHealthEndpoint": "",
+    "videoReportEndpoint": "",
+    "adminBulkVideoEndpoint": "",
+    "healthCheckIntervalHours": 12
+  },
+  "adminTools": {
+    "enabled": false,
+    "videoImportPreviewOnly": true
+  }
+}
