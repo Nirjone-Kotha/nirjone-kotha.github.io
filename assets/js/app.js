@@ -812,6 +812,26 @@ function commentContentText(obj){
   // User comments stay exactly as written; built-in sample comments stay in Bangla.
   return obj?.userGenerated ? (obj.content ?? obj.bn ?? obj.en ?? "") : (obj?.bn ?? obj?.en ?? "");
 }
+function localizePage(){
+  document.documentElement.lang=state.lang;
+  updatePublicLinks();updateAppMetadata();
+  document.documentElement.dataset.theme=state.theme;
+  document.body.classList.toggle("no-motion",!state.motion);
+  $$("[data-t]").forEach(el=>{ const key=el.dataset.t; if(translations[state.lang]&&translations[state.lang][key]) el.textContent=t(key); });
+  const globalSearch=$("#globalSearch");if(globalSearch)globalSearch.placeholder=t("searchPlaceholder");
+  const brandName=$("#brandName");if(brandName)brandName.textContent=state.lang==="bn"?"মনের কথা":"Moner Kotha";
+  const brandSlogan=$("#brandSlogan");if(brandSlogan)brandSlogan.textContent="কথা বলুন মন খুলে";
+  const langBtn=$(".language-button");if(langBtn)langBtn.textContent=state.lang==="bn"?"English":"বাংলা";
+  const themeBtn=$(".icon-button[data-action='theme']");if(themeBtn)themeBtn.innerHTML=icon(state.theme==="dark"?"sun":"moon");
+  const sideAlias=$("#sideAlias");if(sideAlias)sideAlias.textContent=alias();
+  $$(".compact-avatar,.avatar-button").forEach(el=>el.textContent=initials(alias()));
+  const welcomeTitle=$("#welcomeTitle");if(welcomeTitle)welcomeTitle.textContent=t("welcomeTitle");
+  const pill=$("#platformPill b");if(pill)pill.textContent=platformName();
+  const storageLabel=$("#storageStatus b");if(storageLabel)storageLabel.textContent=t("localMode");
+  const networkLabel=$("#networkStatus b");if(networkLabel)networkLabel.textContent=navigator.onLine?t("offline"):t("online");
+  const themeMeta=$("#themeColorMeta"); if(themeMeta)themeMeta.setAttribute("content",state.theme==="dark"?"#101a19":"#f3f8f7");
+  renderInstallButton();renderCircleStories();renderMiniMoods();renderCircleList();renderQuote();renderFeed();renderAdPlacements();updateNav();
+}
 function suggestedAlias(){ return state.lang === "bn" ? aliasPairs[state.aliasIndex][0] : aliasPairs[state.aliasIndex][1]; }
 function alias(){ return state.displayName || suggestedAlias(); }
 function initials(name){
