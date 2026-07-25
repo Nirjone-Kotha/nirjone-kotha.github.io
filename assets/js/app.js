@@ -1063,67 +1063,76 @@ function localizePage(){
   document.documentElement.dataset.theme=state.theme;
   document.body.classList.toggle("no-motion",!state.motion);
   $$("[data-t]").forEach(el=>{ const key=el.dataset.t; if(translations[state.lang]&&translations[state.lang][key]) el.textContent=t(key); });
-  const globalSearch=$("#globalSearch");if(globalSearch)globalSearch.placeholder=t("searchPlaceholder");
-  const brandName=$("#brandName");if(brandName)brandName.textContent=state.lang==="bn"?"মনের কথা":"Moner Kotha";
-  const brandSlogan=$("#brandSlogan");if(brandSlogan)brandSlogan.textContent="কথা বলুন মন খুলে";
-  const langBtn=$(".language-button");if(langBtn)langBtn.textContent=state.lang==="bn"?"English":"বাংলা";
-  const themeBtn=$(".icon-button[data-action='theme']");if(themeBtn)themeBtn.innerHTML=icon(state.theme==="dark"?"sun":"moon");
-  const sideAlias=$("#sideAlias");if(sideAlias)sideAlias.textContent=alias();
-  $$(".compact-avatar,.avatar-button").forEach(el=>el.textContent=initials(alias()));
-  const welcomeTitle=$("#welcomeTitle");if(welcomeTitle)welcomeTitle.textContent=t("welcomeTitle");
-  const pill=$("#platformPill b");if(pill)pill.textContent=platformName();
-  const storageLabel=$("#storageStatus b");if(storageLabel)storageLabel.textContent=t("localMode");
-  const networkLabel=$("#networkStatus b");if(networkLabel)networkLabel.textContent=navigator.onLine?t("online"):t("offline");
-  const themeMeta=$("#themeColorMeta"); if(themeMeta)themeMeta.setAttribute("content",state.theme==="dark"?"#101a19":"#f3f8f7");
-  renderInstallButton();renderCircleStories();renderMiniMoods();renderCircleList();renderQuote();renderFeed();renderAdPlacements();updateNav();
-}
-
-function allMoments(){
-  cleanupExpiredLocalContent();
-  const now=Date.now();
-  const validSeeds = (Array.isArray(seedMoments) ? seedMoments : []).map((item, i) => {
-    const offset = Number(item.createdOffset) || (i * 1800000);
-    const created = now - offset;
-    const expiresAt = created + (MOMENT_TTL_MS || 172800000);
-    return { ...item, id: item.id || `seed-${i}`, created, expiresAt, userGenerated: false };
-  });
-  const validUserMoments = (Array.isArray(state.moments) ? state.moments : []).filter(m => (m.expiresAt || ((m.created || now) + (MOMENT_TTL_MS || 172800000))) > now).map(item => ({ ...item, userGenerated: true }));
-  return [...validUserMoments, ...validSeeds];
-}
-const MOMENT_REACTIONS=[{id:"like",emoji:"👍",en:"Like",bn:"লাইক"},{id:"love",emoji:"❤️",en:"Love",bn:"ভালোবাসা"},{id:"care",emoji:"🫶",en:"Care",bn:"যত্ন"},{id:"sympathy",emoji:"🫂",en:"Sympathy",bn:"সহমর্মিতা"}];
-function momentReactionState(id){
-  const key=String(id),value=state.momentReactions[key];
-  if(value===true){state.momentReactions[key]={care:true};return state.momentReactions[key]}
-  return value&&typeof value==="object"?value:{};
-}
-function momentReactionCount(item,type){
-  const base=Number(item.reactions?.[type]||(type==="sympathy"?item.empathy:0)||0);
-  return base+(momentReactionState(item.id)[type]?1:0);
-}
-function momentCommentsCount(item){return (state.momentComments[String(item.id)]||[]).length;}
-function momentScore(item){return MOMENT_REACTIONS.reduce((sum,reaction)=>sum+momentReactionCount(item,reaction.id)*(reaction.id==="like"?1:2),0)+momentCommentsCount(item)*3;}
-function momentMood(item){return momentMoods.find(m=>m.id===item.mood)||momentMoods[0];}
-function momentText(item){return item.content||item.bn||item.en||"";}
-function momentTimeLeft(item){
-  const hours=Math.max(0,Math.ceil((item.expiresAt-Date.now())/3600000));
-  return state.lang==="bn"?`${toBn(hours)} ঘণ্টা বাকি`:`${hours}h left`;
-}
-function storyPreviewMarkup(item,mood){
-  const text=String(momentText(item)||"").trim();
-  if(text){
-    const preview=text.length>34?`${text.slice(0,34).trim()}…`:text;
-    return `<span class="story-text-preview" aria-hidden="true">${escapeHtml(preview)}</span>`;
+  const globalSearch=$("#globalSearch");if(globalSearch)globalSearch.placeholder=t("searchPlace  // Add hear reaction if present  
+  const hearCount = reactionCount(p, "hear");
+  if (hearCount > 0 && reactionEntries.length < 3) {
+    reactionEntries.push({ emoji: "🤗", count: hearCount });
   }
-  return `<span class="story-emoji-preview" aria-hidden="true">${mood?.emoji||item.emoji||"💬"}</span>`;
-}
-function storyOwnerName(item){
-  if(item.displayName)return item.displayName;
-  if(item.userGenerated)return alias();
-  const seedName=state.lang==="bn"?item.alias_bn:item.alias_en;
-  if(seedName)return seedName;
-  return state.lang==="bn"?"অচেনা বন্ধু":"Unknown Friend";
-}
-function renderCircleStories(){
+
+  const fbReactionIcons = reactionEntries.map(r => `<span class="fb-emoji-icon">${r.emoji}</span>`).join("");
+  const userReacted = Boolean(userReactedEmojiObj);
+  const fbReactionTextContent = totalReactions > 0
+    ? (userReacted
+      ? (totalReactions > 1
+        ? (state.lang==="bn" ? `আপনি এবং আরও ${displayNumber(totalReactions - 1)} জন` : `You and ${displayNumber(totalReactions - 1)} others`)
+        : (state.lang==="bn" ? "আপনি" : "You"))
+      : `${displayNumber(totalReactions)}`)
+    : "";
+
+  const fbCommentsText = commentsCount > 0
+    ? `${displayNumber(commentsCount)} ${state.lang==="bn" ? "মন্তব্য" : "comments"}`
+    : "";
+
+  // Feeling badge for Facebook-style inline mood display
+  const feelingBadge = p.mood && isMobileLayout
+    ? ` — <span class="post-feeling-badge"><span class="feeling-emoji">${m.emoji||""}</span> ${state.lang==="bn" ? "অনুভব করছেন" : "feeling"} ${escapeHtml(moodName(p.mood, p.customMood))}</span>`
+    : "";
+
+  // Comment teaser (Facebook-style "Write a comment..." bar)
+  const commentTeaser = isMobileLayout
+    ? `<div class="fb-comment-teaser" data-comments="${p.id}">
+        <span class="teaser-avatar">${initials(alias())}</span>
+        <span class="teaser-input">${state.lang==="bn" ? "একটি মন্তব্য লিখুন..." : "Write a comment..."}</span>
+      </div>`
+    : "";
+
+  article.innerHTML=`
+    <header class="post-head">
+      <div class="post-person"><span class="post-avatar">${m.emoji||"💬"}</span><span class="post-meta">
+        <span class="post-name-row"><strong>${escapeHtml(name)}</strong>${p.isUser?"":`<button class="follow-button" data-follow="${escapeHtml(followKey)}">${following?(state.lang==="bn"?"অনুসরণ করছেন":"Following"):(state.lang==="bn"?"অনুসরণ করুন":"Follow")}</button>`}</span>
+        <small>${escapeHtml(postTime(p))} · 🌐${groupBadgeInline}${feelingBadge}</small>
+      </span></div><button class="more-button" data-more="${p.id}" aria-label="More">${icon("more")}</button>
+    </header>
+    ${labels.length && !isMobileLayout?`<div class="post-labels">${labels.join("")}</div>`:""}
+    <p class="post-text">${formatPostTextHTML(p)}</p>
+    <div class="post-support"><div class="support-cluster"><span class="support-face">❤️</span><span class="support-face">🤍</span><span class="support-face">🤗</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"}</span></div>
+
+    ${isMobileLayout ? `
+    <div class="fb-reaction-summary">
+      <div style="display:flex;align-items:center">
+        <span class="fb-reaction-emojis">${fbReactionIcons || '<span class="fb-emoji-icon">🤗</span>'}</span>
+        <span class="fb-reaction-text">${fbReactionTextContent}</span>
+      </div>
+      <div class="fb-counts-right">
+        ${fbCommentsText ? `<span data-comments="${p.id}" style="cursor:pointer">${fbCommentsText}</span>` : ""}
+      </div>
+    </div>` : ""}
+
+    ${isPickerOpen ? `
+      <div class="post-emoji-popover" aria-label="Choose emoji reaction">
+        ${emojis.map(e => {
+          const key = `${p.id}:${e.key}`;
+          const reacted = Boolean(state.reactions[key]);
+          return `<button class="emoji-popover-chip ${reacted ? "reacted" : ""}" data-react="${key}" title="${state.lang==="bn"?e.bn:e.en}"><span>${e.emoji}</span></button>`;
+        }).join("")}
+      </div>
+    ` : ""}
+
+    <div class="post-actions">
+      <button class="post-action ${userReactedEmoji ? "reacted" : ""}" data-toggle-emoji-picker="${p.id}">
+        <span class="action-icon-emoji">${userReactedEmoji || "🤗"}</span>
+        <span>${totalReactions > 0 ? formatCompact(totalReactions) : (userReactedEmoji ? (state.lang==="bn"?"সহমর্মী":"Reacted") : (state.lang==="bn"?"সহমর্মিতা":"Support"))}</span>
+      </button>){
   const wrap=$("#circleStories");wrap.innerHTML="";
   const preferred=effectivePreferredMood();
   state.viewedMoments = state.viewedMoments || new Set();
@@ -1139,15 +1148,16 @@ function renderCircleStories(){
     b.dataset.moment=String(item.id);
     b.setAttribute("aria-label",`${storyOwnerName(item)}: ${momentText(item)||localText(mood)}`);
     const previewText = escapeHtml(momentText(item) || localText(mood));
-    const moodEmoji = mood?.emoji || item.emoji || "💬";
+    const isTextStory = Boolean(String(item.content || "").trim());
+    const moodEmoji = mood?.emoji || item.emoji || "";
     const bgColors = moodColors[item.mood] || ["#1e3c72", "#2a5298"];
     b.style.background = `linear-gradient(145deg, ${bgColors[0]}, ${bgColors[1] || bgColors[0]})`;
     b.innerHTML=`
       <span class="story-score-badge">${displayNumber(momentScore(item))}</span>
       <div class="story-gradient-overlay"></div>
       <div class="story-card-content">
-        <span class="story-emoji">${moodEmoji}</span>
-        <p class="story-text-snippet">${previewText}</p>
+        ${isTextStory ? "" : (moodEmoji ? `<span class="story-emoji">${moodEmoji}</span>` : "")}
+        <p class="story-text-snippet ${isTextStory ? "story-pure-text" : ""}">${previewText}</p>
       </div>
       <b class="story-author-name">${escapeHtml(storyOwnerName(item))}</b>
     `;
@@ -1279,10 +1289,14 @@ function renderPostCard(p){
   const article=document.createElement("article");
   article.className="post-card";article.dataset.postId=String(p.id);article.style.cssText=moodStyle(p.mood||"other");
   const commentsCount=(p.comments||0)+(state.userComments[String(p.id)]?.length||0);
-  const labels=[];
+  const circleObj = circles.find(c => String(c.id) === String(p.circle) || String(c.id) === String(p.topic));
+  const groupBadgeInline = circleObj
+    ? ` · <span class="post-group-tag" data-open-circle="${escapeHtml(circleObj.id)}" title="${escapeHtml(localText(circleObj,"bn","en"))}">👥 ${escapeHtml(localText(circleObj,"bn","en"))}</span>`
+    : "";
   if(p.mood)labels.push(`<span class="mood-chip">${m.emoji||"💬"} ${escapeHtml(moodName(p.mood,p.customMood))}</span>`);
+  if(circleObj)labels.push(`<span class="group-chip" data-open-circle="${escapeHtml(circleObj.id)}">👥 ${escapeHtml(localText(circleObj,"bn","en"))}</span>`);
   if(p.need)labels.push(`<span class="need-chip">${escapeHtml(needName(p.need,p.customNeed))}</span>`);
-  if(p.topic)labels.push(`<span class="topic-chip">#${escapeHtml(topicName(p.topic,p.customTopic))}</span>`);
+  if(p.topic && !circleObj)labels.push(`<span class="topic-chip">#${escapeHtml(topicName(p.topic,p.customTopic))}</span>`);
 
   const emojis = sortedPostEmojis(p.mood);
   const totalReactions = POST_EMOJIS.reduce((sum, e) => sum + (p.reactions?.[e.key] || 0) + (state.reactions[`${p.id}:${e.key}`] ? 1 : 0), 0) + reactionCount(p, "hear");
@@ -1333,7 +1347,7 @@ function renderPostCard(p){
     <header class="post-head">
       <div class="post-person"><span class="post-avatar">${m.emoji||"💬"}</span><span class="post-meta">
         <span class="post-name-row"><strong>${escapeHtml(name)}</strong>${p.isUser?"":`<button class="follow-button" data-follow="${escapeHtml(followKey)}">${following?(state.lang==="bn"?"অনুসরণ করছেন":"Following"):(state.lang==="bn"?"অনুসরণ করুন":"Follow")}</button>`}</span>
-        <small>${escapeHtml(postTime(p))} · ${state.lang==="bn"?"🌐":"🌐"}${feelingBadge}</small>
+        <small>${escapeHtml(postTime(p))} · 🌐${groupBadgeInline}${feelingBadge}</small>
       </span></div><button class="more-button" data-more="${p.id}" aria-label="More">${icon("more")}</button>
     </header>
     ${labels.length && !isMobileLayout?`<div class="post-labels">${labels.join("")}</div>`:""}
@@ -1824,9 +1838,16 @@ function bindTilt(){
   });
 }
 
-function openComposer(postId=null){
+function openComposer(postId=null, circleId=null){
   const editing=postId?allPosts().find(p=>String(p.id)===String(postId)&&p.isUser):null;
   state.editingPostId=editing?String(editing.id):null;
+  state.draftCircle = circleId || (editing ? editing.circle : (state.currentGroupContext || ""));
+  if(!editing && state.draftCircle && circles.some(c => String(c.id) === String(state.draftCircle))){
+    if(!state.joined.has(String(state.draftCircle))){
+      showToast(state.lang === "bn" ? "গ্রুপে পোস্ট করতে হলে আপনাকে প্রথমে গ্রুপে যুক্ত (Join) হতে হবে।" : "You must join this group first to publish a post.");
+      return;
+    }
+  }
   if(editing){state.draftMood=editing.mood||"";state.draftNeed=editing.need||"";state.draftTopic=editing.topic||"life";state.customMood=editing.customMood||"";state.customNeed=editing.customNeed||"";state.customTopic=editing.customTopic||"";state.draftText=editing.content||"";}
   const moodButtons=[`<button class="choice-chip ${!state.draftMood?"active":""}" data-draft-mood="__skip__">${t("skip")}</button>`,...Object.entries(moods).map(([k,m])=>`<button class="choice-chip ${state.draftMood===k?"active":""}" data-draft-mood="${k}">${m.emoji} ${escapeHtml(localText(m))}</button>`)].join("");
   const needButtons=[`<button class="choice-chip ${!state.draftNeed?"active":""}" data-draft-need="__skip__">${t("skip")}</button>`,...Object.entries(needMeta).map(([k,n])=>`<button class="choice-chip ${state.draftNeed===k?"active":""}" data-draft-need="${k}">${escapeHtml(localText(n))}</button>`)].join("");
@@ -1835,7 +1856,11 @@ function openComposer(postId=null){
   const needPreview = state.draftNeed ? (needMeta[state.draftNeed] ? localText(needMeta[state.draftNeed]) : (state.customNeed || (state.lang==="bn"?"অন্যান্য":"Other"))) : (state.lang==="bn"?"বাছাই করতে চাপুন ▼":"Tap to choose ▼");
   const topicPreview = state.draftTopic ? `#${topics[state.draftTopic] ? localText(topics[state.draftTopic]) : (state.customTopic || state.draftTopic)}` : (state.lang==="bn"?"বাছাই করতে চাপুন ▼":"Tap to choose ▼");
 
+  const targetCircleObj = state.draftCircle ? circles.find(c => String(c.id) === String(state.draftCircle)) : null;
+  const groupBannerHTML = targetCircleObj ? `<div class="compose-group-banner"><span>👥 ${state.lang==="bn"?"গ্রুপে পোস্ট করা হচ্ছে:":"Posting in group:"} <strong>${escapeHtml(localText(targetCircleObj,"bn","en"))}</strong></span><button class="icon-button" style="width:24px;height:24px;font-size:11px" onclick="state.draftCircle=null;this.closest('.compose-group-banner').remove()">✕</button></div>` : "";
+
   setModal(`${modalHeader(editing?t("editPost"):t("postTitle"))}<div class="modal-body compose-modal-body">
+    ${groupBannerHTML}
     <div class="compose-profile"><span class="profile-orbit">${initials(alias())}</span><div><strong>${escapeHtml(alias())}</strong><small>${icon("lock")} ${state.lang==="bn"?"শুধু আপনার পছন্দের নামটি দেখানো হবে":"Only your chosen display name will be shown"}</small></div></div>
 
     <details class="compose-accordion" ${editing || state.draftMood ? "open" : ""}>
@@ -1892,11 +1917,24 @@ function submitPost(){
   const combined=[text,customMood,customNeed,customTopic].join(" "),validation=validateCommunityText(combined);
   if(!validation.ok){if(validation.reason==="urgent-risk"){closeModal();openSafety(true);return}showToast(communityValidationMessage(validation));return}
   const now=Date.now();
+  const targetCircle = state.draftCircle || state.currentGroupContext || state.draftTopic || "general";
+  if(circles.some(c => String(c.id) === String(targetCircle))){
+    if(!state.joined.has(String(targetCircle))){
+      showToast(state.lang === "bn" ? "গ্রুপে পোস্ট করতে হলে আপনাকে প্রথমে গ্রুপে যুক্ত (Join) হতে হবে।" : "You must join this group first to publish a post.");
+      return;
+    }
+  }
   if(state.editingPostId){
     const index=state.userPosts.findIndex(p=>String(p.id)===String(state.editingPostId));
-    if(index>=0)state.userPosts[index]={...state.userPosts[index],mood:state.draftMood,need:state.draftNeed,topic:state.draftTopic,customMood,customNeed,customTopic,content:text,editedAt:now,displayName:state.displayName};
-  }else state.userPosts.unshift({id:`user-${globalThis.crypto?.randomUUID?.()||now}`,created:now,expiresAt:now+POST_TTL_MS,aliasIndex:state.aliasIndex,displayName:state.displayName,mood:state.draftMood,need:state.draftNeed,topic:state.draftTopic,customMood,customNeed,customTopic,circle:"healing",content:text,contentLang:"auto"});
-  const edited=Boolean(state.editingPostId);state.editingPostId=null;state.draftText="";state.customMood="";state.customNeed="";state.customTopic="";store.remove("draft-text");saveState();platform.notify("success");closeModal();state.view="home";state.feedMode=edited?"latest":"latest";state.shown=10;renderFeed();updateNav();showToast(edited?t("postUpdated"):t("posted"));
+    if(index>=0)state.userPosts[index]={...state.userPosts[index],mood:state.draftMood,need:state.draftNeed,topic:state.draftTopic,circle:targetCircle,customMood,customNeed,customTopic,content:text,editedAt:now,displayName:state.displayName};
+  }else state.userPosts.unshift({id:`user-${globalThis.crypto?.randomUUID?.()||now}`,created:now,expiresAt:now+POST_TTL_MS,aliasIndex:state.aliasIndex,displayName:state.displayName,mood:state.draftMood,need:state.draftNeed,topic:state.draftTopic,circle:targetCircle,customMood,customNeed,customTopic,content:text,contentLang:"auto"});
+  const edited=Boolean(state.editingPostId);state.editingPostId=null;state.draftCircle=null;state.draftText="";state.customMood="";state.customNeed="";state.customTopic="";store.remove("draft-text");saveState();platform.notify("success");closeModal();
+  if(state.currentGroupContext){
+    openCircleDiscussionPage(state.currentGroupContext);
+  }else{
+    state.view="home";state.feedMode="latest";state.shown=10;renderFeed();updateNav();
+  }
+  showToast(edited?t("postUpdated"):t("posted"));
 }
 
 function commentRank(c){return Number(c.empathy||0)+(state.commentReactions[String(c.id)]?1:0);}
@@ -2470,7 +2508,9 @@ function submitMoment(){
   if(state.momentMode==="mood"&&!mood){showToast(state.lang==="bn"?"একটি মুড বেছে নিন।":"Choose a mood.");return}
   if(content){const validation=validateCommunityText(content);if(!validation.ok){if(validation.reason==="urgent-risk"){closeModal();openSafety(true);return}showToast(communityValidationMessage(validation));return}}
   const now=Date.now(),id=`moment-${globalThis.crypto?.randomUUID?.()||now}`;
-  state.moments.unshift({id,created:now,expiresAt:now+MOMENT_TTL_MS,mood:mood?.id||"",emoji:mood?.emoji||"💬",content,displayName:alias(),reactions:{like:0,love:0,care:0,sympathy:0},empathy:0});
+  const storyMood = state.momentMode === "text" ? "" : (mood?.id || "");
+  const storyEmoji = state.momentMode === "text" ? "" : (mood?.emoji || "");
+  state.moments.unshift({id,created:now,expiresAt:now+MOMENT_TTL_MS,mood:storyMood,emoji:storyEmoji,content,displayName:alias(),reactions:{like:0,love:0,care:0,sympathy:0},empathy:0});
   saveState();closeModal();renderCircleStories();showToast(t("momentAdded"));
   requestAnimationFrame(()=>{
     const bubble=[...document.querySelectorAll("[data-moment]")].find(node=>String(node.dataset.moment)===String(id));
@@ -2489,13 +2529,74 @@ function openMoment(id){
   state.viewedMoments = state.viewedMoments || new Set();
   state.viewedMoments.add(String(id));
   renderCircleStories();
-  const item=allMoments().find(moment=>String(moment.id)===String(id));if(!item)return;const mood=momentMood(item),text=momentText(item),selected=momentReactionState(item.id);
-  setModal(`${modalHeader(t("moments"))}<div class="modal-body moment-view facebook-story-card"><header class="story-card-head"><span class="post-avatar">${mood?.emoji||item.emoji||"💬"}</span><div><strong>${escapeHtml(storyOwnerName(item))}</strong><small>${momentTimeLeft(item)}</small></div></header><div class="moment-big-emoji">${mood?.emoji||item.emoji||"💬"}</div>${text?`<p>${escapeHtml(text)}</p>`:`<h3>${escapeHtml(localText(mood))}</h3>`}${momentReactionSummary(item)}<div class="story-action-bar">${MOMENT_REACTIONS.map(reaction=>`<button class="story-reaction-button ${selected[reaction.id]?"active":""}" data-moment-react="${item.id}" data-moment-reaction-type="${reaction.id}"><span>${reaction.emoji}</span><small>${escapeHtml(state.lang==="bn"?reaction.bn:reaction.en)}</small></button>`).join("")}<button class="story-reaction-button" data-moment-comments="${item.id}">${icon("message")}<small>${state.lang==="bn"?"মন্তব্য":"Comment"}</small></button></div></div>`);
+  const item=allMoments().find(moment=>String(moment.id)===String(id));if(!item)return;
+  const mood=momentMood(item),text=momentText(item),selected=momentReactionState(item.id);
+  const isTextStory = Boolean(String(item.content || "").trim());
+  const moodEmoji = mood?.emoji || item.emoji || "";
+  setModal(`${modalHeader(t("moments"))}<div class="modal-body moment-view facebook-story-card"><header class="story-card-head"><span class="post-avatar">${isTextStory ? "✍️" : (moodEmoji || "💬")}</span><div><strong>${escapeHtml(storyOwnerName(item))}</strong><small>${momentTimeLeft(item)}</small></div></header>${isTextStory ? `<div class="moment-pure-text-body"><p>${escapeHtml(text)}</p></div>` : `<div class="moment-big-emoji">${moodEmoji||"💬"}</div><h3>${escapeHtml(localText(mood))}</h3>`}${momentReactionSummary(item)}<div class="story-action-bar">${MOMENT_REACTIONS.map(reaction=>`<button class="story-reaction-button ${selected[reaction.id]?"active":""}" data-moment-react="${item.id}" data-moment-reaction-type="${reaction.id}"><span>${reaction.emoji}</span><small>${escapeHtml(state.lang==="bn"?reaction.bn:reaction.en)}</small></button>`).join("")}<button class="story-reaction-button" data-moment-comments="${item.id}">${icon("message")}<small>${state.lang==="bn"?"মন্তব্য":"Comment"}</small></button></div></div>`);
 }
 function toggleMomentReaction(id,type="care"){
   const current=momentReactionState(id),wasSelected=Boolean(current[type]);
   const next={};MOMENT_REACTIONS.forEach(reaction=>next[reaction.id]=false);if(!wasSelected)next[type]=true;
   state.momentReactions[String(id)]=next;saveState();renderCircleStories();openMoment(id);if(!wasSelected)showToast(state.lang==="bn"?"প্রতিক্রিয়া যোগ হয়েছে।":"Reaction added.");
+}
+function openSearchModal(){
+  setModal(`
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <h2>${state.lang==="bn"?"খুঁজুন (Search)":"Search"}</h2>
+      </div>
+      <button class="icon-button" data-action="close-modal" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body search-modal-body">
+      <div class="search-input-wrap">
+        <span class="search-icon">${icon("search")}</span>
+        <input id="mobileSearchInput" type="search" value="${escapeHtml(state.query||"")}" placeholder="${escapeHtml(t("searchPlaceholder"))}" autocomplete="off" />
+      </div>
+      <div id="searchResultsList" class="search-results-list"></div>
+    </div>
+  `);
+  const input = $("#mobileSearchInput");
+  if(input){
+    input.focus();
+    renderSearchResults(input.value);
+    input.addEventListener("input", e => {
+      state.query = e.target.value.trim();
+      renderSearchResults(state.query);
+      renderFeed();
+    });
+  }
+}
+
+function renderSearchResults(query){
+  const wrap = $("#searchResultsList");
+  if(!wrap) return;
+  const q = String(query||"").trim().toLowerCase();
+  if(!q){
+    wrap.innerHTML = `<p style="text-align:center;color:var(--muted);padding:20px;font-size:13px">${state.lang==="bn"?"গল্প, অনুভূতি বা বিষয় লিখে খুঁজুন...":"Type to search stories, feelings, or topics..."}</p>`;
+    return;
+  }
+  const matchingPosts = allPosts().filter(p => formatPostTextHTML(p).toLowerCase().includes(q) || postAlias(p).toLowerCase().includes(q)).slice(0, 5);
+  const matchingCircles = circles.filter(c => localText(c,"bn","en").toLowerCase().includes(q)).slice(0, 3);
+  
+  let html = "";
+  if(matchingCircles.length){
+    html += `<div class="search-section-title">${state.lang==="bn"?"গ্রুপসমূহ":"Support Groups"}</div>`;
+    matchingCircles.forEach(c => {
+      html += `<button class="search-result-item" data-open-circle="${c.id}"><span>${c.emoji||"👥"}</span><div><strong>${escapeHtml(localText(c,"bn","en"))}</strong><small>${c.members||120} members</small></div></button>`;
+    });
+  }
+  if(matchingPosts.length){
+    html += `<div class="search-section-title">${state.lang==="bn"?"পোস্টসমূহ":"Matching Posts"}</div>`;
+    matchingPosts.forEach(p => {
+      const txt = escapeHtml((p.content||p.bn||p.en||"").slice(0, 70));
+      html += `<button class="search-result-item" data-comments="${p.id}"><span>💬</span><div><strong>${escapeHtml(postAlias(p))}</strong><small>${txt}...</small></div></button>`;
+    });
+  }
+  if(!html){
+    html = `<p style="text-align:center;color:var(--muted);padding:20px;font-size:13px">${state.lang==="bn"?"কোনো তথ্য পাওয়া যায়নি":"No matching results found"}</p>`;
+  }
+  wrap.innerHTML = html;
 }
 
 async function openContact(){
@@ -2650,9 +2751,10 @@ function openCheckin(){
 function openCircleDiscussionPage(circleId){
   const circle = circles.find(c => String(c.id) === String(circleId));
   if (!circle) return;
+  state.currentGroupContext = String(circle.id);
 
   const joined = state.joined.has(String(circle.id));
-  const posts = allPosts().filter(p => p.circle === circle.id || p.topic === circle.id);
+  const posts = allPosts().filter(p => String(p.circle) === String(circle.id) || String(p.topic) === String(circle.id));
 
   setPage(`${pageHeader(escapeHtml(localText(circle,"bn","en")),"circles-page")}
     <div class="modal-body direct-page-body">
@@ -2670,7 +2772,7 @@ function openCircleDiscussionPage(circleId){
           </button>
         </div>
         <p style="font-size:12px;line-height:1.5;margin:0 0 10px">${escapeHtml(localText(circle,"description_bn","description_en"))}</p>
-        <button class="primary-button" style="width:100%;margin-top:10px" data-action="compose">${icon("pen")} ${state.lang==="bn"?"গ্রুপে নতুন গল্প শেয়ার করুন":"Share post in group"}</button>
+        <button class="primary-button" style="width:100%;margin-top:10px" data-action="compose-group" data-circle="${circle.id}">${icon("pen")} ${state.lang==="bn"?"গ্রুপে নতুন গল্প শেয়ার করুন":"Share post in group"}</button>
       </section>
 
       <h3 style="font-size:15px;margin:16px 0 10px">${state.lang==="bn"?"গ্রুপের নতুন আলোচনা (Group Feed)":"Group Discussions"}</h3>
@@ -2727,9 +2829,16 @@ function toggleFollow(name){
   saveState();renderFeed();
 }
 function toggleJoin(id){
-  const on=state.joined.has(id);if(on){state.joined.delete(id);showToast(t("leftCircle"))}else{state.joined.add(id);showToast(t("joinedCircle"))}
+  const sid=String(id);
+  const on=state.joined.has(sid);
+  if(on){state.joined.delete(sid);showToast(t("leftCircle"))}
+  else{state.joined.add(sid);showToast(t("joinedCircle"))}
   saveState();renderCircleList();
-  $$(`[data-join="${CSS.escape(id)}"]`).forEach(b=>{b.classList.toggle("joined",!on);b.textContent=!on?t("joined"):t("join")});
+  if(state.currentGroupContext === sid){
+    openCircleDiscussionPage(sid);
+  } else {
+    $$(`[data-join="${CSS.escape(sid)}"]`).forEach(b=>{b.classList.toggle("joined",!on);b.textContent=!on?t("joined"):t("join")});
+  }
 }
 function toggleReaction(value){
   state.reactions[value]=!state.reactions[value];
@@ -3230,6 +3339,7 @@ document.addEventListener("click",e=>{
   switch(action){
     case"close-video-large":setVideoLargeView(false);break;
     case"compose":openComposer();break;
+    case"compose-group":openComposer(null,target.dataset.circle||state.currentGroupContext);break;
     case"compose-moment":openMomentComposer();break;
     case"install":handleInstall();break;
     case"install-phone":chooseInstallTarget("phone");break;
@@ -3289,7 +3399,7 @@ document.addEventListener("click",e=>{
     case"next-quote":state.quoteIndex=(state.quoteIndex+1)%quotes.length;store.set("quote",state.quoteIndex);renderQuote();break;
     case"new-alias":changeAlias();break;
     case"save-display-name":saveDisplayName();break;
-    case"focus-search":{const search=$("#globalSearch");search.style.display="flex";search.focus();break;}
+    case"focus-search":openSearchModal();break;
     case"filter":openFilters();break;
     case"close-modal":closeModal();break;
     case"close-drawer":closeDrawer();break;

@@ -30,7 +30,7 @@ export const moods = {
     "count": 5
   },
   "numb": {
-    "emoji": "🪨",
+    "emoji": "🌪️",
     "bn": "কিছুই অনুভব হচ্ছে না",
     "en": "Feeling numb",
     "count": 5
