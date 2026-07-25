@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Moner Kotha Control Center</title>
+  <link rel="stylesheet" href="assets/admin.css?v=6.1.0">
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="admin-brand" href="index.html"><img src="../assets/brand/logo-mark.png" alt=""><span><b>Moner Kotha</b><small>Firebase Control Center</small></span></a>
+      <nav id="adminNav">
+        <button class="active" data-page="dashboard"><i>⌂</i><span>Dashboard</span></button>
+        <button data-page="site"><i>⚙</i><span>Site Control</span></button>
+        <button data-page="features"><i>◫</i><span>Feature Manager</span></button>
+        <button data-page="announcements"><i>◉</i><span>Announcements</span></button>
+        <button data-page="advertising"><i>▣</i><span>Advertisement</span></button>
+        <button data-page="videos"><i>▶</i><span>Video Manager</span></button>
+        <button data-page="system"><i>◎</i><span>System & Guide</span></button>
+      </nav>
+      <div class="sidebar-footer"><a href="../" target="_blank" rel="noopener">Open website ↗</a><button class="admin-signout" id="adminSignOut" type="button">Sign out</button></div>
+    </aside>
+    <div class="admin-main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Menu">☰</button>
+        <div><small id="pageEyebrow">Firebase Administration</small><h1 id="pageTitle">Dashboard</h1></div>
+        <div class="top-actions"><span class="live-pill"><i></i> Realtime control</span><div class="user-chip"><b id="adminUserName">Administrator</b><small id="adminUserEmail">Checking access…</small></div></div>
+      </header>
+      <main id="adminContent" class="admin-content"><div class="loading-card">Firebase Control Center প্রস্তুত হচ্ছে…</div></main>
+    </div>
+  </div>
+  <div id="toast" class="admin-toast" role="status"></div>
+  <div id="modal" class="admin-modal" hidden><div class="modal-shade" data-close-modal></div><section id="modalBody" class="modal-panel" role="dialog" aria-modal="true"></section></div>
+  <script>window.MK_ADMIN={version:'6.1.0-firebase'};</script>
+  <script type="module" src="assets/admin.js?v=6.1.0"></script>
+</body>
+</html>

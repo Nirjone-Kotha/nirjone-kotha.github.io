@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Video Import Preview — Moner Kotha</title>
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color:#18312e;background:#eef4f2}*{box-sizing:border-box}body{margin:0;padding:24px}.shell{max-width:1100px;margin:auto}.card{background:#fff;border:1px solid #dbe7e4;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 5px 20px rgba(10,55,50,.06)}h1,h2{margin:0 0 10px}p{color:#62736f;line-height:1.6}.warning{padding:12px;border-radius:12px;background:#fff5d9;color:#72540b}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}label{display:grid;gap:6px;font-weight:800;font-size:13px}input,textarea,select,button{font:inherit}input,textarea,select{width:100%;border:1px solid #cadbd7;border-radius:11px;padding:11px;background:#fff}textarea{min-height:160px;resize:vertical}.moods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.moods label{display:flex;align-items:center;gap:7px;padding:9px;border:1px solid #dbe7e4;border-radius:10px;font-weight:650}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}button{border:0;border-radius:11px;padding:11px 15px;font-weight:850;cursor:pointer;background:#0c756a;color:#fff}button.secondary{background:#e4f2ef;color:#0c756a}.preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.video{border:1px solid #dbe7e4;border-radius:14px;overflow:hidden;background:#fff}.video img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#173d38}.video div{padding:10px}.video strong,.video small{display:block}.video small{color:#697a76;margin-top:4px}.status{font-size:12px;font-weight:800}.status.bad{color:#b13b3b}.status.ok{color:#08735d}@media(max-width:760px){body{padding:12px}.grid,.preview-grid{grid-template-columns:1fr}.moods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <section class="card"><h1>Admin-ready Video Import Preview</h1><p>This page is not linked from the public app and is marked noindex. A real production admin panel still requires authentication, authorization, server-side YouTube validation and a database.</p><div id="status" class="warning">Loading configuration…</div></section>
+  <section class="card">
+    <div class="grid"><label>Section<select id="section"><option value="general">General Video</option><option value="islamic">Islamic Video</option></select></label><label>Format<select id="format"><option value="video">Regular video — max 15 minutes</option><option value="short">Shorts — max 90 seconds</option></select></label></div>
+    <h2 style="margin-top:18px">Mood assignment</h2><p>Leave all unchecked to make the video available to every mood.</p><div id="moods" class="moods"></div>
+  </section>
+  <section class="card"><h2>Add one link</h2><label>YouTube URL or ID<input id="single" type="url" placeholder="https://www.youtube.com/watch?v=…"></label><div class="actions"><button id="addSingle">Prepare one video</button></div></section>
+  <section class="card"><h2>Bulk links</h2><label>Paste one link per line<textarea id="bulk" placeholder="https://youtu.be/…&#10;https://www.youtube.com/shorts/…"></textarea></label><div class="actions"><button id="addBulk">Prepare bulk import</button><button class="secondary" id="clear">Clear</button><button class="secondary" id="export">Export JSON</button><button id="upload">Send to configured admin endpoint</button></div></section>
+  <section class="card"><h2>Prepared records</h2><p id="summary">No records prepared.</p><div id="preview" class="preview-grid"></div></section>
+</main>
+<script type="module" src="./video-import.js"></script>
+</body>
+</html>
