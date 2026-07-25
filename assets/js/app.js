@@ -1244,17 +1244,67 @@ function renderPostCard(p){
   const userReactedEmojiObj = POST_EMOJIS.find(e => state.reactions[`${p.id}:${e.key}`]);
   const userReactedEmoji = userReactedEmojiObj?.emoji;
   const isPickerOpen = Boolean(state.activeEmojiPicker === String(p.id));
+  const isMobileLayout = document.body.classList.contains("force-mobile-layout");
+
+  // Build top 3 reaction emoji icons for Facebook summary
+  const reactionEntries = POST_EMOJIS.map(e => ({
+    emoji: e.emoji,
+    count: (p.reactions?.[e.key] || 0) + (state.reactions[`${p.id}:${e.key}`] ? 1 : 0)
+  })).filter(r => r.count > 0).sort((a, b) => b.count - a.count).slice(0, 3);
+  // Add hear reaction if present  
+  const hearCount = reactionCount(p, "hear");
+  if (hearCount > 0 && reactionEntries.length < 3) {
+    reactionEntries.push({ emoji: "🫂", count: hearCount });
+  }
+
+  const fbReactionIcons = reactionEntries.map(r => `<span class="fb-emoji-icon">${r.emoji}</span>`).join("");
+  const userReacted = Boolean(userReactedEmojiObj);
+  const fbReactionTextContent = totalReactions > 0
+    ? (userReacted
+      ? (totalReactions > 1
+        ? (state.lang==="bn" ? `আপনি এবং আরও ${displayNumber(totalReactions - 1)} জন` : `You and ${displayNumber(totalReactions - 1)} others`)
+        : (state.lang==="bn" ? "আপনি" : "You"))
+      : `${displayNumber(totalReactions)}`)
+    : "";
+
+  const fbCommentsText = commentsCount > 0
+    ? `${displayNumber(commentsCount)} ${state.lang==="bn" ? "মন্তব্য" : "comments"}`
+    : "";
+
+  // Feeling badge for Facebook-style inline mood display
+  const feelingBadge = p.mood && isMobileLayout
+    ? ` — <span class="post-feeling-badge"><span class="feeling-emoji">${m.emoji||""}</span> ${state.lang==="bn" ? "অনুভব করছেন" : "feeling"} ${escapeHtml(moodName(p.mood, p.customMood))}</span>`
+    : "";
+
+  // Comment teaser (Facebook-style "Write a comment..." bar)
+  const commentTeaser = isMobileLayout
+    ? `<div class="fb-comment-teaser" data-comments="${p.id}">
+        <span class="teaser-avatar">${initials(alias())}</span>
+        <span class="teaser-input">${state.lang==="bn" ? "একটি মন্তব্য লিখুন..." : "Write a comment..."}</span>
+      </div>`
+    : "";
 
   article.innerHTML=`
     <header class="post-head">
       <div class="post-person"><span class="post-avatar">${m.emoji||"💬"}</span><span class="post-meta">
         <span class="post-name-row"><strong>${escapeHtml(name)}</strong>${p.isUser?"":`<button class="follow-button" data-follow="${escapeHtml(followKey)}">${following?(state.lang==="bn"?"অনুসরণ করছেন":"Following"):(state.lang==="bn"?"অনুসরণ করুন":"Follow")}</button>`}</span>
-        <small>${escapeHtml(postTime(p))} · ${state.lang==="bn"?"আসল পরিচয় গোপন":"real identity hidden"}</small>
+        <small>${escapeHtml(postTime(p))} · ${state.lang==="bn"?"🌐":"🌐"}${feelingBadge}</small>
       </span></div><button class="more-button" data-more="${p.id}" aria-label="More">${icon("more")}</button>
     </header>
-    ${labels.length?`<div class="post-labels">${labels.join("")}</div>`:""}
+    ${labels.length && !isMobileLayout?`<div class="post-labels">${labels.join("")}</div>`:""}
     <p class="post-text">${formatPostTextHTML(p)}</p>
     <div class="post-support"><div class="support-cluster"><span class="support-face">🫂</span><span class="support-face">🤍</span><span class="support-face">🫶</span></div><span class="support-summary">${formatCompact(totalReactions)} ${state.lang==="bn"?"সহমর্মী সাড়া":"support responses"} · ${displayNumber(commentsCount)} ${state.lang==="bn"?"সহমর্মিতা":"sympathy responses"}</span></div>
+
+    ${isMobileLayout ? `
+    <div class="fb-reaction-summary">
+      <div style="display:flex;align-items:center">
+        <span class="fb-reaction-emojis">${fbReactionIcons || '<span class="fb-emoji-icon">🫂</span>'}</span>
+        <span class="fb-reaction-text">${fbReactionTextContent}</span>
+      </div>
+      <div class="fb-counts-right">
+        ${fbCommentsText ? `<span data-comments="${p.id}" style="cursor:pointer">${fbCommentsText}</span>` : ""}
+      </div>
+    </div>` : ""}
 
     ${isPickerOpen ? `
       <div class="post-emoji-popover" aria-label="Choose emoji reaction">
@@ -1269,13 +1319,14 @@ function renderPostCard(p){
     <div class="post-actions">
       <button class="post-action ${userReactedEmoji ? "reacted" : ""}" data-toggle-emoji-picker="${p.id}">
         <span class="action-icon-emoji">${userReactedEmoji || "🫂"}</span>
-        <span>${userReactedEmoji ? (state.lang==="bn"?"সহমর্মী":"Reacted") : (state.lang==="bn"?"সহমর্মিতা":"Empathy")}</span>
+        <span>${userReactedEmoji ? (state.lang==="bn"?"সহমর্মী":"Reacted") : (state.lang==="bn"?"সহমর্মিতা":"Support")}</span>
         <i class="count">${displayNumber(totalReactions)}</i>
       </button>
       <button class="post-action" data-comments="${p.id}">${icon("message")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(commentsCount)}</i></button>
-      <button class="post-action ${saved?"saved":""}" data-save="${p.id}">${icon("bookmark")}<span>${saved?(state.lang==="bn"?"সংরক্ষিত":"Saved"):(state.lang==="bn"?"সেভ":"Save")}</span></button>
+      ${isMobileLayout ? "" : `<button class="post-action ${saved?"saved":""}" data-save="${p.id}">${icon("bookmark")}<span>${saved?(state.lang==="bn"?"সংরক্ষিত":"Saved"):(state.lang==="bn"?"সেভ":"Save")}</span></button>`}
       <button class="post-action" data-share="${p.id}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button>
-    </div>`;
+    </div>
+    ${commentTeaser}`;
   return article;
 }
 function formatExpiry(expiresAt){

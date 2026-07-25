@@ -94,7 +94,13 @@ export function createYouTubeFeedController({
   let monitoredPlayer = null;
   let ignoreControlChangesUntil = 0;
 
+  function schedulePreparation(task) {
+    if (typeof requestIdleCallback === "function") requestIdleCallback(task, { timeout: 700 });
+    else setTimeout(task, 180);
+  }
+
   prepareYouTubeConnections();
+  schedulePreparation(() => loadYouTubeApi());
 
   function playerHost(card) {
     if (!card) return null;
@@ -205,6 +211,12 @@ export function createYouTubeFeedController({
     try {
       const YT = await loadYouTubeApi();
       if (destroyed || !card.isConnected) return null;
+      if (players.has(key)) {
+        const player = players.get(key);
+        applySharedVolume(player);
+        if (autoplay) startPlayer(card, player, { muted, userInitiated });
+        return player;
+      }
       let player;
       player = new YT.Player(host, {
         host: "https://www.youtube-nocookie.com",
@@ -348,11 +360,6 @@ export function createYouTubeFeedController({
     }
   }
 
-  function schedulePreparation(task) {
-    if (typeof requestIdleCallback === "function") requestIdleCallback(task, { timeout: 700 });
-    else setTimeout(task, 180);
-  }
-
   function warmNextTwo(card) {
     const index = cards.indexOf(card);
     if (index < 0) return;
@@ -392,15 +399,33 @@ export function createYouTubeFeedController({
     if (!cards.length || !("IntersectionObserver" in globalThis)) return;
     observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting && entry.target.dataset.playerPlaying === "true") {
+        if (entry.isIntersecting) {
+          if (entry.intersectionRatio >= 0.68) {
+            play(entry.target, { muted: !sharedSoundEnabled });
+          } else if (entry.intersectionRatio >= 0.25) {
+            ensurePlayer(entry.target, { autoplay: false, muted: !sharedSoundEnabled });
+          }
+        }
+        if (entry.intersectionRatio < 0.68 && entry.target.dataset.playerPlaying === "true") {
           const videoId = entry.target.dataset.videoId;
           const player = players.get(videoId);
           try { player?.pauseVideo?.(); } catch {}
           entry.target.dataset.playerPlaying = "false";
         }
       });
-    }, { root: null, threshold: [0.1, 0.5] });
+    }, { root: null, threshold: [0.25, 0.68] });
     cards.forEach(card => observer.observe(card));
+
+    if (cards[0]) {
+      schedulePreparation(() => {
+        ensurePlayer(cards[0], { autoplay: false, muted: !sharedSoundEnabled }).then(player => {
+          if (player) {
+            applySharedVolume(player);
+            applySound(player, sharedSoundEnabled);
+          }
+        });
+      });
+    }
   }
 
   function destroy() {

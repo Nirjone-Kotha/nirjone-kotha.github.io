@@ -209,6 +209,9 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
 .composer-placeholder strong{font-size:14px}
 .composer-placeholder small{font-size:11px;color:var(--muted)}
 .composer-open{border:0;background:var(--surface-soft);color:var(--brand);height:36px;padding:0 12px;border-radius:11px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800}
+.fb-composer-actions{display:none}
+.fb-reaction-summary{display:none}
+.fb-comment-teaser{display:none}
 .feed-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 13px}
 .feed-tabs{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:4px;box-shadow:var(--shadow-sm)}
 .feed-tab{border:0;background:transparent;padding:8px 13px;border-radius:9px;color:var(--muted);font-size:12px;font-weight:800}
@@ -1182,54 +1185,22 @@ body.installed-phone-app.force-mobile-layout .mood-select-icon{width:38px;height
 body.installed-phone-app.force-mobile-layout .mood-select-copy{display:none!important}
 
 body.installed-phone-app.force-mobile-layout .stories-row{
-  order:1;height:112px;min-height:112px;margin:0;padding:10px 9px!important;border-radius:17px;
-  display:flex;align-items:flex-start;overflow-x:auto;overflow-y:hidden;gap:5px
+  order:1;height:auto;min-height:auto;margin:0
 }
-body.installed-phone-app.force-mobile-layout .circle-stories{gap:5px}
-body.installed-phone-app.force-mobile-layout .story-bubble{width:64px!important;flex:0 0 64px!important;gap:5px}
-body.installed-phone-app.force-mobile-layout .story-ring{width:54px!important;height:54px!important}
-body.installed-phone-app.force-mobile-layout .story-bubble b{width:64px;font-size:9px;line-height:1.2}
+body.installed-phone-app.force-mobile-layout .circle-stories{gap:8px}
 body.installed-phone-app.force-mobile-layout .moment-bubble .story-text-preview{padding:6px;font-size:7px!important;line-height:1.12}
 
 body.installed-phone-app.force-mobile-layout .composer-compact{
-  order:2;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;
-  min-height:112px;margin:0;padding:12px!important;gap:10px!important;border-radius:18px;flex-wrap:nowrap!important
+  order:2;margin:0
 }
-body.installed-phone-app.force-mobile-layout .composer-compact::before{inset:7px;border-radius:13px}
-body.installed-phone-app.force-mobile-layout .compact-avatar{display:none!important}
-body.installed-phone-app.force-mobile-layout .composer-placeholder{width:auto!important;min-width:0}
-body.installed-phone-app.force-mobile-layout .composer-kicker{font-size:9px;margin-bottom:2px}
-body.installed-phone-app.force-mobile-layout .composer-placeholder strong{font-size:17px;line-height:1.24;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-body.installed-phone-app.force-mobile-layout .composer-placeholder small{font-size:9px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-body.installed-phone-app.force-mobile-layout .composer-open{
-  align-self:center!important;width:auto!important;min-width:112px!important;height:44px;margin:0!important;padding:0 13px;border-radius:13px
-}
-body.installed-phone-app.force-mobile-layout .composer-open .icon-svg{width:18px;height:18px}
 
 body.installed-phone-app.force-mobile-layout .feed-toolbar{
-  order:3;position:static!important;display:grid!important;grid-template-columns:minmax(0,1fr) 44px;gap:7px;
-  margin:0;padding:0!important;background:transparent!important;backdrop-filter:none!important;align-items:stretch
+  order:3
 }
-body.installed-phone-app.force-mobile-layout .feed-tabs{
-  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;overflow:visible!important;
-  width:100%;padding:4px;border-radius:15px
-}
-body.installed-phone-app.force-mobile-layout .feed-tab{
-  min-width:0;padding:8px 4px!important;font-size:10.5px!important;line-height:1.15;text-align:center;white-space:normal!important;font-weight:700
-}
-body.installed-phone-app.force-mobile-layout .filter-button{
-  width:44px;min-width:44px;height:auto;min-height:64px;padding:0;border-radius:15px;display:grid;place-items:center
-}
-body.installed-phone-app.force-mobile-layout .filter-button span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-body.installed-phone-app.force-mobile-layout .filter-button .icon-svg{width:21px;height:21px}
 body.installed-phone-app.force-mobile-layout .active-filter-bar{order:4;margin:0}
-body.installed-phone-app.force-mobile-layout #feedList{order:5;display:grid;gap:10px}
+body.installed-phone-app.force-mobile-layout #feedList{order:5}
 body.installed-phone-app.force-mobile-layout #loadMore{order:6;margin:0}
-body.installed-phone-app.force-mobile-layout .post-card{border-radius:18px;padding:15px 14px 11px;overflow:hidden}
-body.installed-phone-app.force-mobile-layout .post-text{font-size:15.5px!important;line-height:1.6}
-body.installed-phone-app.force-mobile-layout .post-meta strong{font-size:13px}
-body.installed-phone-app.force-mobile-layout .post-meta small{font-size:11px}
-body.installed-phone-app.force-mobile-layout .post-action .count{font-size:11px}
+body.installed-phone-app.force-mobile-layout .post-card{overflow:hidden}
 body.installed-phone-app.force-mobile-layout .mobile-nav{
   height:68px;left:6px;right:6px;border-radius:22px;box-shadow:0 10px 34px rgba(22,52,48,.16);backdrop-filter:blur(24px)
 }
@@ -1238,10 +1209,6 @@ body.installed-phone-app.force-mobile-layout .mobile-nav button small{font-size:
 @media(max-width:420px){
   body.installed-phone-app.force-mobile-layout .welcome-strip h1{font-size:19px!important;max-width:205px}
   body.installed-phone-app.force-mobile-layout .welcome-strip p{max-width:220px}
-  body.installed-phone-app.force-mobile-layout .composer-compact{grid-template-columns:1fr!important;min-height:132px}
-  body.installed-phone-app.force-mobile-layout .composer-open{width:100%!important;height:42px}
-  body.installed-phone-app.force-mobile-layout .story-bubble{width:60px!important;flex-basis:60px!important}
-  body.installed-phone-app.force-mobile-layout .story-bubble b{width:60px}
   .video-sound-label{display:none}.video-sound-button{width:38px;padding:0}
 }
 
@@ -2503,16 +2470,37 @@ body.video-large-view .video-card-meta-bar * {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   FACEBOOK FEED STYLE ENHANCEMENT (Mobile Installed App & Mobile Layout)
+   COMPLETE FACEBOOK FEED EXPERIENCE (Mobile & Installed Phone App)
+   Only applies when body has .force-mobile-layout
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 760px) {
+
+  /* ── Feed Column Background (Facebook gray gap between white cards) ── */
+  body.force-mobile-layout .social-shell,
+  body.installed-phone-app.force-mobile-layout .social-shell {
+    background: var(--fb-feed-bg, #F0F2F5) !important;
+  }
+  [data-theme="dark"] body.force-mobile-layout .social-shell,
+  [data-theme="dark"] body.installed-phone-app.force-mobile-layout .social-shell {
+    --fb-feed-bg: #18191A;
+  }
+
+  body.force-mobile-layout .feed-column,
+  body.installed-phone-app.force-mobile-layout .feed-column {
+    background: transparent !important;
+    padding-inline: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* ── Feed List ── */
   body.force-mobile-layout #feedList,
   body.installed-phone-app.force-mobile-layout #feedList {
-    background: color-mix(in srgb, var(--surface-soft, #f0f2f5), transparent 10%) !important;
+    background: transparent !important;
     gap: 8px !important;
     padding-bottom: 90px !important;
   }
 
+  /* ── Post Card: Edge-to-edge Facebook style ── */
   body.force-mobile-layout .post-card,
   body.installed-phone-app.force-mobile-layout .post-card,
   body.force-mobile-layout .video-card:not(.video-large-view *),
@@ -2524,8 +2512,8 @@ body.video-large-view .video-card-meta-bar * {
     width: 100% !important;
     max-width: 100% !important;
     background: var(--surface) !important;
-    padding: 12px 14px 8px !important;
-    margin-bottom: 8px !important;
+    padding: 12px 16px 4px !important;
+    margin-bottom: 0 !important;
   }
 
   body.force-mobile-layout .post-card::before,
@@ -2533,10 +2521,11 @@ body.video-large-view .video-card-meta-bar * {
     display: none !important;
   }
 
-  /* Facebook Post Head */
+  /* ── Facebook Post Header ── */
   body.force-mobile-layout .post-head,
   body.installed-phone-app.force-mobile-layout .post-head {
-    margin-bottom: 8px !important;
+    margin-bottom: 10px !important;
+    gap: 10px !important;
   }
 
   body.force-mobile-layout .post-avatar,
@@ -2545,56 +2534,124 @@ body.video-large-view .video-card-meta-bar * {
     height: 40px !important;
     border-radius: 50% !important;
     font-size: 18px !important;
+    box-shadow: none !important;
+    border: 0 !important;
   }
 
   body.force-mobile-layout .post-meta strong,
   body.installed-phone-app.force-mobile-layout .post-meta strong {
     font-size: 14.5px !important;
     font-weight: 700 !important;
+    color: var(--text) !important;
   }
 
   body.force-mobile-layout .post-meta small,
   body.installed-phone-app.force-mobile-layout .post-meta small {
-    font-size: 11.5px !important;
+    font-size: 12px !important;
     color: var(--muted) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
 
-  /* Facebook Post Text */
+  /* Inline feeling badge in post header */
+  body.force-mobile-layout .post-feeling-badge,
+  body.installed-phone-app.force-mobile-layout .post-feeling-badge {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  body.force-mobile-layout .post-feeling-badge .feeling-emoji,
+  body.installed-phone-app.force-mobile-layout .post-feeling-badge .feeling-emoji {
+    font-size: 13px;
+  }
+
+  /* ── Post Labels (mood/need/topic chips) ── */
+  body.force-mobile-layout .post-labels,
+  body.installed-phone-app.force-mobile-layout .post-labels {
+    display: none !important;
+  }
+
+  /* ── Post Text ── */
   body.force-mobile-layout .post-text,
   body.installed-phone-app.force-mobile-layout .post-text {
     font-size: 15px !important;
     line-height: 1.5 !important;
-    margin-bottom: 10px !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
   }
 
-  /* Facebook Post Support / Meta Stats Row */
-  body.force-mobile-layout .post-support,
-  body.installed-phone-app.force-mobile-layout .post-support {
+  /* ── Facebook Reaction Summary Bar ── */
+  body.force-mobile-layout .fb-reaction-summary,
+  body.installed-phone-app.force-mobile-layout .fb-reaction-summary {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 8px 0 !important;
-    margin-top: 6px !important;
-    border-top: 1px solid color-mix(in srgb, var(--line), transparent 50%) !important;
-    border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 50%) !important;
-    font-size: 12.5px !important;
+    padding: 10px 0 !important;
+    font-size: 13px !important;
+    color: var(--muted) !important;
+    min-height: 36px !important;
+  }
+
+  body.force-mobile-layout .fb-reaction-emojis,
+  body.installed-phone-app.force-mobile-layout .fb-reaction-emojis {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+
+  body.force-mobile-layout .fb-reaction-emojis .fb-emoji-icon,
+  body.installed-phone-app.force-mobile-layout .fb-reaction-emojis .fb-emoji-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 12px;
+    border: 2px solid var(--surface);
+    margin-right: -4px;
+    position: relative;
+    background: var(--surface-soft);
+  }
+  body.force-mobile-layout .fb-reaction-emojis .fb-emoji-icon:nth-child(1) { z-index: 3; }
+  body.force-mobile-layout .fb-reaction-emojis .fb-emoji-icon:nth-child(2) { z-index: 2; }
+  body.force-mobile-layout .fb-reaction-emojis .fb-emoji-icon:nth-child(3) { z-index: 1; }
+
+  body.force-mobile-layout .fb-reaction-text,
+  body.installed-phone-app.force-mobile-layout .fb-reaction-text {
+    margin-left: 8px !important;
+    font-size: 13px !important;
     color: var(--muted) !important;
   }
 
-  body.force-mobile-layout .support-summary,
-  body.installed-phone-app.force-mobile-layout .support-summary {
-    font-size: 12px !important;
+  body.force-mobile-layout .fb-counts-right,
+  body.installed-phone-app.force-mobile-layout .fb-counts-right {
+    display: flex !important;
+    gap: 12px !important;
+    font-size: 13px !important;
+    color: var(--muted) !important;
   }
 
-  /* Facebook Action Bar (4 equal grid buttons across bottom) */
+  /* Hide old support summary in mobile */
+  body.force-mobile-layout .post-support,
+  body.installed-phone-app.force-mobile-layout .post-support {
+    display: none !important;
+  }
+
+  /* ── Facebook 3-Column Action Bar ── */
   body.force-mobile-layout .post-actions,
   body.installed-phone-app.force-mobile-layout .post-actions {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 4px !important;
-    padding: 4px 0 0 !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0 !important;
+    padding: 0 !important;
     margin-top: 0 !important;
-    border: 0 !important;
+    border-top: 1px solid var(--line) !important;
+    border-bottom: 0 !important;
     background: transparent !important;
   }
 
@@ -2603,16 +2660,17 @@ body.video-large-view .video-card-meta-bar * {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
-    height: 38px !important;
-    border-radius: 6px !important;
+    gap: 6px !important;
+    height: 44px !important;
+    border-radius: 0 !important;
     background: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
-    font-size: 12.5px !important;
+    font-size: 13px !important;
     font-weight: 600 !important;
     color: var(--muted) !important;
-    padding: 0 4px !important;
+    padding: 0 !important;
+    transition: background 0.15s ease !important;
   }
 
   body.force-mobile-layout .post-action:active,
@@ -2623,13 +2681,396 @@ body.video-large-view .video-card-meta-bar * {
   body.force-mobile-layout .post-action.reacted,
   body.installed-phone-app.force-mobile-layout .post-action.reacted {
     color: var(--brand, #1877f2) !important;
+    font-weight: 700 !important;
   }
 
+  /* Hide individual count badges in Facebook action bar */
   body.force-mobile-layout .post-action .count,
   body.installed-phone-app.force-mobile-layout .post-action .count {
-    font-style: normal !important;
+    display: none !important;
+  }
+
+  /* Action icon emoji sizing */
+  body.force-mobile-layout .post-action .action-icon-emoji,
+  body.installed-phone-app.force-mobile-layout .post-action .action-icon-emoji {
+    font-size: 18px !important;
+    line-height: 1 !important;
+  }
+
+  body.force-mobile-layout .post-action .icon-svg,
+  body.installed-phone-app.force-mobile-layout .post-action .icon-svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* ── Facebook Emoji Reaction Popover ── */
+  body.force-mobile-layout .post-emoji-popover,
+  body.installed-phone-app.force-mobile-layout .post-emoji-popover {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 8px 14px !important;
+    border-radius: 999px !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.18) !important;
+    margin: 0 0 4px !important;
+    width: fit-content !important;
+    animation: popIn 0.22s var(--ease) !important;
+  }
+
+  body.force-mobile-layout .emoji-popover-chip,
+  body.installed-phone-app.force-mobile-layout .emoji-popover-chip {
+    font-size: 24px !important;
+    padding: 4px 5px !important;
+    transition: transform 0.12s ease !important;
+  }
+
+  body.force-mobile-layout .emoji-popover-chip:hover,
+  body.installed-phone-app.force-mobile-layout .emoji-popover-chip:hover {
+    transform: scale(1.35) translateY(-4px) !important;
+  }
+
+  body.force-mobile-layout .emoji-popover-chip.reacted,
+  body.installed-phone-app.force-mobile-layout .emoji-popover-chip.reacted {
+    background: var(--brand-soft) !important;
+    border-radius: 999px !important;
+    transform: scale(1.1) !important;
+  }
+
+  /* ── Facebook Comment Teaser below post ── */
+  body.force-mobile-layout .fb-comment-teaser,
+  body.installed-phone-app.force-mobile-layout .fb-comment-teaser {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 0 12px !important;
+    cursor: pointer !important;
+  }
+
+  body.force-mobile-layout .fb-comment-teaser .teaser-avatar,
+  body.installed-phone-app.force-mobile-layout .fb-comment-teaser .teaser-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    background: var(--brand-soft) !important;
+    display: grid !important;
+    place-items: center !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: var(--brand) !important;
+    flex-shrink: 0 !important;
+  }
+
+  body.force-mobile-layout .fb-comment-teaser .teaser-input,
+  body.installed-phone-app.force-mobile-layout .fb-comment-teaser .teaser-input {
+    flex: 1 !important;
+    height: 32px !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 999px !important;
+    background: var(--surface-soft) !important;
+    padding: 0 14px !important;
+    font-size: 12px !important;
+    color: var(--muted) !important;
+    display: flex !important;
+    align-items: center !important;
+    pointer-events: none !important;
+  }
+
+  /* ── Stories Row Facebook Enhancement ── */
+  body.force-mobile-layout .stories-row,
+  body.installed-phone-app.force-mobile-layout .stories-row {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    padding: 10px 12px 12px !important;
+    margin-bottom: 8px !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body.force-mobile-layout .story-bubble,
+  body.installed-phone-app.force-mobile-layout .story-bubble {
+    width: 70px !important;
+    flex: 0 0 70px !important;
+    gap: 6px !important;
+  }
+
+  body.force-mobile-layout .story-ring,
+  body.installed-phone-app.force-mobile-layout .story-ring {
+    width: 60px !important;
+    height: 60px !important;
+    border: 2.5px solid transparent !important;
+    background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(145deg, var(--brand), var(--mint)) border-box !important;
+    box-shadow: none !important;
+    padding: 2px !important;
+  }
+
+  body.force-mobile-layout .story-bubble b,
+  body.installed-phone-app.force-mobile-layout .story-bubble b {
+    width: 72px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+  }
+
+  body.force-mobile-layout .add-story .story-ring,
+  body.installed-phone-app.force-mobile-layout .add-story .story-ring {
+    background: var(--surface-soft) !important;
+    border: 2.5px dashed var(--line-strong) !important;
+  }
+
+  /* ── Facebook Composer Bar "What's on your mind?" ── */
+  body.force-mobile-layout .composer-compact,
+  body.installed-phone-app.force-mobile-layout .composer-compact {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 10px 16px !important;
+    margin-bottom: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: auto !important;
+  }
+
+  body.force-mobile-layout .composer-compact::before,
+  body.installed-phone-app.force-mobile-layout .composer-compact::before {
+    display: none !important;
+  }
+
+  body.force-mobile-layout .compact-avatar,
+  body.installed-phone-app.force-mobile-layout .compact-avatar {
+    display: flex !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    font-size: 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  body.force-mobile-layout .composer-placeholder,
+  body.installed-phone-app.force-mobile-layout .composer-placeholder {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  body.force-mobile-layout .composer-kicker,
+  body.installed-phone-app.force-mobile-layout .composer-kicker {
+    display: none !important;
+  }
+
+  body.force-mobile-layout .composer-placeholder strong,
+  body.installed-phone-app.force-mobile-layout .composer-placeholder strong {
+    display: block !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: var(--muted) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 999px !important;
+    padding: 8px 14px !important;
+    background: var(--surface-soft) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body.force-mobile-layout .composer-placeholder small,
+  body.installed-phone-app.force-mobile-layout .composer-placeholder small {
+    display: none !important;
+  }
+
+  body.force-mobile-layout .composer-open,
+  body.installed-phone-app.force-mobile-layout .composer-open {
+    display: none !important;
+  }
+
+  /* Facebook Composer Quick Actions Row */
+  body.force-mobile-layout .fb-composer-actions,
+  body.installed-phone-app.force-mobile-layout .fb-composer-actions {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    border-top: 1px solid var(--line) !important;
+    margin-top: 10px !important;
+    padding-top: 2px !important;
+  }
+
+  body.force-mobile-layout .fb-composer-action,
+  body.installed-phone-app.force-mobile-layout .fb-composer-action {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    height: 38px !important;
+    border: 0 !important;
+    background: transparent !important;
     font-size: 12px !important;
     font-weight: 600 !important;
+    color: var(--muted) !important;
+    cursor: pointer !important;
+  }
+
+  body.force-mobile-layout .fb-composer-action:not(:last-child),
+  body.installed-phone-app.force-mobile-layout .fb-composer-action:not(:last-child) {
+    border-right: 1px solid var(--line) !important;
+  }
+
+  body.force-mobile-layout .fb-composer-action .fb-action-icon,
+  body.installed-phone-app.force-mobile-layout .fb-composer-action .fb-action-icon {
+    font-size: 16px !important;
+  }
+
+  /* ── Feed Tabs: Facebook underline style ── */
+  body.force-mobile-layout .feed-toolbar,
+  body.installed-phone-app.force-mobile-layout .feed-toolbar {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 4px !important;
+    margin: 0 0 8px !important;
+    position: sticky !important;
+    top: calc(var(--topbar, 56px) + 0px) !important;
+    z-index: 30 !important;
+    backdrop-filter: blur(16px) !important;
+  }
+
+  body.force-mobile-layout .feed-tabs,
+  body.installed-phone-app.force-mobile-layout .feed-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+  }
+
+  body.force-mobile-layout .feed-tabs::-webkit-scrollbar,
+  body.installed-phone-app.force-mobile-layout .feed-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body.force-mobile-layout .feed-tab,
+  body.installed-phone-app.force-mobile-layout .feed-tab {
+    flex: 0 0 auto !important;
+    padding: 12px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    border-bottom: 3px solid transparent !important;
+    white-space: nowrap !important;
+    transition: color 0.15s ease, border-color 0.15s ease !important;
+  }
+
+  body.force-mobile-layout .feed-tab.active,
+  body.installed-phone-app.force-mobile-layout .feed-tab.active {
+    color: var(--brand) !important;
+    font-weight: 700 !important;
+    border-bottom-color: var(--brand) !important;
+    background: transparent !important;
+  }
+
+  body.force-mobile-layout .filter-button,
+  body.installed-phone-app.force-mobile-layout .filter-button {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--muted) !important;
+    padding: 0 10px !important;
+    min-width: auto !important;
+  }
+
+  body.force-mobile-layout .filter-button span:last-child,
+  body.installed-phone-app.force-mobile-layout .filter-button span:last-child {
+    display: none !important;
+  }
+
+  /* ── Bottom Navigation Facebook Polish ── */
+  body.force-mobile-layout .mobile-nav button.active,
+  body.installed-phone-app.force-mobile-layout .mobile-nav button.active {
+    color: var(--brand) !important;
+    position: relative !important;
+  }
+
+  body.force-mobile-layout .mobile-nav button.active::before,
+  body.installed-phone-app.force-mobile-layout .mobile-nav button.active::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -1px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 28px !important;
+    height: 3px !important;
+    border-radius: 0 0 3px 3px !important;
+    background: var(--brand) !important;
+  }
+
+  /* ── Welcome Strip as Facebook card ── */
+  body.force-mobile-layout .welcome-strip#welcomeStrip,
+  body.installed-phone-app.force-mobile-layout .welcome-strip#welcomeStrip {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* ── Micro-Animations ── */
+  @keyframes fbReactionBounce {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  body.force-mobile-layout .post-action.reacted .action-icon-emoji,
+  body.installed-phone-app.force-mobile-layout .post-action.reacted .action-icon-emoji {
+    animation: fbReactionBounce 0.35s ease !important;
+  }
+
+  /* Facebook-style see-more link */
+  body.force-mobile-layout .see-more-link,
+  body.installed-phone-app.force-mobile-layout .see-more-link {
+    color: var(--muted) !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+  }
+
+  /* Mobile bottom calm strip as Facebook card */
+  body.force-mobile-layout .mobile-bottom-calm,
+  body.installed-phone-app.force-mobile-layout .mobile-bottom-calm {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Active filter bar Facebook style */
+  body.force-mobile-layout .active-filter-bar,
+  body.installed-phone-app.force-mobile-layout .active-filter-bar {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+    margin: 0 0 8px !important;
+  }
+
+  /* Load more button Facebook style */
+  body.force-mobile-layout #loadMore,
+  body.installed-phone-app.force-mobile-layout #loadMore {
+    background: var(--surface) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 14px !important;
+    font-weight: 600 !important;
+    color: var(--brand) !important;
   }
 }
 

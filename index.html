@@ -31,7 +31,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./assets/icons/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="./assets/css/styles.css?v=6.7.8" />
+  <link rel="stylesheet" href="./assets/css/styles.css?v=6.8.0" />
 </head>
 <body>
   <noscript><div class="noscript-banner">JavaScript is required for the social app. Public information is available in <a href="/bn/">বাংলা</a> and <a href="/en/">English</a>.</div></noscript>
@@ -124,14 +124,19 @@
           <div id="circleStories" class="circle-stories"></div>
         </section>
 
-        <section class="composer-compact surface-card" data-action="compose" tabindex="0" role="button" aria-label="Say the things you have not been able to say">
+        <section class="composer-compact surface-card" tabindex="0" role="button" aria-label="Say the things you have not been able to say">
           <span class="compact-avatar">SR</span>
-          <div class="composer-placeholder">
+          <div class="composer-placeholder" data-action="compose">
             <span class="composer-kicker"><span data-icon="pen"></span><b data-t="createPost">Create an anonymous post</b></span>
             <strong data-t="composerQuestion">What would you like to share?</strong>
             <small data-t="composerHint">Tap here to write. Your real identity will not be shown.</small>
           </div>
           <button class="composer-open" data-action="compose"><span data-icon="plus"></span><span data-t="writePost">Write a post</span></button>
+          <div class="fb-composer-actions">
+            <button class="fb-composer-action" data-action="compose"><span class="fb-action-icon">📷</span><span>Photo</span></button>
+            <button class="fb-composer-action" data-feed="video"><span class="fb-action-icon">🎥</span><span>Video</span></button>
+            <button class="fb-composer-action" data-action="checkin"><span class="fb-action-icon">😊</span><span>Feeling</span></button>
+          </div>
         </section>
 
         <section class="feed-toolbar">
@@ -259,6 +264,6 @@
       }, true);
     })();
   </script>
-  <script type="module" src="./assets/js/app.js?v=6.7.8" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
+  <script type="module" src="./assets/js/app.js?v=6.8.0" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
 </body>
 </html>
