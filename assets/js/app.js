@@ -120,7 +120,7 @@ const translations = {
     "filter": "Filter posts",
     "showMore": "Show more posts",
     "oneMinute": "Takes one minute",
-    "todayCheckin": "Choose how you feel",
+    "todayCheckin": "How are you feeling today?",
     "navFeelings": "Feelings",
     "myMood": "My mood",
     "checkinPrompt": "Pick the feeling closest to you. Matching posts will appear first in your feed.",

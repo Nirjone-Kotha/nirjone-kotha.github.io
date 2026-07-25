@@ -486,7 +486,7 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
   box-shadow: 0 0 0 3.5px transparent, 0 8px 20px rgba(0, 0, 0, 0.12) !important;
   background-origin: border-box !important;
   border: 3.5px solid transparent !important;
-  background-image: linear-gradient(var(--surface), var(--surface)), linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #40e0d0 100%) !important;
+  background-image: linear-gradient(var(--surface), var(--surface)), linear-gradient(135deg, #20E3B2 0%, #10b981 50%, #0b5b54 100%) !important;
   background-clip: padding-box, border-box !important;
 }
 
@@ -638,12 +638,7 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
   background: var(--surface);
 }
 .fb-composer-actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line);
-  margin-top: 10px;
-  padding-top: 4px;
-  width: 100%;
+  display: none !important;
 }
 .fb-composer-action {
   display: flex;
