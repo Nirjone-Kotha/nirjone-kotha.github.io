@@ -103,6 +103,7 @@ const translations = {
     "changeAlias": "Use a suggested name",
     "demoPrivacy": "Use a password account to restore your profile; guest activity stays only in this browser.",
     "safeSocial": "A calm social space",
+    "splashTagline": "Moner Kotha: Anonymous Social Site",
     "welcomeTitle": "How are you feeling today?",
     "welcomeCopy": "Share what is on your mind, listen to others, or take a quiet moment for yourself.",
     "moodCheckin": "Choose your mood",
@@ -384,6 +385,7 @@ const translations = {
     "changeAlias": "প্রস্তাবিত নাম ব্যবহার করুন",
     "demoPrivacy": "Password account নিলে profile ফিরিয়ে আনা যাবে; Guest data শুধু এই browser-এ থাকবে।",
     "safeSocial": "স্বস্তিকর সামাজিক মাধ্যম",
+    "splashTagline": "মন খুলে বলুন কথা · নিরাপদ সামাজিক মাধ্যম",
     "welcomeTitle": "আজ আপনার কেমন লাগছে?",
     "welcomeCopy": "মনের কথা বলুন, অন্যের কথা শুনুন, অথবা কিছুক্ষণ নিজের মতো থাকুন।",
     "moodCheckin": "মুড বেছে নিন",
@@ -1726,6 +1728,17 @@ function renderFeed(){
     return;
   }
 
+  if(state.view==="saved" && visible.length){
+    const savedBanner=document.createElement("div");
+    savedBanner.className="active-filter-bar";
+    savedBanner.style.display="flex";
+    savedBanner.style.alignItems="center";
+    savedBanner.style.justifyContent="space-between";
+    savedBanner.style.marginBottom="12px";
+    savedBanner.innerHTML=`<span>🔖 ${state.lang==="bn"?"সংরক্ষিত পোস্টসমূহ":"Saved posts"} (${displayNumber(state.saved.size)})</span><button class="quiet-link" data-nav="home" style="cursor:pointer;background:none;border:none;color:var(--brand);font-weight:700">${state.lang==="bn"?"সব পোস্ট দেখুন ✕":"View all posts ✕"}</button>`;
+    wrap.appendChild(savedBanner);
+  }
+
   const descriptors=[];
   visible.forEach((post,index)=>{
     const position=index+1;
@@ -2031,13 +2044,14 @@ function openProfile(){
           </div>
         </div>
 
-        <div class="profile-stat-card">
+        <button class="profile-stat-card" data-action="profile-saved">
           <span class="stat-icon">🔖</span>
           <div class="stat-meta">
             <strong>${displayNumber(state.saved.size)}</strong>
             <small>${t("savedCount")}</small>
           </div>
-        </div>
+          <span class="stat-badge">${state.lang==="bn"?"দেখুন ➔":"View ➔"}</span>
+        </button>
       </div>
 
       <!-- Display Name / Custom Nickname Editor Card -->
@@ -2155,6 +2169,11 @@ function openProfilePosts(){
   const ownPosts=state.userPosts.map(post=>({...post,isUser:true})).sort((a,b)=>(b.created||0)-(a.created||0));
   const postRows=ownPosts.length?ownPosts.map(post=>`<article class="profile-post-row"><button class="profile-post-preview" data-edit-post="${post.id}"><strong>${escapeHtml((post.content||"").slice(0,150))}${(post.content||"").length>150?"…":""}</strong><small>${t("expiresIn")} ${formatExpiry(post.expiresAt)}</small></button><span><button class="icon-quiet" data-edit-post="${post.id}" aria-label="${t("editPost")}">${icon("pen")}</button><button class="icon-quiet danger-icon" data-delete-post="${post.id}" aria-label="${t("deletePost")}">${icon("x")}</button></span></article>`).join(""):`<p class="profile-empty">${state.lang==="bn"?"এখনো কোনো পোস্ট করেননি।":"You have not created a post yet."}</p>`;
   setPage(`${pageHeader(t("yourPostsTitle"),"profile")}<div class="modal-body"><section class="profile-owned-posts standalone"><div class="section-heading"><p>${state.lang==="bn"?"আপনার পোস্টগুলো এখান থেকে সম্পাদনা বা মুছে ফেলুন।":"Edit or delete your posts here."}</p><button class="quiet-link" data-action="compose">${icon("plus")} ${t("writePost")}</button></div>${postRows}</section></div>`);
+}
+function openProfileSaved(){
+  closeModal();
+  closeDrawer();
+  navigate("saved");
 }
 
 function editUserPost(id){closeDrawer();closeModal();openComposer(id);}
@@ -2859,6 +2878,14 @@ function navigate(view){
     scrollTo({top:0,behavior:state.motion?"smooth":"auto"});
     return;
   }
+  if(view==="saved"){
+    state.view="saved";
+    state.shown=10;
+    renderFeed();
+    updateNav();
+    scrollTo({top:0,behavior:state.motion?"smooth":"auto"});
+    return;
+  }
   state.view=view;state.shown=10;
   if(view==="explore"){state.feedMode="for-you";state.moodFilter="all";state.topicFilter="all"}
   if(state.feedMode==="islamic"||state.feedMode==="video")state.feedMode="for-you";
@@ -3195,6 +3222,7 @@ document.addEventListener("click",e=>{
     case"identity-toggle-password":{const input=$("#identityPassword");if(input)input.type=input.type==="password"?"text":"password";break;}
     case"identity-signout":handleIdentitySignOut();break;
     case"profile-posts":openProfilePosts();break;
+    case"profile-saved":openProfileSaved();break;
     case"circles-page":openCircles();break;
     case"back-page":closeModal();break;
     case"app-menu":openAppMenu();break;

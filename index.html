@@ -31,7 +31,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./assets/icons/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="./assets/css/styles.css?v=6.8.7" />
+  <link rel="stylesheet" href="./assets/css/styles.css?v=6.8.8" />
 </head>
 <body>
   <noscript><div class="noscript-banner">JavaScript is required for the social app. Public information is available in <a href="/bn/">বাংলা</a> and <a href="/en/">English</a>.</div></noscript>
@@ -41,8 +41,25 @@
   </div>
   <div id="app">
     <div class="app-splash" id="appSplash" aria-hidden="true">
-      <img class="splash-logo" src="./assets/brand/logo-mark.png" alt="" />
-      <p>Moner Kotha</p><small>কথা বলুন মন খুলে</small>
+      <div class="splash-bg-orbs" aria-hidden="true">
+        <span class="splash-orb orb-a"></span>
+        <span class="splash-orb orb-b"></span>
+      </div>
+      <div class="splash-logo-container">
+        <div class="splash-glow-ring"></div>
+        <img class="splash-logo" src="./assets/brand/logo-mark.png" alt="Moner Kotha Logo" />
+      </div>
+      <div class="splash-brand-group">
+        <h1 class="splash-title">Moner Kotha</h1>
+        <p class="splash-subtitle" data-t="splashTagline">Moner Kotha: Anonymous Social Site</p>
+      </div>
+      <div class="splash-loader-bar">
+        <div class="splash-loader-progress"></div>
+      </div>
+      <div class="splash-footer-badge">
+        <span class="splash-badge-dot"></span>
+        <span>Anonymous & Safe Space</span>
+      </div>
     </div>
 
     <div class="ambient" aria-hidden="true">
@@ -270,6 +287,6 @@
       }, true);
     })();
   </script>
-  <script type="module" src="./assets/js/app.js?v=6.8.6" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
+  <script type="module" src="./assets/js/app.js?v=6.8.7" onerror="window.__MK_HIDE_SPLASH__?.();document.getElementById('startupError').hidden=false"></script>
 </body>
 </html>
