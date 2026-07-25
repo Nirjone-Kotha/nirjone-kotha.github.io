@@ -77,6 +77,11 @@ const ICONS = {
   minimize:'<path d="M8 8H3V3M16 8h5V3M8 16H3v5M16 16h5v5"></path>',
   menu:'<path d="M4 6h16M4 12h16M4 18h16"></path>',
   timer:'<circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l3 2M9 2h6"></path>',
+  clock:'<circle cx="12" cy="12" r="9"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M12 2v2"></path>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+  moon:'<path d="M19 4a8.5 8.5 0 1 0 3 10.5 7 7 0 1 1-3-10.5Z"></path><path d="M6 17v-4a3.5 3.5 0 0 1 7 0v4H6Z"></path><path d="M14.5 17V8h2.5v9H14.5Z"></path><path d="M15.75 5v3"></path><path d="M2 19c3-1.2 6.5-1.2 10 0 3.5-1.2 7-1.2 10 0v2c-3-1.2-6.5-1.2-10 0-3.5-1.2-7-1.2-10 0v-2Z"></path>',
+  trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"></path>',
+  tv:'<rect x="2" y="4" width="20" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M2 9h20M6.5 4l3 5M11.5 4l3 5M16.5 4l3 5"></path><polygon points="10 11.5 15 14 10 16.5" fill="currentColor"></polygon>',
   eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle>',
   play:'<path d="m8 5 11 7-11 7V5Z"></path>'
 };
@@ -102,7 +107,10 @@ const translations = {
     "welcomeCopy": "Share what is on your mind, listen to others, or take a quiet moment for yourself.",
     "moodCheckin": "Choose your mood",
     "yourStory": "Write a post",
-    "composerQuestion": "Say the things you have not been able to say.",
+    "composerQuestion": "What's on your mind?",
+    "photo": "Photo",
+    "video": "Video",
+    "feeling": "Feeling",
     "composerHint": "Share at your own pace—your feelings matter. Your real identity will not be shown.",
     "write": "Your message",
     "forYou": "For you",
@@ -380,7 +388,10 @@ const translations = {
     "welcomeCopy": "মনের কথা বলুন, অন্যের কথা শুনুন, অথবা কিছুক্ষণ নিজের মতো থাকুন।",
     "moodCheckin": "মুড বেছে নিন",
     "yourStory": "পোস্ট লিখুন",
-    "composerQuestion": "না বলতে পারা কথাগুলো প্রাণ খুলে বলুন",
+    "composerQuestion": "আপনার মনে কী চলছে?",
+    "photo": "ছবি",
+    "video": "ভিডিও",
+    "feeling": "অনুভূতি",
     "composerHint": "নির্ভয়ে লিখুন—আপনার অনুভূতি গুরুত্বপূর্ণ। আপনার আসল পরিচয় দেখানো হবে না।",
     "write": "আপনার লেখা",
     "forYou": "আপনার জন্য",
@@ -1113,9 +1124,20 @@ function renderCircleStories(){
   }).slice(0,9);
   list.forEach(item=>{
     const mood=momentMood(item),b=document.createElement("button");
-    b.className="story-bubble moment-bubble";b.dataset.moment=String(item.id);
+    b.className="story-card moment-card";b.dataset.moment=String(item.id);
     b.setAttribute("aria-label",`${storyOwnerName(item)}: ${momentText(item)||localText(mood)}`);
-    b.innerHTML=`<span class="story-ring">${storyPreviewMarkup(item,mood)}<i>${displayNumber(momentScore(item))}</i></span><b>${escapeHtml(storyOwnerName(item))}</b>`;
+    const previewText = escapeHtml(momentText(item) || localText(mood));
+    const moodEmoji = mood?.emoji || item.emoji || "💬";
+    const bgColors = moodColors[item.mood] || ["#1e3c72", "#2a5298"];
+    b.style.background = `linear-gradient(145deg, ${bgColors[0]}, ${bgColors[1] || bgColors[0]})`;
+    b.innerHTML=`
+      <span class="story-score-badge">${displayNumber(momentScore(item))}</span>
+      <div class="story-card-content">
+        <span class="story-emoji">${moodEmoji}</span>
+        <p class="story-text-snippet">${previewText}</p>
+      </div>
+      <b class="story-author-name">${escapeHtml(storyOwnerName(item))}</b>
+    `;
     wrap.appendChild(b);
   });
 }
@@ -1319,11 +1341,16 @@ function renderPostCard(p){
     <div class="post-actions">
       <button class="post-action ${userReactedEmoji ? "reacted" : ""}" data-toggle-emoji-picker="${p.id}">
         <span class="action-icon-emoji">${userReactedEmoji || "🫂"}</span>
-        <span>${userReactedEmoji ? (state.lang==="bn"?"সহমর্মী":"Reacted") : (state.lang==="bn"?"সহমর্মিতা":"Support")}</span>
-        <i class="count">${displayNumber(totalReactions)}</i>
+        <span>${totalReactions > 0 ? formatCompact(totalReactions) : (userReactedEmoji ? (state.lang==="bn"?"সহমর্মী":"Reacted") : (state.lang==="bn"?"সহমর্মিতা":"Support"))}</span>
       </button>
-      <button class="post-action" data-comments="${p.id}">${icon("message")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(commentsCount)}</i></button>
-      <button class="post-action" data-share="${p.id}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button>
+      <button class="post-action" data-comments="${p.id}">
+        ${icon("message")}
+        <span>${commentsCount > 0 ? formatCompact(commentsCount) : (state.lang==="bn"?"মন্তব্য":"Comment")}</span>
+      </button>
+      <button class="post-action" data-share="${p.id}">
+        ${icon("share")}
+        <span>${(p.shares || 0) > 0 ? formatCompact(p.shares) : (state.lang==="bn"?"শেয়ার":"Share")}</span>
+      </button>
     </div>
     ${commentTeaser}`;
   return article;

@@ -186,35 +186,272 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
 }
 .soft-button{height:42px;padding:0 14px;position:relative;z-index:1;white-space:nowrap}
 .soft-button:hover,.full-soft-button:hover{transform:translateY(-2px)}
-.stories-row{
-  display:flex;align-items:flex-start;gap:13px;overflow-x:auto;padding:4px 2px 14px;scrollbar-width:none
+.stories-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  overflow-x: auto;
+  padding: 4px 2px 14px;
+  scrollbar-width: none;
 }
-.stories-row::-webkit-scrollbar{display:none}
-.circle-stories{display:flex;gap:13px}
-.story-bubble{width:72px;flex:0 0 72px;border:0;background:transparent;padding:0;display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--muted)}
-.story-ring{
-  width:59px;height:59px;border-radius:50%;padding:3px;background:linear-gradient(145deg,var(--brand),var(--mint));
-  display:grid;place-items:center;box-shadow:0 7px 18px color-mix(in srgb,var(--brand),transparent 80%);transition:.25s var(--ease)
+.stories-row::-webkit-scrollbar { display: none; }
+.circle-stories { display: flex; gap: 9px; }
+
+/* Facebook Vertical Story Card Styling */
+.story-card {
+  width: 108px;
+  height: 165px;
+  flex: 0 0 108px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
 }
-.story-ring i,.story-ring span{
-  width:100%;height:100%;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-style:normal;font-size:20px
+.story-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
-.story-bubble:hover .story-ring{transform:translateY(-4px) scale(1.03)}
-.story-bubble b{width:76px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.add-story .story-ring{background:var(--line-strong)}
-.add-story .story-ring i{background:var(--surface);color:var(--brand)}
-.composer-compact{display:flex;align-items:center;gap:12px;padding:15px 16px;margin-bottom:16px;cursor:text;transition:.2s var(--ease)}
-.composer-compact:hover{border-color:color-mix(in srgb,var(--brand),transparent 62%);box-shadow:var(--shadow)}
-.composer-placeholder{display:flex;flex:1;flex-direction:column;min-width:0}
-.composer-placeholder strong{font-size:14px}
-.composer-placeholder small{font-size:11px;color:var(--muted)}
-.composer-open{border:0;background:var(--surface-soft);color:var(--brand);height:36px;padding:0 12px;border-radius:11px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800}
-.fb-composer-actions{display:none}
+.story-card:active {
+  transform: scale(0.97);
+}
+
+/* 1. Add Story Card */
+.add-story-card {
+  background: var(--surface);
+}
+.add-story-cover {
+  height: 116px;
+  width: 100%;
+  background: linear-gradient(145deg, var(--brand-strong, #104e49), var(--brand, #147970));
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  position: relative;
+}
+.add-story-cover .icon-svg {
+  width: 24px;
+  height: 24px;
+  opacity: 0.9;
+}
+.add-story-plus {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1877F2;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid var(--surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  z-index: 3;
+}
+.add-story-label {
+  height: 48px;
+  background: var(--surface);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  font-size: 11.5px;
+  font-weight: 750;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* 2. User Moment Story Card */
+.moment-card {
+  padding: 8px;
+}
+.moment-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.78) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.story-score-badge {
+  position: relative;
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #1877F2;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  align-self: flex-start;
+}
+.story-card-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 4px 2px;
+}
+.story-emoji {
+  font-size: 22px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+.story-text-snippet {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+.story-author-name {
+  position: relative;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 750;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
+}
+.composer-compact {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  padding: 12px 16px 8px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.composer-compact:hover {
+  border-color: color-mix(in srgb, var(--brand), transparent 60%);
+  box-shadow: var(--shadow);
+}
+.fb-composer-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.composer-write-btn {
+  border: 1px solid color-mix(in srgb, var(--brand), transparent 75%);
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 12.5px;
+  font-weight: 750;
+  padding: 8px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.composer-write-btn:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--brand), transparent 82%);
+}
+.composer-write-btn .icon-svg {
+  width: 15px;
+  height: 15px;
+}
+.composer-placeholder {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+.composer-placeholder strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 16px;
+  background: var(--surface-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.composer-placeholder:hover strong {
+  border-color: color-mix(in srgb, var(--brand), transparent 70%);
+  background: var(--surface);
+}
+.fb-composer-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  margin-top: 10px;
+  padding-top: 4px;
+  width: 100%;
+}
+.fb-composer-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+.fb-composer-action:hover {
+  background: color-mix(in srgb, var(--text), transparent 94%);
+  color: var(--text);
+}
+.fb-composer-action:not(:last-child) {
+  border-right: 1px solid var(--line);
+}
+.fb-composer-action .fb-action-icon {
+  font-size: 16px;
+  line-height: 1;
+}
 .fb-reaction-summary{display:none}
 .fb-comment-teaser{display:none}
 .feed-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 13px}
 .feed-tabs{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:4px;box-shadow:var(--shadow-sm)}
-.feed-tab{border:0;background:transparent;padding:8px 13px;border-radius:9px;color:var(--muted);font-size:12px;font-weight:800}
+.feed-tab{border:0;background:transparent;padding:8px 13px;border-radius:9px;color:var(--muted);font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:7px}
+.feed-tab .icon-svg{width:16px;height:16px;flex-shrink:0}
 .feed-tab.active{background:var(--brand-soft);color:var(--brand)}
 .filter-button{
   border:1px solid var(--line);background:var(--surface);height:38px;padding:0 12px;border-radius:12px;
@@ -259,63 +496,47 @@ html[data-theme="dark"] .avatar-button{background:#293457;color:#dfe6ff}
 .post-actions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding-top: 10px;
+  gap: 8px;
+  padding: 8px 0 2px;
   margin-top: 6px;
   border-top: 1px solid var(--line);
 }
 .post-action {
   min-width: 0;
-  height: 40px;
-  border: 1px solid var(--line);
+  height: 38px;
+  border: 0;
   background: var(--surface-soft);
-  border-radius: 12px;
-  padding: 0 6px;
+  border-radius: 999px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   color: var(--text);
-  font-size: 11.5px;
-  font-weight: 750;
+  font-size: 13px;
+  font-weight: 650;
   cursor: pointer;
-  transition: transform 0.15s var(--ease), background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 .post-action:hover {
-  background: var(--brand-soft);
-  border-color: color-mix(in srgb, var(--brand), transparent 65%);
-  color: var(--brand);
-  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--text), transparent 90%);
 }
 .post-action:active {
   transform: scale(0.96);
 }
 .post-action.reacted {
   background: var(--brand-soft);
-  border-color: var(--brand);
-  color: var(--brand);
-  font-weight: 850;
+  color: var(--brand, #1877f2);
+  font-weight: 750;
 }
-.post-action.saved {
-  background: color-mix(in srgb, var(--brand), transparent 90%);
-  border-color: var(--brand);
-  color: var(--brand);
-  font-weight: 850;
-}
-.post-action .count {
-  font-style: normal;
-  font-size: 10.5px;
-  font-weight: 800;
-  background: color-mix(in srgb, var(--brand), transparent 86%);
-  color: var(--brand);
-  padding: 1.5px 6px;
-  border-radius: 999px;
+.post-action .action-icon-emoji {
+  font-size: 17px;
   line-height: 1;
 }
 .post-action .icon-svg {
   width: 17px;
   height: 17px;
-  flex: 0 0 auto;
+  flex-shrink: 0;
 }
 .load-more{
   width:100%;height:44px;margin-top:15px;border:1px solid var(--line);background:var(--surface);
@@ -726,15 +947,7 @@ body.force-mobile-layout .install-link-box .secondary-button{width:100%}
 .mood-select-copy{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}
 .mood-select-copy strong{font-size:12px}.mood-select-copy small{font-size:9px;color:var(--muted);font-weight:650;margin-top:2px;white-space:normal}
 
-.composer-compact{position:relative;border:1.5px solid color-mix(in srgb,var(--brand),transparent 55%);background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--brand-soft),transparent 35%));box-shadow:0 10px 30px rgba(16,78,73,.08)}
-.composer-compact::before{content:"";position:absolute;inset:8px;border:1px dashed color-mix(in srgb,var(--brand),transparent 72%);border-radius:14px;pointer-events:none}
-.composer-compact>*{position:relative;z-index:1}
-.composer-kicker{display:flex;align-items:center;gap:6px;color:var(--brand);font-size:10px;font-weight:900;text-transform:none;letter-spacing:.02em;margin-bottom:3px}
-.composer-kicker .icon-svg{width:14px;height:14px}
-.composer-placeholder strong{font-size:15px;line-height:1.35}
-.composer-placeholder small{margin-top:3px;line-height:1.45}
-.composer-open{height:42px;background:var(--brand);color:#fff;padding:0 14px;box-shadow:0 9px 22px color-mix(in srgb,var(--brand),transparent 72%)}
-.composer-open:hover{background:var(--brand-strong);transform:translateY(-1px)}
+
 
 .profile-share-card{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:11px;padding:12px;margin:12px 0;border:1px solid var(--line);border-radius:15px;background:linear-gradient(135deg,var(--brand-soft),var(--surface))}
 .profile-share-card>span{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--surface);color:var(--brand)}
@@ -2647,9 +2860,9 @@ body.video-large-view .video-card-meta-bar * {
   body.installed-phone-app.force-mobile-layout .post-actions {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0 !important;
-    padding: 0 !important;
-    margin-top: 0 !important;
+    gap: 8px !important;
+    padding: 8px 0 2px !important;
+    margin-top: 6px !important;
     border-top: 1px solid var(--line) !important;
     border-bottom: 0 !important;
     background: transparent !important;
@@ -2661,46 +2874,46 @@ body.video-large-view .video-card-meta-bar * {
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    height: 44px !important;
-    border-radius: 0 !important;
-    background: transparent !important;
+    height: 38px !important;
+    border-radius: 999px !important;
+    background: var(--surface-soft) !important;
     border: 0 !important;
     box-shadow: none !important;
     font-size: 13px !important;
-    font-weight: 600 !important;
-    color: var(--muted) !important;
-    padding: 0 !important;
-    transition: background 0.15s ease !important;
+    font-weight: 650 !important;
+    color: var(--text) !important;
+    padding: 0 10px !important;
+    transition: background 0.15s ease, transform 0.12s ease !important;
+  }
+
+  body.force-mobile-layout .post-action:hover,
+  body.installed-phone-app.force-mobile-layout .post-action:hover {
+    background: color-mix(in srgb, var(--text), transparent 90%) !important;
   }
 
   body.force-mobile-layout .post-action:active,
   body.installed-phone-app.force-mobile-layout .post-action:active {
-    background: color-mix(in srgb, var(--text), transparent 92%) !important;
+    transform: scale(0.96) !important;
   }
 
   body.force-mobile-layout .post-action.reacted,
   body.installed-phone-app.force-mobile-layout .post-action.reacted {
+    background: var(--brand-soft) !important;
     color: var(--brand, #1877f2) !important;
-    font-weight: 700 !important;
-  }
-
-  /* Hide individual count badges in Facebook action bar */
-  body.force-mobile-layout .post-action .count,
-  body.installed-phone-app.force-mobile-layout .post-action .count {
-    display: none !important;
+    font-weight: 750 !important;
   }
 
   /* Action icon emoji sizing */
   body.force-mobile-layout .post-action .action-icon-emoji,
   body.installed-phone-app.force-mobile-layout .post-action .action-icon-emoji {
-    font-size: 18px !important;
+    font-size: 17px !important;
     line-height: 1 !important;
   }
 
   body.force-mobile-layout .post-action .icon-svg,
   body.installed-phone-app.force-mobile-layout .post-action .icon-svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 17px !important;
+    height: 17px !important;
   }
 
   /* ── Facebook Emoji Reaction Popover ── */
@@ -2788,35 +3001,12 @@ body.video-large-view .video-card-meta-bar * {
     box-shadow: none !important;
   }
 
-  body.force-mobile-layout .story-bubble,
-  body.installed-phone-app.force-mobile-layout .story-bubble {
-    width: 70px !important;
-    flex: 0 0 70px !important;
-    gap: 6px !important;
-  }
-
-  body.force-mobile-layout .story-ring,
-  body.installed-phone-app.force-mobile-layout .story-ring {
-    width: 60px !important;
-    height: 60px !important;
-    border: 2.5px solid transparent !important;
-    background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(145deg, var(--brand), var(--mint)) border-box !important;
-    box-shadow: none !important;
-    padding: 2px !important;
-  }
-
-  body.force-mobile-layout .story-bubble b,
-  body.installed-phone-app.force-mobile-layout .story-bubble b {
-    width: 72px !important;
-    font-size: 10px !important;
-    font-weight: 600 !important;
-    color: var(--text) !important;
-  }
-
-  body.force-mobile-layout .add-story .story-ring,
-  body.installed-phone-app.force-mobile-layout .add-story .story-ring {
-    background: var(--surface-soft) !important;
-    border: 2.5px dashed var(--line-strong) !important;
+  body.force-mobile-layout .story-card,
+  body.installed-phone-app.force-mobile-layout .story-card {
+    width: 104px !important;
+    height: 160px !important;
+    flex: 0 0 104px !important;
+    border-radius: 14px !important;
   }
 
   /* ── Facebook Composer Bar "What's on your mind?" ── */
@@ -2826,63 +3016,8 @@ body.video-large-view .video-card-meta-bar * {
     border-radius: 0 !important;
     border: 0 !important;
     box-shadow: none !important;
-    padding: 10px 16px !important;
+    padding: 10px 14px 6px !important;
     margin-bottom: 8px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    min-height: auto !important;
-  }
-
-  body.force-mobile-layout .composer-compact::before,
-  body.installed-phone-app.force-mobile-layout .composer-compact::before {
-    display: none !important;
-  }
-
-  body.force-mobile-layout .compact-avatar,
-  body.installed-phone-app.force-mobile-layout .compact-avatar {
-    display: flex !important;
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 50% !important;
-    font-size: 12px !important;
-    flex-shrink: 0 !important;
-  }
-
-  body.force-mobile-layout .composer-placeholder,
-  body.installed-phone-app.force-mobile-layout .composer-placeholder {
-    flex: 1 !important;
-    min-width: 0 !important;
-  }
-
-  body.force-mobile-layout .composer-kicker,
-  body.installed-phone-app.force-mobile-layout .composer-kicker {
-    display: none !important;
-  }
-
-  body.force-mobile-layout .composer-placeholder strong,
-  body.installed-phone-app.force-mobile-layout .composer-placeholder strong {
-    display: block !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    color: var(--muted) !important;
-    border: 1px solid var(--line) !important;
-    border-radius: 999px !important;
-    padding: 8px 14px !important;
-    background: var(--surface-soft) !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  body.force-mobile-layout .composer-placeholder small,
-  body.installed-phone-app.force-mobile-layout .composer-placeholder small {
-    display: none !important;
-  }
-
-  body.force-mobile-layout .composer-open,
-  body.installed-phone-app.force-mobile-layout .composer-open {
-    display: none !important;
   }
 
   /* Facebook Composer Quick Actions Row */
