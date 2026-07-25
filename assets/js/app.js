@@ -1323,7 +1323,6 @@ function renderPostCard(p){
         <i class="count">${displayNumber(totalReactions)}</i>
       </button>
       <button class="post-action" data-comments="${p.id}">${icon("message")}<span>${state.lang==="bn"?"মন্তব্য":"Comment"}</span><i class="count">${displayNumber(commentsCount)}</i></button>
-      ${isMobileLayout ? "" : `<button class="post-action ${saved?"saved":""}" data-save="${p.id}">${icon("bookmark")}<span>${saved?(state.lang==="bn"?"সংরক্ষিত":"Saved"):(state.lang==="bn"?"সেভ":"Save")}</span></button>`}
       <button class="post-action" data-share="${p.id}">${icon("share")}<span>${state.lang==="bn"?"শেয়ার":"Share"}</span></button>
     </div>
     ${commentTeaser}`;
