@@ -95,7 +95,7 @@ const translations = {
     "needHelp": "Get help",
     "home": "Home",
     "explore": "Explore",
-    "circles": "Support circles",
+    "circles": "Groups",
     "saved": "Saved",
     "calmRoom": "Calm space",
     "shareFeeling": "Write a post",
@@ -1080,8 +1080,14 @@ function localizePage(){
 function allMoments(){
   cleanupExpiredLocalContent();
   const now=Date.now();
-  const seeds=seedMoments.map(item=>({...item,created:now-item.createdOffset,expiresAt:now-item.createdOffset+MOMENT_TTL_MS,userGenerated:false})).filter(item=>item.expiresAt>now);
-  return [...state.moments.map(item=>({...item,userGenerated:true})),...seeds];
+  const validSeeds = (Array.isArray(seedMoments) ? seedMoments : []).map((item, i) => {
+    const offset = Number(item.createdOffset) || (i * 1800000);
+    const created = now - offset;
+    const expiresAt = created + (MOMENT_TTL_MS || 172800000);
+    return { ...item, id: item.id || `seed-${i}`, created, expiresAt, userGenerated: false };
+  });
+  const validUserMoments = (Array.isArray(state.moments) ? state.moments : []).filter(m => (m.expiresAt || ((m.created || now) + (MOMENT_TTL_MS || 172800000))) > now).map(item => ({ ...item, userGenerated: true }));
+  return [...validUserMoments, ...validSeeds];
 }
 const MOMENT_REACTIONS=[{id:"like",emoji:"👍",en:"Like",bn:"লাইক"},{id:"love",emoji:"❤️",en:"Love",bn:"ভালোবাসা"},{id:"care",emoji:"🫶",en:"Care",bn:"যত্ন"},{id:"sympathy",emoji:"🫂",en:"Sympathy",bn:"সহমর্মিতা"}];
 function momentReactionState(id){
@@ -2725,7 +2731,14 @@ function toggleJoin(id){
   $$(`[data-join="${CSS.escape(id)}"]`).forEach(b=>{b.classList.toggle("joined",!on);b.textContent=!on?t("joined"):t("join")});
 }
 function toggleReaction(value){
-  state.reactions[value]=!state.reactions[value];saveState();renderFeed();if(state.reactions[value]){platform.haptic("light");showToast(t("supportDelivered"));}
+  state.reactions[value]=!state.reactions[value];
+  state.activeEmojiPicker=null;
+  saveState();
+  renderFeed();
+  if(state.reactions[value]){
+    platform.haptic("light");
+    showToast(t("supportDelivered"));
+  }
 }
 function siteShareText(){
   return state.lang==="bn"
@@ -3125,6 +3138,10 @@ const pwa=initPWA({
 });
 
 document.addEventListener("click",e=>{
+  if(state.activeEmojiPicker && !e.target.closest(".post-emoji-popover, [data-toggle-emoji-picker]")){
+    state.activeEmojiPicker = null;
+    renderFeed();
+  }
   const target=e.target.closest("button,a,[data-action],[data-nav],[data-open-circle]");if(!target)return;
   if(target.dataset.openCircle){openCircleDiscussionPage(target.dataset.openCircle);return}
   if(!guardAdminAction(target)){e.preventDefault();showToast(state.lang==="bn"?"এই সুবিধাটি বর্তমানে বন্ধ আছে।":"This feature is currently unavailable.");return}
